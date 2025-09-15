@@ -1,0 +1,148 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\cafebook\\views\\nhanvien\\pages\\goimonview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\nhanvien\\pages\\goimonview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\cafebook\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\cafebook\\views\\nhanvien\\pages\\goimonview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\nhanvien\\pages\\goimonview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\cafebook\\views\\admin\\pages\\khuyenmaiview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\khuyenmaiview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\pages\\khuyenmaiview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\khuyenmaiview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\manhinhdangnhap.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\manhinhdangnhap.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\MainWindow.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\MainWindow.xaml",
+              "RelativeToolTip": "Cafebook\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-15T17:03:51.603Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{007a3a6b-b5b2-454d-a2bd-cf929f989be2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Cafebook\\MainWindow.xaml.cs",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\MainWindow.xaml.cs",
+              "RelativeToolTip": "Cafebook\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:55:30.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ManHinhDangNhap.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\ManHinhDangNhap.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\ManHinhDangNhap.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\ManHinhDangNhap.xaml",
+              "RelativeToolTip": "Cafebook\\ManHinhDangNhap.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-15T20:53:36.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "KhuyenMaiView.xaml.cs",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml.cs",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml.cs",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml.cs",
+              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAuwIsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T20:08:52.081Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "KhuyenMaiView.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml",
+              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\KhuyenMaiView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-15T20:08:50.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GoiMonView.xaml.cs",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml.cs",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml.cs",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml.cs",
+              "RelativeToolTip": "Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAIwJwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T19:56:35.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GoiMonView.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml",
+              "RelativeToolTip": "Cafebook\\Views\\nhanvien\\pages\\GoiMonView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-15T19:56:28.837Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+﻿ALTER TABLE CongThuc
+ADD donViTinhSuDung NVARCHAR(20) NULL;
+GO

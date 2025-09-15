@@ -1,0 +1,50 @@
+﻿<Page x:Class="Cafebook.Views.admin.pages.BanView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace Cafebook.Views.admin.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="1050"
+      Title="BanView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Column="0" x:Name="dgBan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgBan_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding IdBan}" Width="50"/>
+                <DataGridTextColumn Header="Số Bàn" Binding="{Binding SoBan}" Width="120"/>
+                <DataGridTextColumn Header="Số Ghế" Binding="{Binding SoGhe}" Width="80"/>
+                <DataGridTextColumn Header="Ghi chú" Binding="{Binding GhiChu}" Width="*"/>
+                <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="1" Width="300" Margin="10,0,0,0">
+            <GroupBox Header="Thông tin Bàn">
+                <StackPanel Margin="10">
+                    <Label Content="Số bàn (Tên bàn):"/>
+                    <TextBox x:Name="txtSoBan" Margin="0,0,0,10"/>
+                    <Label Content="Số ghế:"/>
+                    <TextBox x:Name="txtSoGhe" Margin="0,0,0,10"/>
+                    <Label Content="Ghi chú (vd: Gần cửa sổ, ngoài trời...):"/>
+                    <TextBox x:Name="txtGhiChu" Margin="0,0,0,10"/>
+                    <Label Content="Trạng thái (chỉ áp dụng khi bàn trống):"/>
+                    <ComboBox x:Name="cmbTrangThai" Margin="0,0,0,15">
+                        <ComboBoxItem Content="Trống"/>
+                        <ComboBoxItem Content="Bảo trì"/>
+                    </ComboBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnLamMoiBan" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoiBan_Click"/>
+                        <Button x:Name="btnThemBan" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThemBan_Click"/>
+                        <Button x:Name="btnLuuBan" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuuBan_Click"/>
+                        <Button x:Name="btnXoaBan" Content="Xóa" Margin="5" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoaBan_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,169 @@
+﻿<Page x:Class="Cafebook.Views.nhanvien.pages.SoDoBanView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Cafebook.Views.nhanvien.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="SoDoBanView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <Style x:Key="TableCardStyle" TargetType="Button">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Margin" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0,4,0,0"/>
+            <Setter Property="BorderBrush" Value="#2ECC71"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="cardBorder" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2" Color="Gray" Opacity="0.2" BlurRadius="10"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="cardBorder" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="cardBorder" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="cardBorder" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="cardBorder" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Có khách">
+                    <Setter Property="BorderBrush" Value="#E74C3C"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TrangThai}" Value="Đã đặt">
+                    <Setter Property="BorderBrush" Value="#F39C12"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#EAECEE"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F4F6F7">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="icBan" Margin="10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource TableCardStyle}" Click="BtnBan_Click">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                <TextBlock Text="&#xf00c;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="24" Foreground="#2ECC71">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding TrangThai}" Value="Có khách">
+                                                    <Setter Property="Text" Value="&#xf0c0;"/>
+                                                    <Setter Property="Foreground" Value="#E74C3C"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding TrangThai}" Value="Đã đặt">
+                                                    <Setter Property="Text" Value="&#xf017;"/>
+                                                    <Setter Property="Foreground" Value="#F39C12"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBlock Text="{Binding SoBan}" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding TrangThai}" FontSize="12" Foreground="Gray"/>
+
+                                <TextBlock Text="{Binding TongTienHienTai, StringFormat={}{0:N0} VND}" FontSize="12" Foreground="Red" FontWeight="SemiBold">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding TrangThai}" Value="Có khách">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border Grid.Column="1" Background="White" CornerRadius="8,0,0,8">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="1" Direction="270" Color="Black" Opacity="0.1" BlurRadius="15"/>
+            </Border.Effect>
+            <Grid x:Name="panelThaoTac" Margin="20">
+                <StackPanel x:Name="panelChuaChon" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xf590;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="60" Foreground="#BDC3C7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Chọn một bàn để bắt đầu" FontSize="16" Foreground="Gray" TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="panelDaChon" Visibility="Collapsed">
+                    <TextBlock Text="Thông tin Bàn" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+                    <Separator/>
+                    <TextBlock FontSize="36" FontWeight="ExtraBold" Margin="0,15,0,0">Bàn <Run x:Name="runSoBan"/></TextBlock>
+                    <TextBlock FontSize="16" Margin="0,5,0,0">Trạng thái: <Run x:Name="runTrangThai" FontWeight="SemiBold"/></TextBlock>
+
+                    <TextBlock x:Name="tbGhiChu" FontStyle="Italic" Foreground="Gray" Margin="0,5,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock x:Name="tbTongTienWrapper" FontSize="16" Margin="0,5,0,0">Tổng tiền: <Run x:Name="runTongTien" FontWeight="SemiBold" Foreground="Red"/></TextBlock>
+
+                    <StackPanel Margin="0,40,0,0">
+                        <Button x:Name="btnGoiMon" Content="Gọi Món / Xem Chi tiết" Padding="15" FontSize="16" FontWeight="Bold" Background="#2980B9" Foreground="White" Click="BtnGoiMon_Click"/>
+                        <Button x:Name="btnChuyenBan" Content="Chuyển Bàn" Style="{StaticResource ActionButton}" Click="BtnChuyenBan_Click"/>
+
+                        <Button x:Name="btnGopBan" Content="Gộp Bàn" Style="{StaticResource ActionButton}" Click="BtnGopBan_Click"/>
+                    </StackPanel>
+
+                    <Button x:Name="btnLamMoi" Content="Làm mới Sơ đồ" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0,50,0,0" Click="BtnLamMoi_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

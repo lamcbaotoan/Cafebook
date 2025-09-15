@@ -1,0 +1,3 @@
+﻿ALTER TABLE ChiTietHoaDon
+ADD GhiChu NVARCHAR(255) NULL;
+GO

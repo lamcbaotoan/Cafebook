@@ -1,0 +1,155 @@
+﻿<Page x:Class="Cafebook.Views.nhanvien.pages.GoiMonView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Cafebook.Views.nhanvien.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="GoiMonView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style x:Key="ProductButton" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="90"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="5">
+                            <StackPanel>
+                                <TextBlock Text="{Binding TenSanPham}" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" Height="40" FontSize="14"/>
+                                <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#007ACC"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="1" Color="Gray" Opacity="0.3" BlurRadius="8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="5, 10, 5, 5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Background="#F5F5F5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ListBox x:Name="lbLoaiSP" Margin="5" DisplayMemberPath="TenLoaiSP" SelectionChanged="LbLoaiSP_SelectionChanged" BorderThickness="0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="icSanPham">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource ProductButton}" Click="ProductButton_Click"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="lblTieuDeHoaDon" Text="Hóa đơn - Bàn ..." FontSize="22" FontWeight="Bold" Margin="0,5,0,10"/>
+
+            <DataGrid Grid.Row="1" x:Name="dgChiTietHoaDon" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding ChiTietHoaDonOC}" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#EEE">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding TenSanPham}" Width="*" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTemplateColumn Header="Số lượng" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Button x:Name="btnGiamSL" Content="-" Width="25" Height="25" Click="BtnGiamSL_Click"/>
+                                    <TextBlock Text="{Binding SoLuong}" Margin="8,0" VerticalAlignment="Center" FontSize="14"/>
+                                    <Button x:Name="btnTangSL" Content="+" Width="25" Height="25" Click="BtnTangSL_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGiaLucBan, StringFormat=N0}" Width="100" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat=N0}" Width="120" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTemplateColumn Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="btnXoaMon" Content="X" Background="IndianRed" Foreground="White" Width="25" Height="25" Click="BtnXoaMon_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="0,1,0,0" Margin="0,10,0,0" Padding="0,10,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Tổng tiền:" Margin="5" FontSize="16"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblTongTien" Text="0" Margin="5" FontSize="16" HorizontalAlignment="Right" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Khuyến mãi:" Margin="5" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cmbKhuyenMai" DisplayMemberPath="TenKhuyenMai" Margin="5" SelectionChanged="CmbKhuyenMai_SelectionChanged"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Tiền giảm:" Margin="5" FontSize="16"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblTienGiam" Text="0" Margin="5" FontSize="16" HorizontalAlignment="Right" Foreground="Green" FontWeight="SemiBold"/>
+                    <Separator Grid.Row="3" Grid.ColumnSpan="2" Margin="0,5"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="THÀNH TIỀN:" Margin="5" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="lblThanhTien" Text="0 VND" Margin="5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Right" Foreground="Red"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Column="2" Background="#F5F5F5">
+            <Button x:Name="btnThanhToan" Content="Thanh Toán" Style="{StaticResource ActionButton}" Background="#27AE60" Click="BtnThanhToan_Click"/>
+            <Button x:Name="btnLuu" Content="Lưu Hóa đơn" Style="{StaticResource ActionButton}" Background="#2980B9" Click="BtnLuu_Click"/>
+            <Button x:Name="btnInTamTinh" Content="In Tạm tính" Style="{StaticResource ActionButton}" Background="#7F8C8D"/>
+            <Button x:Name="btnQuayLai" Content="Quay lại Sơ đồ bàn" Style="{StaticResource ActionButton}" Background="#EAECEE" Foreground="#333" Click="BtnQuayLai_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

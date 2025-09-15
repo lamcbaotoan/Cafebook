@@ -1,0 +1,69 @@
+﻿<Window x:Class="Cafebook.Views.admin.ManHinhAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cafebook.Views.admin"
+        mc:Ignorable="d"
+        Title="Cafebook - Bảng điều khiển" Height="720" Width="1280"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#D5D8DC"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4A5A6A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Background="#2C3E50">
+            <DockPanel>
+                <Button x:Name="btnDangXuat" Content="Đăng xuất" DockPanel.Dock="Bottom" Height="50" 
+                        Background="#E74C3C" Foreground="White" BorderThickness="0" FontSize="14"
+                        Click="BtnDangXuat_Click"/>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Cafebook" FontSize="24" FontWeight="Bold" Foreground="White" 
+                                   HorizontalAlignment="Center" Margin="0,20,0,30"/>
+
+                        <Button x:Name="btnTongQuan" Content="Tổng quan &amp; Báo cáo" Style="{StaticResource NavButton}" Click="BtnTongQuan_Click"/>
+                        <Button x:Name="btnSanPham" Content="Quản lý Sản phẩm" Style="{StaticResource NavButton}" Click="BtnSanPham_Click"/>
+                        <Button x:Name="btnBan" Content="Quản lý Bàn" Style="{StaticResource NavButton}" Click="BtnBan_Click"/>
+                        <Button x:Name="btnKho" Content="Quản lý Kho" Style="{StaticResource NavButton}" Click="BtnKho_Click"/>
+                        <Button x:Name="btnSach" Content="Quản lý Sách" Style="{StaticResource NavButton}" Click="BtnSach_Click"/>
+                        <Button x:Name="btnNhanSu" Content="Quản lý Nhân sự" Style="{StaticResource NavButton}" Click="BtnNhanSu_Click"/>
+                        <Button x:Name="btnKhachHang" Content="Quản lý Khách hàng &amp; KM" Style="{StaticResource NavButton}" Click="BtnKhachHang_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Grid>
+
+        <Frame x:Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Background="#F4F6F7"/>
+
+    </Grid>
+</Window>

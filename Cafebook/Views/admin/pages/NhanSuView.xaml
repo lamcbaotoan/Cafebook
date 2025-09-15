@@ -1,0 +1,147 @@
+﻿<Page x:Class="Cafebook.Views.admin.pages.NhanSuView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Cafebook.Views.admin.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="1050"
+      Title="NhanSuView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+    <TabControl>
+        <TabItem Header="Danh sách Nhân viên">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Column="0" x:Name="dgNhanVien" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgNhanVien_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding IdNhanVien}" Width="50"/>
+                        <DataGridTextColumn Header="Họ Tên" Binding="{Binding HoTen}" Width="*"/>
+                        <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="120"/>
+                        <DataGridTextColumn Header="Vai trò" Binding="{Binding TenVaiTro}" Width="120"/>
+                        <DataGridCheckBoxColumn Header="Đang làm" Binding="{Binding TrangThai}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Column="1" Width="350" Margin="10,0,0,0">
+                    <GroupBox Header="Thông tin chi tiết">
+                        <StackPanel Margin="5">
+                            <Label Content="Họ tên:"/>
+                            <TextBox x:Name="txtHoTen" Margin="0,0,0,5"/>
+                            <Label Content="Số điện thoại:"/>
+                            <TextBox x:Name="txtSdt" Margin="0,0,0,5"/>
+                            <Label Content="Email:"/>
+                            <TextBox x:Name="txtEmail" Margin="0,0,0,5"/>
+                            <Label Content="Mật khẩu:"/>
+                            <PasswordBox x:Name="txtMatKhau" Margin="0,0,0,5"/>
+                            <Label Content="Địa chỉ:"/>
+                            <TextBox x:Name="txtDiaChi" Margin="0,0,0,5" Height="40" TextWrapping="Wrap"/>
+                            <Label Content="Vai trò:"/>
+                            <ComboBox x:Name="cmbVaiTro" DisplayMemberPath="TenVaiTro" SelectedValuePath="IdVaiTro" Margin="0,0,0,5"/>
+                            <Label Content="Ngày vào làm:"/>
+                            <DatePicker x:Name="dpNgayVaoLam" Margin="0,0,0,5"/>
+                            <CheckBox x:Name="chkTrangThai" Content="Đang làm việc" Margin="0,5,0,10"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button x:Name="btnLamMoiNV" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoiNV_Click"/>
+                        <Button x:Name="btnThemNV" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThemNV_Click"/>
+                        <Button x:Name="btnLuuNV" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuuNV_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Lịch làm việc">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Calendar x:Name="calLichLamViec" SelectedDatesChanged="CalLichLamViec_SelectedDatesChanged"/>
+                    <GroupBox Header="Thêm lịch làm việc" Margin="0,10,0,0">
+                        <StackPanel Margin="5">
+                            <Label Content="Chọn nhân viên:"/>
+                            <ComboBox x:Name="cmbNhanVien_Lich" DisplayMemberPath="HoTen" SelectedValuePath="IdNhanVien" Margin="0,0,0,5"/>
+                            <Label Content="Chọn ca:"/>
+                            <ComboBox x:Name="cmbCaLamViec_Lich" DisplayMemberPath="TenCa" SelectedValuePath="IdCa" Margin="0,0,0,5"/>
+                            <Button x:Name="btnThemLich" Content="Thêm Lịch" Margin="0,10,0,0" Padding="10,5" Click="BtnThemLich_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+                <Grid Grid.Column="1" Margin="10,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="lblNgayDaChon" Text="Lịch làm việc ngày: " FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <Button x:Name="btnXoaLich" Content="Xóa Lịch đã chọn" Margin="20,0,0,0" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoaLich_Click"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" x:Name="dgLichLamViec" Margin="0,10,0,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nhân viên" Binding="{Binding HoTenNhanVien}" Width="*"/>
+                            <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="120"/>
+                            <DataGridTextColumn Header="Bắt đầu" Binding="{Binding GioBatDau}" Width="100"/>
+                            <DataGridTextColumn Header="Kết thúc" Binding="{Binding GioKetThuc}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Chấm công &amp; Lương">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Row="0" Header="Bảng Chấm công">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Label Content="Xem chấm công ngày:" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpNgayChamCong" SelectedDateChanged="DpNgayChamCong_SelectedDateChanged"/>
+                        </StackPanel>
+                        <DataGrid x:Name="dgChamCong" MaxHeight="300" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nhân viên" Binding="{Binding HoTenNhanVien}" Width="*"/>
+                                <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="120"/>
+                                <DataGridTextColumn Header="Giờ vào" Binding="{Binding GioVao, StringFormat='HH:mm:ss'}" Width="100"/>
+                                <DataGridTextColumn Header="Giờ ra" Binding="{Binding GioRa, StringFormat='HH:mm:ss'}" Width="100"/>
+                                <DataGridTextColumn Header="Tổng giờ" Binding="{Binding SoGioLam, StringFormat=N2}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Tính lương Tạm tính" Margin="0,10,0,0">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <Label Content="Chọn nhân viên:"/>
+                            <ComboBox x:Name="cmbNhanVien_Luong" DisplayMemberPath="HoTen" SelectedValuePath="IdNhanVien" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Từ ngày:"/>
+                                <DatePicker x:Name="dpTuNgay"/>
+                                <Label Content="Đến ngày:" Margin="10,0,0,0"/>
+                                <DatePicker x:Name="dpDenNgay"/>
+                            </StackPanel>
+                            <Button x:Name="btnXemTongGio" Content="Xem Tổng giờ làm" Margin="0,10,0,0" Padding="10,5" HorizontalAlignment="Left" Click="BtnXemTongGio_Click"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                            <TextBlock Text="Tổng giờ làm:" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="lblTongGioLam" Text="0.00 giờ" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <Label Content="Nhập mức lương/giờ (VND):"/>
+                            <TextBox x:Name="txtMucLuongGio" Text="20000" Margin="0,0,0,5"/>
+                            <Button x:Name="btnTinhLuong" Content="TÍNH LƯƠNG" Margin="0,5,0,0" Padding="10,8" FontWeight="Bold" Click="BtnTinhLuong_Click"/>
+                            <TextBlock Text="Tiền lương tạm tính:" Margin="0,10,0,0"/>
+                            <TextBlock x:Name="lblTienLuong" Text="0 VND" FontSize="22" FontWeight="Bold" Foreground="Green"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Page>

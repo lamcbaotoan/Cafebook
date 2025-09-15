@@ -1,0 +1,76 @@
+﻿<Page x:Class="Cafebook.Views.admin.pages.KhuyenMaiView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Cafebook.Views.admin.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="1050"
+      Title="KhuyenMaiView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Column="0" x:Name="dgKhuyenMai" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgKhuyenMai_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding IdKhuyenMai}" Width="50"/>
+                <DataGridTextColumn Header="Tên chương trình" Binding="{Binding TenKhuyenMai}" Width="*"/>
+                <DataGridTextColumn Header="Loại" Binding="{Binding LoaiGiamGia}" Width="100"/>
+                <DataGridTextColumn Header="Giá trị" Binding="{Binding GiaTriGiam, StringFormat=N0}" Width="100"/>
+                <DataGridTextColumn Header="Bắt đầu" Binding="{Binding NgayBatDau, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                <DataGridTextColumn Header="Kết thúc" Binding="{Binding NgayKetThuc, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="1" Width="380" Margin="10,0,0,0">
+            <GroupBox Header="Thông tin Chương trình Khuyến mãi">
+                <StackPanel Margin="10">
+                    <Label Content="Tên chương trình:"/>
+                    <TextBox x:Name="txtTenKM" Margin="0,0,0,10"/>
+                    <Label Content="Mô tả:"/>
+                    <TextBox x:Name="txtMoTa" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                            <Label Content="Loại giảm giá:"/>
+                            <ComboBox x:Name="cmbLoaiGiamGia">
+                                <ComboBoxItem Content="PhanTram"/>
+                                <ComboBoxItem Content="SoTien"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                            <Label Content="Giá trị giảm:"/>
+                            <TextBox x:Name="txtGiaTriGiam"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                            <Label Content="Ngày bắt đầu:"/>
+                            <DatePicker x:Name="dpNgayBatDau"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                            <Label Content="Ngày kết thúc:"/>
+                            <DatePicker x:Name="dpNgayKetThuc"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button x:Name="btnLamMoi" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoi_Click"/>
+                <Button x:Name="btnThem" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThem_Click"/>
+                <Button x:Name="btnLuu" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuu_Click"/>
+                <Button x:Name="btnXoa" Content="Xóa" Margin="5" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoa_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,220 @@
+﻿<Window x:Class="Cafebook.ManHinhDangNhap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cafebook"
+        mc:Ignorable="d"
+        Title="Đăng nhập hệ thống CafeBook" Height="420" Width="640"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI"
+        Background="#EFEFF1"
+        Loaded="Window_Loaded"
+        KeyDown="Window_KeyDown">
+
+    <Window.Resources>
+        <!-- Primary color -->
+        <Color x:Key="PrimaryColor">#007ACC</Color>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#005A9C"/>
+
+        <!-- TextBox / PasswordBox base style -->
+        <Style x:Key="InputBase" TargetType="Control">
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource InputBase}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#007ACC" BlurRadius="10" Opacity="0.08" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#005A9C" BlurRadius="18" Opacity="0.12" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource InputBase}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#007ACC" BlurRadius="10" Opacity="0.08" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#005A9C" BlurRadius="18" Opacity="0.12" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Button style -->
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="b" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#007ACC" BlurRadius="14" Opacity="0.14" ShadowDepth="0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="b" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="b" Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="GhostButton" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+
+        <!-- Small accent TextBlock -->
+        <Style TargetType="TextBlock" x:Key="AccentHeader">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Background decoration -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#FFFFFF" Offset="0"/>
+                <GradientStop Color="#F5F7FA" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Center card -->
+        <Border Width="420" Height="320" Background="White" CornerRadius="12"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Padding="18">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="20" ShadowDepth="6"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,6">
+                    <TextBlock Text="ĐĂNG NHẬP" Style="{StaticResource AccentHeader}" Margin="0,0,0,6"/>
+                    <TextBlock Text="Vui lòng đăng nhập để sử dụng hệ thống CafeBook" FontSize="12" Foreground="#666" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Content -->
+                <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                    <TextBlock Text="Tên đăng nhập (SĐT hoặc Email)" Margin="0,6,0,4" Foreground="Gray"/>
+                    <TextBox x:Name="txtUsername" />
+
+                    <TextBlock Text="Mật khẩu" Margin="0,10,0,4" Foreground="Gray"/>
+                    <PasswordBox x:Name="txtPassword" />
+
+                    <!-- Forgot / show password area (non-intrusive) -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0"/>
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,18,0,0">
+                        <Button x:Name="btnLogin" Content="Đăng nhập" Width="130" Style="{StaticResource PrimaryButton}" Click="BtnLogin_Click"/>
+                        <Button x:Name="btnExit" Content="Thoát" Width="110" Margin="14,0,0,0" Style="{StaticResource GhostButton}" Click="BtnExit_Click"/>
+                    </StackPanel>
+
+                    <!-- subtle footer -->
+                    <TextBlock Text="© CafeBook - Quản lý quán cà phê" FontSize="11" Foreground="#999" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- floating logo/brand on top-left of window -->
+        <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18" Background="#007ACC" CornerRadius="8" Padding="8,6" Opacity="0.95">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Width="28" Height="28" Fill="White" Margin="0,0,8,0"/>
+                <StackPanel>
+                    <TextBlock Text="CafeBook" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Quản lý quán" FontSize="11" Foreground="#DCEEFF"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

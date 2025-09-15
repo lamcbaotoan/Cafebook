@@ -1,0 +1,11 @@
+﻿<Application x:Class="Cafebook.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Cafebook"
+             StartupUri="ManHinhDangNhap.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="FontAwesomeSolid">/Fonts/Font Awesome 6 Free-Solid-900.otf#Font Awesome 6 Free Solid</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

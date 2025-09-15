@@ -1,0 +1,149 @@
+﻿<Page x:Class="Cafebook.Views.admin.pages.SanPhamView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:localroot="clr-namespace:Cafebook"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="1050"
+      Title="SanPhamView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <localroot:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
+    </Page.Resources>
+
+    <TabControl>
+        <TabItem Header="Quản lý Sản phẩm">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Danh sách Sản phẩm" FontSize="18" FontWeight="SemiBold" Margin="5"/>
+                    <DataGrid Grid.Row="1" x:Name="dgSanPham" AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionChanged="DgSanPham_SelectionChanged" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding IdSanPham}" Width="40"/>
+                            <DataGridTextColumn Header="Tên Sản phẩm" Binding="{Binding TenSanPham}" Width="*"/>
+                            <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGia, StringFormat=N0}" Width="80"/>
+                            <DataGridTextColumn Header="Loại" Binding="{Binding TenLoaiSP}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="formChiTiet">
+                        <TextBlock Text="Thông tin Chi tiết" FontSize="18" FontWeight="SemiBold" Margin="5"/>
+                        <Border Background="WhiteSmoke" Padding="15" CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Content="Tên sản phẩm:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtTenSP" Margin="5"/>
+
+                                <Label Grid.Row="1" Grid.Column="0" Content="Loại sản phẩm:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cmbLoaiSP" Margin="5" DisplayMemberPath="TenLoaiSP" SelectedValuePath="IdLoaiSP"/>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="Đơn giá:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtDonGia" Margin="5"/>
+
+                                <Label Grid.Row="3" Grid.Column="0" Content="Trạng thái:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="3" Grid.Column="1" x:Name="cmbTrangThai" Margin="5">
+                                    <ComboBoxItem Content="Đang bán"/>
+                                    <ComboBoxItem Content="Tạm ngưng"/>
+                                </ComboBox>
+
+                                <Label Grid.Row="4" Grid.Column="0" Content="Mô tả:" VerticalAlignment="Top"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtMoTa" Margin="5" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+                            </Grid>
+                        </Border>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,5,10">
+                            <Button x:Name="btnLamMoiSP" Content="Làm mới" Margin="5" Padding="15,5" Click="BtnLamMoiSP_Click"/>
+                            <Button x:Name="btnThemSP" Content="Thêm" Margin="5" Padding="15,5" Background="#27AE60" Foreground="White" Click="BtnThemSP_Click"/>
+                            <Button x:Name="btnLuuSP" Content="Lưu" Margin="5" Padding="15,5" Background="#2980B9" Foreground="White" Click="BtnLuuSP_Click"/>
+                            <Button x:Name="btnXoaSP" Content="Xóa" Margin="5" Padding="15,5" Background="#C0392B" Foreground="White" Click="BtnXoaSP_Click"/>
+                        </StackPanel>
+
+                        <GroupBox Header="Công thức định lượng" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,0" IsEnabled="{Binding ElementName=dgSanPham, Path=SelectedItem, Converter={StaticResource NullToBooleanConverter}}">
+                            <StackPanel Margin="10">
+                                <DataGrid x:Name="dgCongThuc" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="150">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Tên Nguyên liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
+                                        <DataGridTextColumn Header="Số lượng" Binding="{Binding LuongCanThiet}" Width="80"/>
+                                        <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinhSuDung}" Width="60"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" x:Name="cmbNguyenLieu" DisplayMemberPath="TenNguyenLieu" SelectedValuePath="IdNguyenLieu" Margin="0,0,5,0" SelectionChanged="CmbNguyenLieu_SelectionChanged"/>
+                                    <TextBox Grid.Column="1" x:Name="txtSoLuongNL" Width="80" Margin="5,0"/>
+
+                                    <ComboBox Grid.Column="2" x:Name="cmbDonViTinhNVL" Width="60" Margin="5,0"/>
+
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                        <Button x:Name="btnLuuNVL" Content="Lưu NVL" Margin="5,0,0,0" Padding="10,5" Click="BtnLuuNVL_Click"/>
+                                        <Button x:Name="btnXoaNVL" Content="Xóa NVL" Margin="5,0,0,0" Padding="10,5" Click="BtnXoaNVL_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Quản lý Loại Sản phẩm">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Grid.Column="0" x:Name="dgLoaiSanPham" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgLoaiSanPham_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding IdLoaiSP}" Width="50"/>
+                        <DataGridTextColumn Header="Tên Loại Sản phẩm" Binding="{Binding TenLoaiSP}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Column="1" Width="300" Margin="10,0,0,0">
+                    <GroupBox Header="Thông tin Loại Sản phẩm">
+                        <StackPanel Margin="10">
+                            <Label Content="Tên loại sản phẩm:"/>
+                            <TextBox x:Name="txtTenLoaiSP" Margin="0,0,0,15"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="btnLamMoiLSP" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoiLSP_Click"/>
+                                <Button x:Name="btnThemLSP" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThemLSP_Click"/>
+                                <Button x:Name="btnLuuLSP" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuuLSP_Click"/>
+                                <Button x:Name="btnXoaLSP" Content="Xóa" Margin="5" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoaLSP_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Page>

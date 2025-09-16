@@ -38,6 +38,33 @@ namespace Cafebook.BUS
             return doanhThu;
         }
 
+        // HÀM MỚI: Lấy dữ liệu doanh thu cho biểu đồ 30 ngày qua
+        public Dictionary<DateTime, decimal> GetDoanhThu30NgayQua()
+        {
+            var data = new Dictionary<DateTime, decimal>();
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                // Lấy dữ liệu từ 30 ngày trước cho đến hôm nay
+                string query = @"
+                    SELECT CONVERT(date, thoiGianTao) AS Ngay, SUM(thanhTien) AS TongDoanhThu
+                    FROM HoaDon
+                    WHERE trangThai = N'Đã thanh toán' 
+                      AND thoiGianTao >= DATEADD(day, -29, GETDATE())
+                    GROUP BY CONVERT(date, thoiGianTao)
+                    ORDER BY Ngay ASC";
+                var cmd = new SqlCommand(query, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data[(DateTime)reader["Ngay"]] = (decimal)reader["TongDoanhThu"];
+                    }
+                }
+            }
+            return data;
+        }
+
         // Lấy tổng số đơn hàng trong ngày hôm nay
         public int GetSoDonHangHomNay()
         {
@@ -80,5 +107,7 @@ namespace Cafebook.BUS
             }
             return tenSP;
         }
+
+
     }
 }

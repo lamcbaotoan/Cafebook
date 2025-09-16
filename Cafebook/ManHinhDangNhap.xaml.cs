@@ -4,6 +4,7 @@ using Cafebook.Views.admin;
 using Cafebook.Views.nhanvien;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls; // NEW: Added for TextChangedEventArgs
 using System.Windows.Input;
 using Cafebook.Views.Common;
 
@@ -11,16 +12,14 @@ namespace Cafebook
 {
     public partial class ManHinhDangNhap : Window
     {
-        private NhanVienBUS nhanVienBUS;
+        private TaiKhoanBUS taiKhoanBUS;
         private bool isProcessing = false;
+        private bool _isPasswordSyncing = false; // NEW: Flag to prevent event loops
 
         public ManHinhDangNhap()
         {
             InitializeComponent();
-            nhanVienBUS = new NhanVienBUS();
-            // Optional: set default values for testing (comment out in production)
-            // txtUsername.Text = "demo@cafebook.vn";
-            // txtPassword.Password = "123456";
+            taiKhoanBUS = new TaiKhoanBUS();
         }
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)
@@ -28,9 +27,9 @@ namespace Cafebook
             if (isProcessing) return;
 
             string username = txtUsername.Text?.Trim();
+            // This line remains correct as txtPassword is always kept in sync
             string password = txtPassword.Password;
 
-            // 1. Kiểm tra đầu vào
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -43,34 +42,25 @@ namespace Cafebook
                 btnLogin.IsEnabled = false;
                 btnLogin.Content = "Đang đăng nhập...";
 
-                // 2. Gọi lớp BUS để kiểm tra (giả sử đây là gọi sync). Nếu là gọi DB nặng, chạy async.
-                // Mình giả sử KiemTraDangNhap là sync; nếu bạn có phiên bản async thay vào await nhanVienBUS.KiemTraDangNhapAsync(...)
-                NhanVien loggedInUser = await Task.Run(() => nhanVienBUS.KiemTraDangNhap(username, password));
+                NhanVien loggedInUser = await Task.Run(() => taiKhoanBUS.DangNhap(username, password));
 
-                // 3. Xử lý kết quả
                 if (loggedInUser != null)
                 {
-                    // 1) Thay vì hiện MessageBox đơn giản, gọi màn hình chào mừng có animation + loading
-                    // Ẩn login window trước để tránh flicker
                     this.Hide();
-
-                    // Tạo và hiển thị welcome window (Modal) — nó sẽ tự mở màn hình tiếp theo rồi đóng login
                     var welcome = new Cafebook.Views.Common.WelcomeWindow(loggedInUser, this, durationMs: 1400);
-                    welcome.Owner = this; // đảm bảo center on owner
+                    welcome.Owner = this;
                     welcome.ShowDialog();
 
-                    // Note: WelcomeWindow sẽ tự Close() login window khi đã mở next window.
-                    // Nếu welcome bị đóng và login vẫn còn hiển thị (trường hợp lỗi), show lại hoặc đóng.
                     if (this.IsVisible)
                     {
                         this.Close();
                     }
                 }
-
                 else
                 {
                     MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thử lại.", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Error);
                     txtPassword.Clear();
+                    txtVisiblePassword.Clear(); // NEW: Clear the visible password field as well
                     txtPassword.Focus();
                 }
             }
@@ -88,15 +78,23 @@ namespace Cafebook
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            MessageBoxResult result = MessageBox.Show(
+                "Bạn có chắc chắn muốn thoát khỏi chương trình?",
+                "Xác nhận Thoát",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
-        // Bắt phím Enter để đăng nhập
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                // Khi đang xử lý thì bỏ qua
                 if (!isProcessing)
                 {
                     BtnLogin_Click(btnLogin, new RoutedEventArgs());
@@ -108,12 +106,49 @@ namespace Cafebook
             }
         }
 
-        // Thực hiện 1 chút hiệu ứng khi load (nếu muốn)
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Ví dụ: focus vào username ngay khi mở
             txtUsername.Focus();
-            // Nếu muốn, bạn có thể thêm animation programmatically hoặc qua XAML (mình đã thêm shadow/fade in qua XAML resources).
+        }
+
+        // ####################################################################
+        // ## NEW: Methods to handle Show/Hide Password functionality        ##
+        // ####################################################################
+
+        private void ChkShowPassword_Checked(object sender, RoutedEventArgs e)
+        {
+            // Show the TextBox, hide the PasswordBox
+            txtVisiblePassword.Visibility = Visibility.Visible;
+            txtPassword.Visibility = Visibility.Collapsed;
+        }
+
+        private void ChkShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // Hide the TextBox, show the PasswordBox
+            txtVisiblePassword.Visibility = Visibility.Collapsed;
+            txtPassword.Visibility = Visibility.Visible;
+        }
+
+        private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            // Sync password from PasswordBox to TextBox to ensure they match
+            if (!_isPasswordSyncing)
+            {
+                _isPasswordSyncing = true;
+                txtVisiblePassword.Text = txtPassword.Password;
+                _isPasswordSyncing = false;
+            }
+        }
+
+        private void TxtVisiblePassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Sync password from TextBox to PasswordBox to ensure they match
+            if (!_isPasswordSyncing)
+            {
+                _isPasswordSyncing = true;
+                txtPassword.Password = txtVisiblePassword.Text;
+                _isPasswordSyncing = false;
+            }
         }
     }
 }

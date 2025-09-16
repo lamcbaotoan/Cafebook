@@ -3,12 +3,14 @@ using Cafebook.DTO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using Cafebook.Views.Common; // Đảm bảo có using này
 
 namespace Cafebook.Views.admin.pages
 {
     public partial class NhanSuView : Page
     {
         private NhanSuBUS nhanSuBUS = new NhanSuBUS();
+        private PhieuLuong phieuLuongTamTinh;
 
         public NhanSuView()
         {
@@ -19,22 +21,25 @@ namespace Cafebook.Views.admin.pages
         {
             LoadAllData();
             ClearFormNV();
+            ClearFormChinhSach();
 
             calLichLamViec.SelectedDate = DateTime.Today;
             dpNgayChamCong.SelectedDate = DateTime.Today;
             dpTuNgay.SelectedDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            dpDenNgay.SelectedDate = DateTime.Today;
+            dpDenNgay.SelectedDate = dpTuNgay.SelectedDate.Value.AddMonths(1).AddDays(-1);
         }
 
         private void LoadAllData()
         {
             var dsNhanVien = nhanSuBUS.GetDanhSachNhanVien();
-            dgNhanVien.ItemsSource = dsNhanVien;
-            cmbNhanVien_Lich.ItemsSource = dsNhanVien;
-            cmbNhanVien_Luong.ItemsSource = dsNhanVien;
+            var dsChinhSach = nhanSuBUS.GetChinhSach();
 
+            dgNhanVien.ItemsSource = dsNhanVien;
             cmbVaiTro.ItemsSource = nhanSuBUS.GetDanhSachVaiTro();
+            cmbNhanVien_Lich.ItemsSource = dsNhanVien;
             cmbCaLamViec_Lich.ItemsSource = nhanSuBUS.GetDanhSachCaLamViec();
+            dgThuongPhat.ItemsSource = dsChinhSach;
+            cmbNhanVien_Luong.ItemsSource = dsNhanVien;
         }
 
         #region NhanVien
@@ -42,12 +47,9 @@ namespace Cafebook.Views.admin.pages
         {
             dgNhanVien.SelectedItem = null;
             txtHoTen.Text = "";
-            txtSdt.Text = "";
-            txtEmail.Text = "";
             txtMatKhau.Password = "";
-            txtDiaChi.Text = "";
+            txtMucLuong.Text = "20000";
             cmbVaiTro.SelectedIndex = -1;
-            dpNgayVaoLam.SelectedDate = DateTime.Today;
             chkTrangThai.IsChecked = true;
             btnThemNV.IsEnabled = true;
             btnLuuNV.IsEnabled = false;
@@ -58,12 +60,9 @@ namespace Cafebook.Views.admin.pages
             if (dgNhanVien.SelectedItem is NhanVien selected)
             {
                 txtHoTen.Text = selected.HoTen;
-                txtSdt.Text = selected.SoDienThoai;
-                txtEmail.Text = selected.Email;
                 txtMatKhau.Password = selected.MatKhau;
-                txtDiaChi.Text = selected.DiaChi;
+                txtMucLuong.Text = selected.MucLuongTheoGio.ToString("G0");
                 cmbVaiTro.SelectedValue = selected.IdVaiTro;
-                dpNgayVaoLam.SelectedDate = selected.NgayVaoLam;
                 chkTrangThai.IsChecked = selected.TrangThai;
                 btnThemNV.IsEnabled = false;
                 btnLuuNV.IsEnabled = true;
@@ -77,12 +76,9 @@ namespace Cafebook.Views.admin.pages
             var nv = new NhanVien
             {
                 HoTen = txtHoTen.Text,
-                SoDienThoai = txtSdt.Text,
-                Email = txtEmail.Text,
                 MatKhau = txtMatKhau.Password,
-                DiaChi = txtDiaChi.Text,
+                MucLuongTheoGio = decimal.TryParse(txtMucLuong.Text, out var luong) ? luong : 20000,
                 IdVaiTro = (int)cmbVaiTro.SelectedValue,
-                NgayVaoLam = dpNgayVaoLam.SelectedDate ?? DateTime.Today,
                 TrangThai = chkTrangThai.IsChecked ?? false
             };
             if (nhanSuBUS.ThemNhanVien(nv))
@@ -98,12 +94,9 @@ namespace Cafebook.Views.admin.pages
             if (dgNhanVien.SelectedItem is NhanVien selected)
             {
                 selected.HoTen = txtHoTen.Text;
-                selected.SoDienThoai = txtSdt.Text;
-                selected.Email = txtEmail.Text;
                 selected.MatKhau = txtMatKhau.Password;
-                selected.DiaChi = txtDiaChi.Text;
+                selected.MucLuongTheoGio = decimal.TryParse(txtMucLuong.Text, out var luong) ? luong : 20000;
                 selected.IdVaiTro = (int)cmbVaiTro.SelectedValue;
-                selected.NgayVaoLam = dpNgayVaoLam.SelectedDate ?? DateTime.Today;
                 selected.TrangThai = chkTrangThai.IsChecked ?? false;
 
                 if (nhanSuBUS.SuaNhanVien(selected))
@@ -140,7 +133,7 @@ namespace Cafebook.Views.admin.pages
 
                 if (nhanSuBUS.ThemLichLamViec(llv))
                 {
-                    CalLichLamViec_SelectedDatesChanged(null, null); // Refresh datagrid
+                    CalLichLamViec_SelectedDatesChanged(null, null);
                 }
                 else
                 {
@@ -161,7 +154,7 @@ namespace Cafebook.Views.admin.pages
                 {
                     if (nhanSuBUS.XoaLichLamViec(selected.IdLichLamViec))
                     {
-                        CalLichLamViec_SelectedDatesChanged(null, null); // Refresh datagrid
+                        CalLichLamViec_SelectedDatesChanged(null, null);
                     }
                     else
                     {
@@ -176,6 +169,82 @@ namespace Cafebook.Views.admin.pages
         }
         #endregion
 
+        #region ChinhSachLuong
+        private void ClearFormChinhSach()
+        {
+            dgThuongPhat.SelectedItem = null;
+            txtTenChinhSach.Text = "";
+            txtSoTienChinhSach.Text = "";
+            cmbLoaiChinhSach.SelectedIndex = -1;
+            btnThemCS.IsEnabled = true;
+            btnLuuCS.IsEnabled = false;
+            btnXoaCS.IsEnabled = false;
+        }
+
+        private void DgThuongPhat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgThuongPhat.SelectedItem is LoaiThuongPhat selected)
+            {
+                txtTenChinhSach.Text = selected.TenLoai;
+                txtSoTienChinhSach.Text = selected.SoTien.ToString("G0");
+                cmbLoaiChinhSach.Text = selected.Loai;
+                btnThemCS.IsEnabled = false;
+                btnLuuCS.IsEnabled = true;
+                btnXoaCS.IsEnabled = true;
+            }
+        }
+
+        private void BtnLamMoiCS_Click(object sender, RoutedEventArgs e) => ClearFormChinhSach();
+
+        private void BtnThemCS_Click(object sender, RoutedEventArgs e)
+        {
+            var ltp = new LoaiThuongPhat
+            {
+                TenLoai = txtTenChinhSach.Text,
+                SoTien = decimal.TryParse(txtSoTienChinhSach.Text, out var tien) ? tien : 0,
+                Loai = (cmbLoaiChinhSach.SelectedItem as ComboBoxItem)?.Content.ToString()
+            };
+            if (nhanSuBUS.ThemChinhSach(ltp))
+            {
+                MessageBox.Show("Thêm chính sách thành công!");
+                LoadAllData();
+                ClearFormChinhSach();
+            }
+        }
+
+        private void BtnLuuCS_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgThuongPhat.SelectedItem is LoaiThuongPhat selected)
+            {
+                selected.TenLoai = txtTenChinhSach.Text;
+                selected.SoTien = decimal.TryParse(txtSoTienChinhSach.Text, out var tien) ? tien : 0;
+                selected.Loai = (cmbLoaiChinhSach.SelectedItem as ComboBoxItem)?.Content.ToString();
+                if (nhanSuBUS.SuaChinhSach(selected))
+                {
+                    MessageBox.Show("Cập nhật thành công!");
+                    LoadAllData();
+                    ClearFormChinhSach();
+                }
+            }
+        }
+
+        private void BtnXoaCS_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgThuongPhat.SelectedItem is LoaiThuongPhat selected)
+            {
+                if (MessageBox.Show($"Bạn có chắc muốn xóa chính sách '{selected.TenLoai}'?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    if (nhanSuBUS.XoaChinhSach(selected.IdLoai))
+                    {
+                        MessageBox.Show("Xóa thành công!");
+                        LoadAllData();
+                        ClearFormChinhSach();
+                    }
+                }
+            }
+        }
+        #endregion
+
         #region ChamCong & Luong
         private void DpNgayChamCong_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -185,26 +254,84 @@ namespace Cafebook.Views.admin.pages
             }
         }
 
-        private void BtnXemTongGio_Click(object sender, RoutedEventArgs e)
+        private void BtnTuDongPhat_Click(object sender, RoutedEventArgs e)
         {
-            if (cmbNhanVien_Luong.SelectedValue != null && dpTuNgay.SelectedDate.HasValue && dpDenNgay.SelectedDate.HasValue)
+            if (dpNgayChamCong.SelectedDate.HasValue)
             {
-                int idNV = (int)cmbNhanVien_Luong.SelectedValue;
-                DateTime tuNgay = dpTuNgay.SelectedDate.Value;
-                DateTime denNgay = dpDenNgay.SelectedDate.Value;
+                int soNhanVienBiPhat = nhanSuBUS.TuDongPhatDiTre(dpNgayChamCong.SelectedDate.Value, 15); // Phạt nếu trễ > 15 phút
+                if (soNhanVienBiPhat >= 0)
+                    MessageBox.Show($"Đã tự động thêm {soNhanVienBiPhat} khoản phạt đi trễ cho ngày {dpNgayChamCong.SelectedDate.Value:dd/MM/yyyy}.", "Hoàn tất");
+                else
+                    MessageBox.Show("Chưa có chính sách 'Phạt đi trễ' trong hệ thống. Vui lòng thêm ở tab Thiết lập.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
-                decimal tongGio = nhanSuBUS.GetTongGioLam(idNV, tuNgay, denNgay);
-                lblTongGioLam.Text = tongGio.ToString("N2") + " giờ";
+        private void CmbNhanVien_Luong_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbNhanVien_Luong.SelectedItem is NhanVien selectedNV)
+            {
+                dgPhieuLuong.ItemsSource = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien);
             }
         }
 
         private void BtnTinhLuong_Click(object sender, RoutedEventArgs e)
         {
-            decimal.TryParse(lblTongGioLam.Text.Replace(" giờ", ""), out decimal tongGio);
-            decimal.TryParse(txtMucLuongGio.Text, out decimal mucLuong);
+            if (cmbNhanVien_Luong.SelectedItem is NhanVien selectedNV && dpTuNgay.SelectedDate.HasValue && dpDenNgay.SelectedDate.HasValue)
+            {
+                phieuLuongTamTinh = nhanSuBUS.TinhLuong(selectedNV.IdNhanVien, dpTuNgay.SelectedDate.Value, dpDenNgay.SelectedDate.Value);
 
-            decimal tienLuong = tongGio * mucLuong;
-            lblTienLuong.Text = tienLuong.ToString("N0") + " VND";
+                if (phieuLuongTamTinh != null)
+                {
+                    runLuongTheoGio.Text = $"{selectedNV.MucLuongTheoGio:N0} đ/giờ";
+                    runTongGioLam.Text = $"{phieuLuongTamTinh.TongGioLam:N2} giờ";
+                    runTongThuong.Text = $"+ {phieuLuongTamTinh.TongThuong:N0} đ";
+                    runTongPhat.Text = $"- {phieuLuongTamTinh.TongPhat:N0} đ";
+                    runThucLanh.Text = $"{phieuLuongTamTinh.ThucLanh:N0} VND";
+                    btnChotLuong.IsEnabled = true;
+                }
+            }
+        }
+
+        private void BtnChotLuong_Click(object sender, RoutedEventArgs e)
+        {
+            if (phieuLuongTamTinh != null)
+            {
+                if (nhanSuBUS.ChotPhieuLuong(phieuLuongTamTinh))
+                {
+                    MessageBox.Show("Chốt và tạo phiếu lương thành công!", "Thành công");
+                    phieuLuongTamTinh = null;
+                    btnChotLuong.IsEnabled = false;
+                    LoadLichSuPhieuLuong();
+                }
+                else
+                {
+                    MessageBox.Show("Chốt lương thất bại.", "Lỗi");
+                }
+            }
+        }
+
+        private void LoadLichSuPhieuLuong()
+        {
+            if (cmbNhanVien_Luong.SelectedItem is NhanVien selectedNV)
+            {
+                dgPhieuLuong.ItemsSource = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien);
+            }
+        }
+
+        // HÀM BỊ THIẾU ĐÃ ĐƯỢC BỔ SUNG
+        private void BtnXemPhieuLuong_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is PhieuLuong selectedPhieuLuong &&
+                cmbNhanVien_Luong.SelectedItem is NhanVien selectedNhanVien)
+            {
+                // Để hiển thị đầy đủ, ta cần tính lại chi tiết phiếu lương dựa trên ngày đã lưu
+                var phieuLuongChiTiet = nhanSuBUS.TinhLuong(selectedNhanVien.IdNhanVien, selectedPhieuLuong.TuNgay, selectedPhieuLuong.DenNgay);
+                phieuLuongChiTiet.NgayTinhLuong = selectedPhieuLuong.NgayTinhLuong; // Giữ lại ngày chốt cũ
+
+                var previewWindow = new PhieuLuongPreviewWindow(phieuLuongChiTiet, selectedNhanVien);
+                previewWindow.Owner = Window.GetWindow(this);
+                previewWindow.ShowDialog();
+            }
         }
         #endregion
     }

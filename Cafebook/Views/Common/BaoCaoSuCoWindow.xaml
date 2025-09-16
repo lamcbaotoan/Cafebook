@@ -1,0 +1,25 @@
+﻿<Window x:Class="Cafebook.Views.Common.BaoCaoSuCoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Báo cáo Sự cố" Height="300" Width="450"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        WindowStyle="ToolWindow" FontFamily="Segoe UI">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="lblTieuDe" Text="Báo cáo sự cố cho Bàn ..." FontSize="18" FontWeight="SemiBold"/>
+
+        <GroupBox Grid.Row="1" Header="Nội dung sự cố" Margin="0,10">
+            <TextBox x:Name="txtNoiDungSuCo" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+        </GroupBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnGuiBaoCao" Content="Gửi Báo cáo" Width="100" Height="35" Margin="5" IsDefault="True" Click="BtnGuiBaoCao_Click"/>
+            <Button x:Name="btnHuy" Content="Hủy" Width="80" Height="35" Margin="5" IsCancel="True" Click="BtnHuy_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

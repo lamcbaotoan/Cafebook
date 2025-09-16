@@ -15,5 +15,9 @@ namespace Cafebook.DTO
         public decimal SoTienGiam { get; set; }
         public decimal ThanhTien { get; set; }
         public string TrangThai { get; set; }
+
+        // --- Thuộc tính bổ sung để hiển thị ---
+        public string SoBan { get; set; }
+        public string TenNhanVien { get; set; }
     }
 }

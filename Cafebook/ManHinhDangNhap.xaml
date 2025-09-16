@@ -14,12 +14,9 @@
         KeyDown="Window_KeyDown">
 
     <Window.Resources>
-        <!-- Primary color -->
         <Color x:Key="PrimaryColor">#007ACC</Color>
         <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
         <SolidColorBrush x:Key="AccentBrush" Color="#005A9C"/>
-
-        <!-- TextBox / PasswordBox base style -->
         <Style x:Key="InputBase" TargetType="Control">
             <Setter Property="Margin" Value="0,0,0,8"/>
             <Setter Property="FontSize" Value="14"/>
@@ -27,7 +24,6 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
-
         <Style TargetType="TextBox" BasedOn="{StaticResource InputBase}">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#DDD"/>
@@ -61,7 +57,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="PasswordBox" BasedOn="{StaticResource InputBase}">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#DDD"/>
@@ -95,8 +90,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Button style -->
         <Style TargetType="Button" x:Key="PrimaryButton">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
@@ -140,13 +133,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Button" x:Key="GhostButton" BasedOn="{StaticResource PrimaryButton}">
             <Setter Property="Background" Value="#F0F0F0"/>
             <Setter Property="Foreground" Value="#333"/>
         </Style>
-
-        <!-- Small accent TextBlock -->
         <Style TargetType="TextBlock" x:Key="AccentHeader">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -156,7 +146,6 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Background decoration -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="#FFFFFF" Offset="0"/>
@@ -164,49 +153,47 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <!-- Center card -->
         <Border Width="420" Height="320" Background="White" CornerRadius="12"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Padding="18">
             <Border.Effect>
                 <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="20" ShadowDepth="6"/>
             </Border.Effect>
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
-                <!-- Header -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,6">
                     <TextBlock Text="ĐĂNG NHẬP" Style="{StaticResource AccentHeader}" Margin="0,0,0,6"/>
                     <TextBlock Text="Vui lòng đăng nhập để sử dụng hệ thống CafeBook" FontSize="12" Foreground="#666" HorizontalAlignment="Center"/>
                 </StackPanel>
-
-                <!-- Content -->
                 <StackPanel Grid.Row="1" Margin="0,12,0,0">
                     <TextBlock Text="Tên đăng nhập (SĐT hoặc Email)" Margin="0,6,0,4" Foreground="Gray"/>
                     <TextBox x:Name="txtUsername" />
 
                     <TextBlock Text="Mật khẩu" Margin="0,10,0,4" Foreground="Gray"/>
-                    <PasswordBox x:Name="txtPassword" />
 
-                    <!-- Forgot / show password area (non-intrusive) -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0"/>
+                    <Grid>
+                        <PasswordBox x:Name="txtPassword" PasswordChanged="TxtPassword_PasswordChanged"/>
+                        <TextBox x:Name="txtVisiblePassword" Visibility="Collapsed" TextChanged="TxtVisiblePassword_TextChanged" Style="{StaticResource {x:Type TextBox}}"/>
+                    </Grid>
 
-                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                        <CheckBox x:Name="chkShowPassword" Content="Hiển thị mật khẩu" FontSize="11" Foreground="#444"
+                                  Checked="ChkShowPassword_Checked" Unchecked="ChkShowPassword_Unchecked"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,18,0,0">
                         <Button x:Name="btnLogin" Content="Đăng nhập" Width="130" Style="{StaticResource PrimaryButton}" Click="BtnLogin_Click"/>
                         <Button x:Name="btnExit" Content="Thoát" Width="110" Margin="14,0,0,0" Style="{StaticResource GhostButton}" Click="BtnExit_Click"/>
                     </StackPanel>
 
-                    <!-- subtle footer -->
                     <TextBlock Text="© CafeBook - Quản lý quán cà phê" FontSize="11" Foreground="#999" HorizontalAlignment="Center" Margin="0,14,0,0"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- floating logo/brand on top-left of window -->
         <Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18" Background="#007ACC" CornerRadius="8" Padding="8,6" Opacity="0.95">
             <StackPanel Orientation="Horizontal">
                 <Ellipse Width="28" Height="28" Fill="White" Margin="0,0,8,0"/>

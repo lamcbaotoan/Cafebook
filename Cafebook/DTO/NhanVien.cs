@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace Cafebook.DTO
 {
     public class NhanVien
@@ -9,12 +8,13 @@ namespace Cafebook.DTO
         public string HoTen { get; set; }
         public string SoDienThoai { get; set; }
         public string Email { get; set; }
-        public string DiaChi { get; set; } // Thuộc tính bị thiếu
+        public string DiaChi { get; set; }
         public string MatKhau { get; set; }
         public DateTime NgayVaoLam { get; set; }
         public bool TrangThai { get; set; }
+        public decimal MucLuongTheoGio { get; set; }
 
-        // Thuộc tính bổ sung
+        // Thuộc tính hiển thị
         public string TenVaiTro { get; set; }
     }
 }

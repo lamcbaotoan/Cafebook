@@ -4,10 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cafebook.Views.nhanvien.pages"
+      xmlns:localroot="clr-namespace:Cafebook"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="GoiMonView" FontFamily="Segoe UI" Loaded="Page_Loaded">
+
     <Page.Resources>
+        <localroot:IsLessThanValueConverter x:Key="IsLessThanValueConverter"/>
+
         <Style x:Key="ProductButton" TargetType="Button">
             <Setter Property="Width" Value="120"/>
             <Setter Property="Height" Value="90"/>
@@ -22,7 +26,9 @@
                         <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="5">
                             <StackPanel>
                                 <TextBlock Text="{Binding TenSanPham}" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" Height="40" FontSize="14"/>
-                                <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}" Foreground="Red" HorizontalAlignment="Center" Margin="0,5,0,0" FontWeight="Bold"/>
+                                <TextBlock x:Name="tbWarning" Text="{Binding SoLuongCoThePhucVu, StringFormat={}Chỉ còn: {0}}" 
+                                           FontSize="10" Foreground="OrangeRed" HorizontalAlignment="Center" Visibility="Collapsed"/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -47,6 +53,7 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </Page.Resources>
 
@@ -69,7 +76,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="icSanPham">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -78,7 +85,27 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource ProductButton}" Click="ProductButton_Click"/>
+                            <Button Click="ProductButton_Click">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding TenSanPham}" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center" Height="40" FontSize="14"/>
+                                    <TextBlock Text="{Binding DonGia, StringFormat={}{0:N0} đ}" Foreground="Red" HorizontalAlignment="Center" Margin="0,5,0,0" FontWeight="Bold"/>
+                                    <TextBlock x:Name="tbWarning" Text="{Binding SoLuongCoThePhucVu, StringFormat={}Chỉ còn: {0}}" 
+                                               FontSize="10" Foreground="OrangeRed" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource ProductButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SoLuongCoThePhucVu}" Value="0">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=SoLuongCoThePhucVu, Converter={StaticResource IsLessThanValueConverter}, ConverterParameter=5}" Value="True">
+                                                <Setter Property="ToolTip" Value="{Binding SoLuongCoThePhucVu, StringFormat='Sắp hết hàng! Chỉ còn đủ làm {0} phần.'}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -92,8 +119,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock x:Name="lblTieuDeHoaDon" Text="Hóa đơn - Bàn ..." FontSize="22" FontWeight="Bold" Margin="0,5,0,10"/>
-
-            <DataGrid Grid.Row="1" x:Name="dgChiTietHoaDon" AutoGenerateColumns="False" CanUserAddRows="False" ItemsSource="{Binding ChiTietHoaDonOC}" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#EEE">
+            <DataGrid Grid.Row="1" x:Name="dgChiTietHoaDon" AutoGenerateColumns="False" CanUserAddRows="False" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#EEE" HeadersVisibility="Column" Background="White">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding TenSanPham}" Width="*" IsReadOnly="True" FontWeight="SemiBold"/>
                     <DataGridTemplateColumn Header="Số lượng" Width="100">
@@ -118,7 +144,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
             <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="0,1,0,0" Margin="0,10,0,0" Padding="0,10,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -145,10 +170,10 @@
             </Border>
         </Grid>
 
-        <StackPanel Grid.Column="2" Background="#F5F5F5">
+        <StackPanel Grid.Column="2" Background="#F5F5F5" Margin="10,0,0,0">
             <Button x:Name="btnThanhToan" Content="Thanh Toán" Style="{StaticResource ActionButton}" Background="#27AE60" Click="BtnThanhToan_Click"/>
             <Button x:Name="btnLuu" Content="Lưu Hóa đơn" Style="{StaticResource ActionButton}" Background="#2980B9" Click="BtnLuu_Click"/>
-            <Button x:Name="btnInTamTinh" Content="In Tạm tính" Style="{StaticResource ActionButton}" Background="#7F8C8D"/>
+            <Button x:Name="btnInTamTinh" Content="In Tạm tính" Style="{StaticResource ActionButton}" Background="#7F8C8D" Click="BtnInTamTinh_Click"/>
             <Button x:Name="btnQuayLai" Content="Quay lại Sơ đồ bàn" Style="{StaticResource ActionButton}" Background="#EAECEE" Foreground="#333" Click="BtnQuayLai_Click"/>
         </StackPanel>
     </Grid>

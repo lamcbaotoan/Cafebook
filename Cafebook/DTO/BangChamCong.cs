@@ -9,7 +9,7 @@ namespace Cafebook.DTO
         public DateTime? GioRa { get; set; }
         public decimal? SoGioLam { get; set; }
 
-        // --- Thuộc tính bổ sung ---
+        // Thuộc tính hiển thị
         public string HoTenNhanVien { get; set; }
         public DateTime NgayLam { get; set; }
         public string TenCa { get; set; }

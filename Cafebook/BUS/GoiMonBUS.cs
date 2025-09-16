@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Cafebook.BUS
 {
@@ -10,9 +11,13 @@ namespace Cafebook.BUS
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
 
+        // Trong BUS/GoiMonBUS.cs
+
+        // SỬA LẠI HÀM NÀY
         public List<SanPham> GetSanPhamTheoLoai(int idLoaiSP)
         {
             var ds = new List<SanPham>();
+            var sanPhamBUS = new SanPhamBUS();
             using (var conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -22,13 +27,15 @@ namespace Cafebook.BUS
                 {
                     while (reader.Read())
                     {
-                        ds.Add(new SanPham
+                        var sp = new SanPham
                         {
                             IdSanPham = (int)reader["idSanPham"],
                             TenSanPham = (string)reader["tenSanPham"],
-                            DonGia = (decimal)reader["donGia"],
-                            HinhAnh = reader.IsDBNull(reader.GetOrdinal("hinhAnh")) ? null : (string)reader["hinhAnh"]
-                        });
+                            DonGia = (decimal)reader["donGia"]
+                        };
+
+                        sp.SoLuongCoThePhucVu = sanPhamBUS.KiemTraKhaNangPhucVu(sp.IdSanPham);
+                        ds.Add(sp);
                     }
                 }
             }
@@ -93,7 +100,8 @@ namespace Cafebook.BUS
             return ds;
         }
 
-        public List<KhuyenMai> GetKhuyenMaiHopLe()
+        // HÀM BỊ THIẾU ĐÃ ĐƯỢC BỔ SUNG
+        public List<KhuyenMai> GetKhuyenMaiCoTheApDung(decimal tongTien, List<int> idSanPhamTrongHoaDon)
         {
             var ds = new List<KhuyenMai>();
             using (var conn = new SqlConnection(connectionString))
@@ -104,13 +112,30 @@ namespace Cafebook.BUS
                 {
                     while (reader.Read())
                     {
-                        ds.Add(new KhuyenMai
+                        var km = new KhuyenMai
                         {
                             IdKhuyenMai = (int)reader["idKhuyenMai"],
                             TenKhuyenMai = (string)reader["tenKhuyenMai"],
                             LoaiGiamGia = (string)reader["loaiGiamGia"],
-                            GiaTriGiam = (decimal)reader["giaTriGiam"]
-                        });
+                            GiaTriGiam = (decimal)reader["giaTriGiam"],
+                            GiaTriDonHangToiThieu = reader.IsDBNull(reader.GetOrdinal("giaTriDonHangToiThieu")) ? (decimal?)null : (decimal)reader["giaTriDonHangToiThieu"],
+                            IdSanPhamApDung = reader.IsDBNull(reader.GetOrdinal("idSanPhamApDung")) ? (int?)null : (int)reader["idSanPhamApDung"]
+                        };
+
+                        bool dieuKienOk = true;
+                        if (km.GiaTriDonHangToiThieu.HasValue && tongTien < km.GiaTriDonHangToiThieu.Value)
+                        {
+                            dieuKienOk = false;
+                        }
+                        if (dieuKienOk && km.IdSanPhamApDung.HasValue && !idSanPhamTrongHoaDon.Contains(km.IdSanPhamApDung.Value))
+                        {
+                            dieuKienOk = false;
+                        }
+
+                        if (dieuKienOk)
+                        {
+                            ds.Add(km);
+                        }
                     }
                 }
             }
@@ -172,7 +197,6 @@ namespace Cafebook.BUS
                 }
             }
         }
-        // Dán hàm này vào bên trong class GoiMonBUS trong file BUS/GoiMonBUS.cs
 
         public bool ThanhToanHoaDon(int idHoaDon)
         {
@@ -182,7 +206,6 @@ namespace Cafebook.BUS
                 SqlTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    // Bước 1: Lấy danh sách chi tiết hóa đơn để biết cần trừ kho những gì
                     var chiTietList = new List<ChiTietHoaDon>();
                     var cmdGetChiTiet = new SqlCommand("SELECT idSanPham, soLuong FROM ChiTietHoaDon WHERE idHoaDon = @idHD", conn, transaction);
                     cmdGetChiTiet.Parameters.AddWithValue("@idHD", idHoaDon);
@@ -198,33 +221,29 @@ namespace Cafebook.BUS
                         }
                     }
 
-                    // Bước 2: Lặp qua từng món trong hóa đơn để trừ kho nguyên liệu
                     foreach (var item in chiTietList)
                     {
                         var cmdTruKho = new SqlCommand(@"
-                    UPDATE NguyenLieu
-                    SET soLuongTon = soLuongTon - (ct.luongCanThiet * @soLuongSP)
-                    FROM NguyenLieu nl
-                    JOIN CongThuc ct ON nl.idNguyenLieu = ct.idNguyenLieu
-                    WHERE ct.idSanPham = @idSP", conn, transaction);
+                            UPDATE NguyenLieu
+                            SET soLuongTon = soLuongTon - (ct.luongCanThiet * @soLuongSP)
+                            FROM NguyenLieu nl
+                            JOIN CongThuc ct ON nl.idNguyenLieu = ct.idNguyenLieu
+                            WHERE ct.idSanPham = @idSP", conn, transaction);
 
                         cmdTruKho.Parameters.AddWithValue("@soLuongSP", item.SoLuong);
                         cmdTruKho.Parameters.AddWithValue("@idSP", item.IdSanPham);
                         cmdTruKho.ExecuteNonQuery();
                     }
 
-                    // Bước 3: Cập nhật trạng thái hóa đơn thành 'Đã thanh toán'
                     var cmdUpdateHD = new SqlCommand("UPDATE HoaDon SET trangThai = N'Đã thanh toán' WHERE idHoaDon = @idHD", conn, transaction);
                     cmdUpdateHD.Parameters.AddWithValue("@idHD", idHoaDon);
                     cmdUpdateHD.ExecuteNonQuery();
 
-                    // Nếu mọi thứ thành công, commit transaction
                     transaction.Commit();
                     return true;
                 }
                 catch (Exception)
                 {
-                    // Nếu có bất kỳ lỗi nào, rollback tất cả thay đổi
                     transaction.Rollback();
                     return false;
                 }

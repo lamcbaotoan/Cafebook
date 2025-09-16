@@ -45,6 +45,30 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Header="Sự cố Bàn cần xử lý" Margin="0,15,0,0" FontWeight="SemiBold">
+                <ListBox x:Name="lbThongBaoBan" MaxHeight="250" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding NoiDung}" TextWrapping="Wrap" FontWeight="Normal"/>
+                                        <TextBlock FontStyle="Italic" FontSize="11" Foreground="Gray" FontWeight="Normal">
+                                    <Run Text="{Binding TenNhanVien}"/> - <Run Text="{Binding ThoiGianTao, StringFormat='HH:mm dd/MM'}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="✔" VerticalAlignment="Center" Margin="5,0,0,0" ToolTip="Đánh dấu đã đọc"
+                                    x:Name="btnDanhDauDaDoc" Click="BtnDanhDauDaDoc_Click"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </Page>

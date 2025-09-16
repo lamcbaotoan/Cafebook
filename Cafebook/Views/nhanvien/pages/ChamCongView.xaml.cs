@@ -1,6 +1,7 @@
 ﻿using Cafebook.BUS;
 using Cafebook.DTO;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -11,7 +12,6 @@ namespace Cafebook.Views.nhanvien.pages
         private NhanVien currentUser;
         private NhanSuBUS nhanSuBUS = new NhanSuBUS();
         private DispatcherTimer timer;
-
         private LichLamViec lichLamViecHomNay;
         private BangChamCong chamCongHomNay;
 
@@ -20,15 +20,22 @@ namespace Cafebook.Views.nhanvien.pages
             InitializeComponent();
             this.currentUser = user;
 
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
             timer.Tick += Timer_Tick;
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             timer.Start();
             LoadData();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            timer?.Stop();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -57,19 +64,19 @@ namespace Cafebook.Views.nhanvien.pages
 
         private void UpdateUIState()
         {
-            if (chamCongHomNay == null) // Chưa vào ca
+            if (chamCongHomNay == null)
             {
                 btnVaoCa.IsEnabled = true;
                 btnRaCa.IsEnabled = false;
                 lblTrangThaiChamCong.Text = "Trạng thái: Chưa vào ca.";
             }
-            else if (chamCongHomNay.GioRa == null) // Đã vào ca, chưa ra ca
+            else if (chamCongHomNay.GioRa == null)
             {
                 btnVaoCa.IsEnabled = false;
                 btnRaCa.IsEnabled = true;
                 lblTrangThaiChamCong.Text = $"Trạng thái: Đã vào ca lúc {chamCongHomNay.GioVao:HH:mm:ss}";
             }
-            else // Đã vào và ra ca
+            else
             {
                 btnVaoCa.IsEnabled = false;
                 btnRaCa.IsEnabled = false;
@@ -77,7 +84,7 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
-        private void BtnVaoCa_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void BtnVaoCa_Click(object sender, RoutedEventArgs e)
         {
             int newId = nhanSuBUS.ThucHienVaoCa(lichLamViecHomNay.IdLichLamViec);
             if (newId > 0)
@@ -87,13 +94,12 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
-        private void BtnRaCa_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void BtnRaCa_Click(object sender, RoutedEventArgs e)
         {
             if (nhanSuBUS.ThucHienRaCa(chamCongHomNay.IdChamCong))
             {
-                chamCongHomNay.GioRa = DateTime.Now; // Cập nhật trạng thái local
+                chamCongHomNay.GioRa = DateTime.Now;
                 UpdateUIState();
-                // Tải lại lịch sử để thấy số giờ làm
                 dgLichSuChamCong.ItemsSource = nhanSuBUS.GetLichSuChamCong(currentUser.IdNhanVien);
             }
         }

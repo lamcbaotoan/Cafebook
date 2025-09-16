@@ -8,6 +8,7 @@ namespace Cafebook.Views.admin.pages
     public partial class BanView : Page
     {
         private QuanLyBanBUS banBUS = new QuanLyBanBUS();
+        private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
 
         public BanView()
         {
@@ -18,6 +19,7 @@ namespace Cafebook.Views.admin.pages
         {
             LoadData();
             ClearForm();
+            LoadThongBaoBan(); // Đảm bảo hàm này được gọi
         }
 
         private void LoadData()
@@ -25,12 +27,30 @@ namespace Cafebook.Views.admin.pages
             dgBan.ItemsSource = banBUS.GetDanhSachBan();
         }
 
+        // Tải các thông báo liên quan đến bàn
+        private void LoadThongBaoBan()
+        {
+            lbThongBaoBan.ItemsSource = thongBaoBUS.GetThongBaoBanChuaDoc();
+        }
+
+        // Xử lý sự kiện khi nhấn nút "Đánh dấu đã đọc"
+        private void BtnDanhDauDaDoc_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Button)?.DataContext is ThongBao selected)
+            {
+                if (thongBaoBUS.DanhDauDaDoc(selected.IdThongBao))
+                {
+                    LoadThongBaoBan(); // Tải lại danh sách sau khi đánh dấu
+                }
+            }
+        }
+
         private void ClearForm()
         {
             dgBan.SelectedItem = null;
             txtSoBan.Text = "";
             txtSoGhe.Text = "";
-            txtGhiChu.Text = ""; // Thêm
+            txtGhiChu.Text = "";
             cmbTrangThai.SelectedIndex = 0;
             btnThemBan.IsEnabled = true;
             btnLuuBan.IsEnabled = false;
@@ -44,7 +64,7 @@ namespace Cafebook.Views.admin.pages
             {
                 txtSoBan.Text = selected.SoBan;
                 txtSoGhe.Text = selected.SoGhe.ToString();
-                txtGhiChu.Text = selected.GhiChu; // Thêm
+                txtGhiChu.Text = selected.GhiChu;
                 cmbTrangThai.Text = selected.TrangThai;
 
                 bool isEditable = (selected.TrangThai == "Trống" || selected.TrangThai == "Bảo trì");
@@ -64,7 +84,7 @@ namespace Cafebook.Views.admin.pages
             {
                 SoBan = txtSoBan.Text,
                 SoGhe = int.TryParse(txtSoGhe.Text, out var soGhe) ? soGhe : 0,
-                GhiChu = txtGhiChu.Text // Thêm
+                GhiChu = txtGhiChu.Text
             };
             if (banBUS.ThemBan(ban))
             {
@@ -80,7 +100,7 @@ namespace Cafebook.Views.admin.pages
             {
                 selected.SoBan = txtSoBan.Text;
                 selected.SoGhe = int.TryParse(txtSoGhe.Text, out var soGhe) ? soGhe : 0;
-                selected.GhiChu = txtGhiChu.Text; // Thêm
+                selected.GhiChu = txtGhiChu.Text;
                 selected.TrangThai = (cmbTrangThai.SelectedItem as ComboBoxItem)?.Content.ToString();
 
                 if (banBUS.SuaBan(selected))

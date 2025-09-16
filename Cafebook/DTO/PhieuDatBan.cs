@@ -13,11 +13,23 @@ namespace Cafebook.DTO
         public DateTime ThoiGianDat { get; set; }
         public int SoLuongKhach { get; set; }
         public string GhiChu { get; set; }
-        public string TrangThai { get; set; }
+        public string TrangThai { get; set; } // Ví dụ: "Đã đặt", "Đã hủy", "Đã đến"
 
-        // --- Thuộc tính bổ sung để hiển thị ---
-        public string TenKhachHangHienThi => IdKhachHang.HasValue ? "(Thành viên)" : TenKhachVangLai;
-        public string SdtHienThi { get; set; } // Sẽ gán trong BUS
-        public string SoBanHienThi { get; set; } // Sẽ gán trong BUS
+        // Thuộc tính bổ sung để hiển thị
+        public string TenKhachHangHienThi
+        {
+            get => IdKhachHang.HasValue ? TenKhachHangThanhVien : TenKhachVangLai;
+        }
+
+        public string SdtHienThi
+        {
+            get => IdKhachHang.HasValue ? SdtKhachHangThanhVien : SdtKhachVangLai;
+        }
+
+        public string SoBanHienThi { get; set; }
+
+        // --- HAI THUỘC TÍNH BỊ THIẾU LÀ ĐÂY ---
+        public string TenKhachHangThanhVien { get; set; } // Để JOIN từ bảng KhachHang
+        public string SdtKhachHangThanhVien { get; set; } // Để JOIN từ bảng KhachHang
     }
 }

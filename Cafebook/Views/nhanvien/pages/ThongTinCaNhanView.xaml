@@ -3,47 +3,82 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Cafebook.Views.admin.pages"
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="1050"
       Title="ThongTinCaNhanView" FontFamily="Segoe UI" Loaded="Page_Loaded">
     <Grid>
-        <Border Width="500" Background="WhiteSmoke" Padding="30" CornerRadius="5"
-                VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel>
-                <TextBlock Text="Thông tin Cá nhân" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="Họ tên:" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblHoTen" VerticalAlignment="Center"/>
-                    <Label Grid.Row="1" Grid.Column="0" Content="Vai trò:" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblVaiTro" VerticalAlignment="Center"/>
-                    <Label Grid.Row="2" Grid.Column="0" Content="Số điện thoại:" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblSdt" VerticalAlignment="Center"/>
-                    <Label Grid.Row="3" Grid.Column="0" Content="Email:" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblEmail" VerticalAlignment="Center"/>
+            <!-- Cột thông tin cá nhân -->
+            <Border Width="500" Background="WhiteSmoke" Padding="30" CornerRadius="5" Margin="0,0,20,0">
+                <StackPanel>
+                    <TextBlock Text="Thông tin Cá nhân" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-                    <Label Grid.Row="4" Grid.Column="0" Content="Địa chỉ:" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtDiaChi" Margin="0,5"/>
-                    <Label Grid.Row="5" Grid.Column="0" Content="Mật khẩu mới:" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <PasswordBox Grid.Row="5" Grid.Column="1" x:Name="txtMatKhauMoi" Margin="0,5"/>
-                    <Label Grid.Row="6" Grid.Column="0" Content="Xác nhận MK:" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <PasswordBox Grid.Row="6" Grid.Column="1" x:Name="txtXacNhanMatKhau" Margin="0,5"/>
-                </Grid>
-                <Button x:Name="btnCapNhat" Content="Cập nhật Thông tin" Margin="0,20,0,0" Padding="10" Background="#2980B9" Foreground="White" Click="BtnCapNhat_Click"/>
-            </StackPanel>
-        </Border>
+                    <GroupBox Header="Thông tin cơ bản" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Content="Họ tên:" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblHoTen" VerticalAlignment="Center"/>
+                            <Label Grid.Row="1" Grid.Column="0" Content="Vai trò:" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblVaiTro" VerticalAlignment="Center"/>
+                            <Label Grid.Row="2" Grid.Column="0" Content="Ngày vào làm:" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblNgayVaoLam" VerticalAlignment="Center"/>
+                            <Label Grid.Row="3" Grid.Column="0" Content="Mức lương:" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblLuong" VerticalAlignment="Center"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Thông tin có thể cập nhật">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Content="Số điện thoại:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtSdt" Margin="0,5"/>
+                            <Label Grid.Row="1" Grid.Column="0" Content="Email:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtEmail" Margin="0,5"/>
+                            <Label Grid.Row="2" Grid.Column="0" Content="Địa chỉ:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtDiaChi" Margin="0,5"/>
+                            <Label Grid.Row="3" Grid.Column="0" Content="Mật khẩu mới:" VerticalAlignment="Center"/>
+                            <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="txtMatKhauMoi" Margin="0,5"/>
+                            <Label Grid.Row="4" Grid.Column="0" Content="Xác nhận MK:" VerticalAlignment="Center"/>
+                            <PasswordBox Grid.Row="4" Grid.Column="1" x:Name="txtXacNhanMatKhau" Margin="0,5"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <Button x:Name="btnCapNhat" Content="Cập nhật Thông tin" Margin="0,20,0,0" Padding="10" Background="#2980B9" Foreground="White" Click="BtnCapNhat_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Cột gửi thông báo -->
+            <Border Width="400" Background="WhiteSmoke" Padding="30" CornerRadius="5">
+                <StackPanel>
+                    <TextBlock Text="Gửi Báo Cáo / Góp Ý" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="Gửi thông báo đến quản lý về các vấn đề như: thiếu nguyên liệu, thiết bị hỏng, góp ý vận hành,..." TextWrapping="Wrap" FontStyle="Italic" Foreground="Gray" Margin="0,0,0,15"/>
+                    <Label Content="Nội dung báo cáo:"/>
+                    <TextBox x:Name="txtNoiDungThongBao" Height="200" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                    <Button x:Name="btnGuiThongBao" Content="Gửi Thông Báo" Margin="0,20,0,0" Padding="10" Background="#27AE60" Foreground="White" Click="BtnGuiThongBao_Click"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
     </Grid>
 </Page>

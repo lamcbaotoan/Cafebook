@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\dto\\ban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\dto\\ban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\manhinhadmin.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\manhinhadmin.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,26 +35,26 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "App.config",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\App.config",
-              "RelativeDocumentMoniker": "Cafebook\\App.config",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\App.config",
-              "RelativeToolTip": "Cafebook\\App.config",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-09-15T01:42:13.866Z",
+              "Title": "Ban.cs",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\DTO\\Ban.cs",
+              "RelativeDocumentMoniker": "Cafebook\\DTO\\Ban.cs",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\DTO\\Ban.cs",
+              "RelativeToolTip": "Cafebook\\DTO\\Ban.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T21:39:08.853Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "App.xaml",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\App.xaml",
-              "RelativeDocumentMoniker": "Cafebook\\App.xaml",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\App.xaml",
-              "RelativeToolTip": "Cafebook\\App.xaml",
+              "Title": "ManHinhAdmin.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\ManHinhAdmin.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\ManHinhAdmin.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\ManHinhAdmin.xaml",
+              "RelativeToolTip": "Cafebook\\Views\\admin\\ManHinhAdmin.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-15T01:42:08.015Z",
+              "WhenOpened": "2025-09-15T21:37:58.123Z",
               "EditorCaption": ""
             }
           ]

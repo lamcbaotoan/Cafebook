@@ -1,5 +1,6 @@
 ﻿using Cafebook.BUS;
 using Cafebook.DTO;
+using Cafebook.Views.Common;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,15 +12,17 @@ namespace Cafebook.Views.nhanvien.pages
     {
         private BanBUS banBUS = new BanBUS();
         private ObservableCollection<Ban> danhSachBan;
+        private NhanVien currentUser;
 
         // Các biến trạng thái
         private bool dangChuyenBan = false;
         private bool dangGopBan = false;
         private Ban banDuocChon; // Bàn đang được chọn (bàn nguồn)
 
-        public SoDoBanView()
+        public SoDoBanView(NhanVien user)
         {
             InitializeComponent();
+            this.currentUser = user;
             danhSachBan = new ObservableCollection<Ban>();
             icBan.ItemsSource = danhSachBan;
         }
@@ -56,21 +59,9 @@ namespace Cafebook.Views.nhanvien.pages
             var clickedBan = (sender as Button)?.DataContext as Ban;
             if (clickedBan == null) return;
 
-            // Xử lý khi đang trong chế độ CHUYỂN BÀN
-            if (dangChuyenBan)
-            {
-                HandleChuyenBan(clickedBan);
-            }
-            // Xử lý khi đang trong chế độ GỘP BÀN
-            else if (dangGopBan)
-            {
-                HandleGopBan(clickedBan);
-            }
-            // Xử lý khi chọn bàn bình thường
-            else
-            {
-                HandleChonBan(clickedBan);
-            }
+            if (dangChuyenBan) { HandleChuyenBan(clickedBan); }
+            else if (dangGopBan) { HandleGopBan(clickedBan); }
+            else { HandleChonBan(clickedBan); }
         }
 
         private void HandleChonBan(Ban selectedBan)
@@ -81,11 +72,8 @@ namespace Cafebook.Views.nhanvien.pages
 
             runSoBan.Text = banDuocChon.SoBan;
             runTrangThai.Text = banDuocChon.TrangThai;
-
-            // Hiển thị ghi chú
             tbGhiChu.Text = banDuocChon.GhiChu;
             tbGhiChu.Visibility = string.IsNullOrEmpty(banDuocChon.GhiChu) ? Visibility.Collapsed : Visibility.Visible;
-
             tbTongTienWrapper.Visibility = banDuocChon.TrangThai == "Có khách" ? Visibility.Visible : Visibility.Collapsed;
             runTongTien.Text = banDuocChon.TongTienHienTai.ToString("N0") + " VND";
 
@@ -141,7 +129,7 @@ namespace Cafebook.Views.nhanvien.pages
             }
             ClearSelection();
         }
-
+        // Trong file SoDoBanView.xaml.cs
 
         private void BtnGoiMon_Click(object sender, RoutedEventArgs e)
         {
@@ -150,7 +138,8 @@ namespace Cafebook.Views.nhanvien.pages
                 var mainWindow = Window.GetWindow(this) as ManHinhNhanVien;
                 if (mainWindow != null)
                 {
-                    mainWindow.MainFrame.Navigate(new GoiMonView(banDuocChon));
+                    // SỬA LẠI DÒNG NÀY: Truyền thêm 'this.currentUser'
+                    mainWindow.MainFrame.Navigate(new GoiMonView(banDuocChon, this.currentUser));
                 }
             }
         }
@@ -174,6 +163,20 @@ namespace Cafebook.Views.nhanvien.pages
                 panelDaChon.Visibility = Visibility.Collapsed;
                 panelChuaChon.Visibility = Visibility.Visible;
                 (panelChuaChon.Children[1] as TextBlock).Text = $"Đang gộp từ bàn '{banDuocChon.SoBan}'.\nVui lòng chọn bàn CÓ KHÁCH khác để gộp vào.\n(Nhấn lại bàn '{banDuocChon.SoBan}' để hủy)";
+            }
+        }
+
+        private void BtnBaoCaoSuCo_Click(object sender, RoutedEventArgs e)
+        {
+            if (banDuocChon != null)
+            {
+                var reportWindow = new BaoCaoSuCoWindow(banDuocChon, this.currentUser);
+                reportWindow.Owner = Window.GetWindow(this);
+                reportWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một bàn trước khi báo cáo sự cố.", "Thông báo");
             }
         }
 

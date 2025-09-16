@@ -1,9 +1,10 @@
-﻿E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\GeneratedInternalTypeHelper.g.cs
+﻿
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\App.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\MainWindow.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\ManHinhDangNhap.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\ManHinhAdmin.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\pages\DashboardView.xaml;;
+FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\pages\DonHangView.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\pages\KhoView.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\pages\KhuyenMaiView.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\admin\pages\NhanSuView.xaml;;
@@ -14,4 +15,5 @@ FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\nhanvien\pages\Dat
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\nhanvien\pages\GoiMonView.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\nhanvien\pages\SoDoBanView.xaml;;
 FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\nhanvien\pages\ThanhToanView.xaml;;
+FE:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\Views\nhanvien\pages\ThongTinCaNhanView.xaml;;
 

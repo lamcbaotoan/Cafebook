@@ -1,17 +1,70 @@
-﻿// BUS/SanPhamBUS.cs
-using Cafebook.DTO;
+﻿using Cafebook.DTO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.Windows;
+using System.Linq;
 
 namespace Cafebook.BUS
 {
     public class SanPhamBUS
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+
+        // Hàm hỗ trợ quy đổi đơn vị
+        private decimal ConvertToDonViCoBan(decimal quantity, string selectedUnit, string baseUnit)
+        {
+            if (string.IsNullOrEmpty(selectedUnit)) return quantity; // Nếu công thức cũ chưa có DVT, coi như là DVT cơ bản
+            selectedUnit = selectedUnit.ToLower();
+            baseUnit = baseUnit.ToLower();
+            if (selectedUnit == baseUnit) return quantity;
+            if (selectedUnit == "g" && baseUnit == "kg") return quantity / 1000;
+            if (selectedUnit == "ml" && (baseUnit == "lít" || baseUnit == "l")) return quantity / 1000;
+            return quantity;
+        }
+
+        // HÀM MỚI QUAN TRỌNG: Kiểm tra xem có thể làm được bao nhiêu sản phẩm từ kho
+        public int KiemTraKhaNangPhucVu(int idSanPham)
+        {
+            int soLuongCoThePhucVu = int.MaxValue;
+            var congThuc = GetCongThuc(idSanPham);
+            if (!congThuc.Any()) return 1000; // Món không có công thức, coi như luôn bán được
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                foreach (var thanhPhan in congThuc)
+                {
+                    var cmd = new SqlCommand("SELECT soLuongTon, donViTinh FROM NguyenLieu WHERE idNguyenLieu = @idNL", conn);
+                    cmd.Parameters.AddWithValue("@idNL", thanhPhan.IdNguyenLieu);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            decimal soLuongTon = reader.GetDecimal(0);
+                            string donViTinhCoBan = reader.GetString(1);
+
+                            decimal luongCanThietChuan = ConvertToDonViCoBan(thanhPhan.LuongCanThiet, thanhPhan.DonViTinhSuDung, donViTinhCoBan);
+
+                            if (luongCanThietChuan > 0)
+                            {
+                                int coTheLamDuoc = (int)(soLuongTon / luongCanThietChuan);
+                                if (coTheLamDuoc < soLuongCoThePhucVu)
+                                {
+                                    soLuongCoThePhucVu = coTheLamDuoc;
+                                }
+                            }
+                        }
+                        else // Nguyên liệu không tồn tại trong kho
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+            return soLuongCoThePhucVu;
+        }
 
         // Lấy danh sách TẤT CẢ sản phẩm
         public List<SanPham> GetDanhSachSanPham()

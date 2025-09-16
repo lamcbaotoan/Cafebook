@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -50,9 +50,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.3, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -72,35 +83,51 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BUS\BanBUS.cs" />
+    <Compile Include="BUS\BaoCaoBUS.cs" />
+    <Compile Include="BUS\CaiDatBUS.cs" />
+    <Compile Include="BUS\CaiDatHelper.cs" />
+    <Compile Include="BUS\DonHangBUS.cs" />
     <Compile Include="BUS\GoiMonBUS.cs" />
+    <Compile Include="BUS\KhachHangBUS.cs" />
     <Compile Include="BUS\KhoBUS.cs" />
     <Compile Include="BUS\KhuyenMaiBUS.cs" />
     <Compile Include="BUS\NghiepVuBUS.cs" />
+    <Compile Include="BUS\NguyenLieuBUS.cs" />
     <Compile Include="BUS\NhanSuBUS.cs" />
     <Compile Include="BUS\QuanLyBanBUS.cs" />
     <Compile Include="BUS\SachBUS.cs" />
     <Compile Include="BUS\SanPhamBUS.cs" />
+    <Compile Include="BUS\TaiKhoanBUS.cs" />
     <Compile Include="BUS\ThanhToanBUS.cs" />
+    <Compile Include="BUS\ThongBaoBUS.cs" />
     <Compile Include="BUS\ThongKeBUS.cs" />
     <Compile Include="DTO\Ban.cs" />
     <Compile Include="DTO\BangChamCong.cs" />
     <Compile Include="DTO\CaLamViec.cs" />
     <Compile Include="DTO\ChiTietHoaDon.cs" />
     <Compile Include="DTO\ChiTietPhieuNhap.cs" />
+    <Compile Include="DTO\ChiTietThuongPhat.cs" />
     <Compile Include="DTO\CongThuc.cs" />
+    <Compile Include="DTO\DoanhThu.cs" />
+    <Compile Include="DTO\HieuSuatNhanVien.cs" />
     <Compile Include="DTO\HoaDon.cs" />
     <Compile Include="DTO\HoaDonDauVao.cs" />
+    <Compile Include="DTO\KhachHang.cs" />
     <Compile Include="DTO\KhuyenMai.cs" />
     <Compile Include="DTO\LichLamViec.cs" />
     <Compile Include="DTO\LoaiSanPham.cs" />
+    <Compile Include="DTO\LoaiThuongPhat.cs" />
     <Compile Include="DTO\NguyenLieu.cs" />
     <Compile Include="DTO\NhaCungCap.cs" />
     <Compile Include="DTO\PhieuDatBan.cs" />
+    <Compile Include="DTO\PhieuLuong.cs" />
     <Compile Include="DTO\PhieuNhapKho.cs" />
     <Compile Include="DTO\PhieuThueSach.cs" />
     <Compile Include="DTO\Sach.cs" />
     <Compile Include="DTO\SanPham.cs" />
+    <Compile Include="DTO\ThongBao.cs" />
     <Compile Include="DTO\VaiTro.cs" />
+    <Compile Include="IsLessThanValueConverter.cs" />
     <Compile Include="NullToBooleanConverter.cs" />
     <Compile Include="Views\admin\ManHinhAdmin.xaml.cs">
       <DependentUpon>ManHinhAdmin.xaml</DependentUpon>
@@ -110,6 +137,9 @@
     </Compile>
     <Compile Include="Views\admin\pages\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\admin\pages\DonHangView.xaml.cs">
+      <DependentUpon>DonHangView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\admin\pages\KhoView.xaml.cs">
       <DependentUpon>KhoView.xaml</DependentUpon>
@@ -125,6 +155,27 @@
     </Compile>
     <Compile Include="Views\admin\pages\SanPhamView.xaml.cs">
       <DependentUpon>SanPhamView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\BaoCaoSuCoWindow.xaml.cs">
+      <DependentUpon>BaoCaoSuCoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\CaiDatThongTinWindow.xaml.cs">
+      <DependentUpon>CaiDatThongTinWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\HoaDonPreviewWindow.xaml.cs">
+      <DependentUpon>HoaDonPreviewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\HoaDonTraSachWindow.xaml.cs">
+      <DependentUpon>HoaDonTraSachWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\PhieuLuongPreviewWindow.xaml.cs">
+      <DependentUpon>PhieuLuongPreviewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\PhieuThuePreviewWindow.xaml.cs">
+      <DependentUpon>PhieuThuePreviewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\ThongBaoChiTietWindow.xaml.cs">
+      <DependentUpon>ThongBaoChiTietWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Common\WelcomeWindow.xaml.cs">
       <DependentUpon>WelcomeWindow.xaml</DependentUpon>
@@ -180,6 +231,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\admin\pages\DonHangView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\admin\pages\KhoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +252,34 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\admin\pages\SanPhamView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\BaoCaoSuCoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\CaiDatThongTinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\HoaDonPreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\HoaDonTraSachWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\PhieuLuongPreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\PhieuThuePreviewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\ThongBaoChiTietWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,6 +338,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\Font Awesome 6 Free-Solid-900.otf" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -262,15 +346,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CafebookDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="CafebookDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>CafebookDB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -284,6 +359,14 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CafebookDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CafebookDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>CafebookDB.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,9 +1,0 @@
-﻿CREATE TABLE ThongBao (
-    idThongBao INT PRIMARY KEY IDENTITY(1,1),
-    idNhanVien INT NOT NULL,
-    noiDung NVARCHAR(500) NOT NULL,
-    thoiGianTao DATETIME2 NOT NULL DEFAULT GETDATE(),
-    daDoc BIT NOT NULL DEFAULT 0,
-    FOREIGN KEY (idNhanVien) REFERENCES NhanVien(idNhanVien)
-);
-GO

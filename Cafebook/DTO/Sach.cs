@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cafebook.DTO
+﻿namespace Cafebook.DTO
 {
     public class Sach
     {
@@ -15,5 +9,7 @@ namespace Cafebook.DTO
         public string MoTa { get; set; }
         public int TongSoLuong { get; set; }
         public int SoLuongCoSan { get; set; }
+        public string ViTri { get; set; }
+        public decimal GiaBia { get; set; } // THÊM THUỘC TÍNH NÀY
     }
 }

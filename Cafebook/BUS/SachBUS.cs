@@ -1,5 +1,4 @@
-﻿// BUS/SachBUS.cs
-using Cafebook.DTO; // <--- THÊM DÒNG NÀY
+﻿using Cafebook.DTO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,116 +10,186 @@ namespace Cafebook.BUS
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
 
-        #region CRUD Sách
+        #region Quản lý Sách (CRUD)
         public List<Sach> GetDanhSachSach()
         {
-            var dsSach = new List<Sach>();
+            var ds = new List<Sach>();
+            string query = "SELECT idSach, tieuDe, tacGia, theLoai, moTa, tongSoLuong, soLuongCoSan, viTri, giaBia FROM Sach ORDER BY tieuDe";
             using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Sach", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        dsSach.Add(new Sach
+                        ds.Add(new Sach
                         {
-                            IdSach = reader.GetInt32(0),
-                            TieuDe = reader.GetString(1),
-                            TacGia = reader.IsDBNull(2) ? "" : reader.GetString(2),
-                            TheLoai = reader.IsDBNull(3) ? "" : reader.GetString(3),
-                            MoTa = reader.IsDBNull(4) ? "" : reader.GetString(4),
-                            TongSoLuong = reader.GetInt32(5),
-                            SoLuongCoSan = reader.GetInt32(6)
+                            IdSach = (int)reader["idSach"],
+                            TieuDe = (string)reader["tieuDe"],
+                            TacGia = reader["tacGia"] as string,
+                            TheLoai = reader["theLoai"] as string,
+                            MoTa = reader["moTa"] as string,
+                            TongSoLuong = (int)reader["tongSoLuong"],
+                            SoLuongCoSan = (int)reader["soLuongCoSan"],
+                            ViTri = reader["viTri"] as string,
+                            GiaBia = (decimal)reader["giaBia"]
                         });
                     }
                 }
             }
-            return dsSach;
+            return ds;
         }
 
         public bool ThemSach(Sach sach)
         {
+            string query = @"INSERT INTO Sach (tieuDe, tacGia, theLoai, moTa, tongSoLuong, soLuongCoSan, viTri, giaBia) 
+                             VALUES (@tieuDe, @tacGia, @theLoai, @moTa, @tongSoLuong, @soLuongCoSan, @viTri, @giaBia)";
             using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
             {
-                conn.Open();
-                var cmd = new SqlCommand("INSERT INTO Sach (tieuDe, tacGia, theLoai, moTa, tongSoLuong, soLuongCoSan) VALUES (@tieuDe, @tacGia, @theLoai, @moTa, @tongSL, @slCoSan)", conn);
                 cmd.Parameters.AddWithValue("@tieuDe", sach.TieuDe);
-                cmd.Parameters.AddWithValue("@tacGia", sach.TacGia);
-                cmd.Parameters.AddWithValue("@theLoai", sach.TheLoai);
-                cmd.Parameters.AddWithValue("@moTa", sach.MoTa);
-                cmd.Parameters.AddWithValue("@tongSL", sach.TongSoLuong);
-                cmd.Parameters.AddWithValue("@slCoSan", sach.TongSoLuong); // Mới thêm vào thì số lượng có sẵn bằng tổng số
+                cmd.Parameters.AddWithValue("@tacGia", (object)sach.TacGia ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@theLoai", (object)sach.TheLoai ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@moTa", (object)sach.MoTa ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@tongSoLuong", sach.TongSoLuong);
+                cmd.Parameters.AddWithValue("@soLuongCoSan", sach.TongSoLuong); // Khi thêm sách mới, số lượng có sẵn bằng tổng số
+                cmd.Parameters.AddWithValue("@viTri", (object)sach.ViTri ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@giaBia", sach.GiaBia);
+                conn.Open();
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         public bool SuaSach(Sach sach)
         {
+            string query = @"UPDATE Sach SET 
+                                tieuDe = @tieuDe, tacGia = @tacGia, theLoai = @theLoai, 
+                                moTa = @moTa, tongSoLuong = @tongSoLuong, viTri = @viTri, giaBia = @giaBia
+                             WHERE idSach = @idSach";
+            // Lưu ý: soLuongCoSan không được sửa trực tiếp ở đây. 
+            // Nó được quản lý qua nghiệp vụ thuê/trả.
             using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
             {
-                conn.Open();
-                // Lưu ý: Không cho sửa số lượng có sẵn trực tiếp. Chỉ cho sửa tổng số lượng.
-                // Việc điều chỉnh số lượng có sẵn sẽ dựa vào nghiệp vụ thuê/trả.
-                var cmd = new SqlCommand("UPDATE Sach SET tieuDe = @tieuDe, tacGia = @tacGia, theLoai = @theLoai, moTa = @moTa, tongSoLuong = @tongSL WHERE idSach = @id", conn);
                 cmd.Parameters.AddWithValue("@tieuDe", sach.TieuDe);
-                cmd.Parameters.AddWithValue("@tacGia", sach.TacGia);
-                cmd.Parameters.AddWithValue("@theLoai", sach.TheLoai);
-                cmd.Parameters.AddWithValue("@moTa", sach.MoTa);
-                cmd.Parameters.AddWithValue("@tongSL", sach.TongSoLuong);
-                cmd.Parameters.AddWithValue("@id", sach.IdSach);
+                cmd.Parameters.AddWithValue("@tacGia", (object)sach.TacGia ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@theLoai", (object)sach.TheLoai ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@moTa", (object)sach.MoTa ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@tongSoLuong", sach.TongSoLuong);
+                cmd.Parameters.AddWithValue("@viTri", (object)sach.ViTri ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@giaBia", sach.GiaBia);
+                cmd.Parameters.AddWithValue("@idSach", sach.IdSach);
+                conn.Open();
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         public bool XoaSach(int idSach)
         {
+            // Chỉ cho phép xóa khi số lượng có sẵn bằng tổng số lượng (nghĩa là không có cuốn nào đang được thuê)
+            string query = "DELETE FROM Sach WHERE idSach = @idSach AND soLuongCoSan = tongSoLuong";
             using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
             {
+                cmd.Parameters.AddWithValue("@idSach", idSach);
                 conn.Open();
-                // Chỉ xóa sách nếu tất cả các bản sao đều có sẵn (không có ai đang thuê)
-                var cmd = new SqlCommand("DELETE FROM Sach WHERE idSach = @id AND soLuongCoSan = tongSoLuong", conn);
-                cmd.Parameters.AddWithValue("@id", idSach);
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
         #endregion
 
-        #region Lịch sử cho thuê
+        #region Lịch sử & Cài đặt
         public List<PhieuThueSach> GetLichSuThueSach()
         {
-            var dsLichSu = new List<PhieuThueSach>();
+            var ds = new List<PhieuThueSach>();
+            string query = @"SELECT TOP 100
+                                s.tieuDe, kh.hoTen, pt.ngayThue, pt.ngayHenTra, pt.ngayTraThucTe, pt.tienPhat, pt.trangThai
+                             FROM PhieuThueSach pt
+                             JOIN Sach s ON pt.idSach = s.idSach
+                             JOIN KhachHang kh ON pt.idKhachHang = kh.idKhachHang
+                             ORDER BY pt.idPhieuThue DESC";
             using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
             {
                 conn.Open();
-                var cmd = new SqlCommand(@"
-                    SELECT pts.idPhieuThue, s.tieuDe, kh.hoTen, nv.hoTen, pts.ngayThue, pts.ngayHenTra, pts.ngayTraThucTe, pts.tienPhat, pts.trangThai
-                    FROM PhieuThueSach pts
-                    JOIN Sach s ON pts.idSach = s.idSach
-                    JOIN KhachHang kh ON pts.idKhachHang = kh.idKhachHang
-                    JOIN NhanVien nv ON pts.idNhanVien = nv.idNhanVien
-                    ORDER BY pts.ngayThue DESC", conn);
-
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        dsLichSu.Add(new PhieuThueSach
+                        ds.Add(new PhieuThueSach
                         {
-                            IdPhieuThue = reader.GetInt32(0),
-                            TieuDeSach = reader.GetString(1),
-                            TenKhachHang = reader.GetString(2),
-                            TenNhanVien = reader.GetString(3),
-                            NgayThue = reader.GetDateTime(4),
-                            NgayHenTra = reader.GetDateTime(5),
-                            NgayTraThucTe = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6),
-                            TienPhat = reader.GetDecimal(7),
-                            TrangThai = reader.GetString(8)
+                            TieuDeSach = reader.GetString(0),
+                            TenKhachHang = reader.GetString(1),
+                            NgayThue = reader.GetDateTime(2),
+                            NgayHenTra = reader.GetDateTime(3),
+                            NgayTraThucTe = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4),
+                            TienPhat = reader.GetDecimal(5),
+                            TrangThai = reader.GetString(6)
                         });
                     }
                 }
             }
-            return dsLichSu;
+            return ds;
+        }
+
+        public List<PhieuThueSach> GetDanhSachSachQuaHan()
+        {
+            var ds = new List<PhieuThueSach>();
+            string query = @"SELECT 
+                                s.tieuDe, kh.hoTen, pt.ngayHenTra, pt.trangThai
+                             FROM PhieuThueSach pt
+                             JOIN Sach s ON pt.idSach = s.idSach
+                             JOIN KhachHang kh ON pt.idKhachHang = kh.idKhachHang
+                             WHERE pt.trangThai = N'Quá hạn' OR (pt.trangThai = N'Đang thuê' AND pt.ngayHenTra < GETDATE())
+                             ORDER BY pt.ngayHenTra ASC";
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ds.Add(new PhieuThueSach
+                        {
+                            TieuDeSach = reader.GetString(0),
+                            TenKhachHang = reader.GetString(1),
+                            NgayHenTra = reader.GetDateTime(2),
+                            TrangThai = reader.GetString(3)
+                        });
+                    }
+                }
+            }
+            return ds;
+        }
+
+        public string GetCaiDat(string tenCaiDat)
+        {
+            string query = "SELECT giaTri FROM CaiDat WHERE tenCaiDat = @ten";
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ten", tenCaiDat);
+                conn.Open();
+                return cmd.ExecuteScalar()?.ToString();
+            }
+        }
+
+        public bool SetCaiDat(string tenCaiDat, string giaTri)
+        {
+            string query = @"IF EXISTS (SELECT 1 FROM CaiDat WHERE tenCaiDat = @ten)
+                                UPDATE CaiDat SET giaTri = @giaTri WHERE tenCaiDat = @ten
+                             ELSE
+                                INSERT INTO CaiDat (tenCaiDat, giaTri) VALUES (@ten, @giaTri)";
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ten", tenCaiDat);
+                cmd.Parameters.AddWithValue("@giaTri", giaTri);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
         }
         #endregion
     }

@@ -1,5 +1,4 @@
-﻿// DTO/KhuyenMai.cs
-using System;
+﻿using System;
 
 namespace Cafebook.DTO
 {
@@ -13,7 +12,12 @@ namespace Cafebook.DTO
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
 
+        // --- Thuộc tính điều kiện mới ---
+        public decimal? GiaTriDonHangToiThieu { get; set; }
+        public int? IdSanPhamApDung { get; set; }
+
         // --- Thuộc tính bổ sung để hiển thị ---
+        public string TenSanPhamApDung { get; set; }
         public string TrangThai
         {
             get

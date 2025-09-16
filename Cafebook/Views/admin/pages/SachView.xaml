@@ -10,39 +10,78 @@
     <TabControl>
         <TabItem Header="Quản lý Sách">
             <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <DataGrid Grid.Column="0" x:Name="dgSach" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgSach_SelectionChanged">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding IdSach}" Width="50"/>
-                        <DataGridTextColumn Header="Tiêu đề" Binding="{Binding TieuDe}" Width="*"/>
-                        <DataGridTextColumn Header="Tác giả" Binding="{Binding TacGia}" Width="150"/>
-                        <DataGridTextColumn Header="Có sẵn" Binding="{Binding SoLuongCoSan}" Width="80"/>
-                        <DataGridTextColumn Header="Tổng SL" Binding="{Binding TongSoLuong}" Width="80"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <StackPanel Grid.Column="1" Width="350" Margin="10,0,0,0">
-                    <Label Content="Tiêu đề sách:"/>
-                    <TextBox x:Name="txtTieuDe" Margin="0,0,0,10"/>
-                    <Label Content="Tác giả:"/>
-                    <TextBox x:Name="txtTacGia" Margin="0,0,0,10"/>
-                    <Label Content="Thể loại:"/>
-                    <TextBox x:Name="txtTheLoai" Margin="0,0,0,10"/>
-                    <Label Content="Tổng số lượng:"/>
-                    <TextBox x:Name="txtTongSoLuong" Margin="0,0,0,10"/>
-                    <Label Content="Mô tả:"/>
-                    <TextBox x:Name="txtMoTa" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnLamMoi" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoi_Click"/>
-                        <Button x:Name="btnThem" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThem_Click"/>
-                        <Button x:Name="btnLuu" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuu_Click"/>
-                        <Button x:Name="btnXoa" Content="Xóa" Margin="5" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoa_Click"/>
-                    </StackPanel>
+                <!-- Khu vực tìm kiếm và lọc -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Tìm kiếm:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtTimKiemSach" Width="200" Margin="5,0,10,0" TextChanged="TxtTimKiemSach_TextChanged"/>
+                    <Label Content="Thể loại:" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbFilterTheLoai" Width="150" Margin="5,0,10,0" SelectionChanged="CbFilterTheLoai_SelectionChanged"/>
+                    <Button x:Name="btnLamMoiLoc" Content="Làm mới lọc" Margin="5" Padding="10,5" Click="BtnLamMoiLoc_Click"/>
                 </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DataGrid Grid.Column="0" x:Name="dgSach" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgSach_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding IdSach}" Width="50"/>
+                            <DataGridTextColumn Header="Tiêu đề" Binding="{Binding TieuDe}" Width="*"/>
+                            <DataGridTextColumn Header="Tác giả" Binding="{Binding TacGia}" Width="150"/>
+                            <DataGridTextColumn Header="Thể loại" Binding="{Binding TheLoai}" Width="100"/>
+                            <DataGridTextColumn Header="Vị trí" Binding="{Binding ViTri}" Width="80"/>
+                            <!-- Thêm cột Vị trí -->
+                            <DataGridTextColumn Header="Có sẵn" Binding="{Binding SoLuongCoSan}" Width="80"/>
+                            <DataGridTextColumn Header="Tổng SL" Binding="{Binding TongSoLuong}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- ... (phần trên giữ nguyên) ... -->
+                    <StackPanel Grid.Column="1" Width="350" Margin="10,0,0,0">
+                        <Label Content="Tiêu đề sách:"/>
+                        <TextBox x:Name="txtTieuDe" Margin="0,0,0,10"/>
+                        <Label Content="Tác giả:"/>
+                        <TextBox x:Name="txtTacGia" Margin="0,0,0,10"/>
+                        <Label Content="Thể loại:"/>
+                        <TextBox x:Name="txtTheLoai" Margin="0,0,0,10"/>
+                        <Label Content="Vị trí:" />
+                        <TextBox x:Name="txtViTri" Margin="0,0,0,10"/>
+
+                        <!-- THÊM KHU VỰC NHẬP GIÁ BÌA -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                <Label Content="Tổng số lượng:"/>
+                                <TextBox x:Name="txtTongSoLuong" Margin="0,0,0,10" PreviewTextInput="NumberValidationTextBox"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                <Label Content="Giá bìa (Tiền cọc):"/>
+                                <TextBox x:Name="txtGiaBia" Margin="0,0,0,10" PreviewTextInput="NumberValidationTextBox"/>
+                            </StackPanel>
+                        </Grid>
+                        <!-- KẾT THÚC KHU VỰC THÊM -->
+
+                        <Label Content="Mô tả:"/>
+                        <TextBox x:Name="txtMoTa" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnLamMoi" Content="Làm mới" Margin="5" Padding="10,5" Click="BtnLamMoi_Click"/>
+                            <Button x:Name="btnThem" Content="Thêm" Margin="5" Padding="10,5" Click="BtnThem_Click"/>
+                            <Button x:Name="btnLuu" Content="Lưu" Margin="5" Padding="10,5" Click="BtnLuu_Click"/>
+                            <Button x:Name="btnXoa" Content="Xóa" Margin="5" Padding="10,5" Background="IndianRed" Foreground="White" Click="BtnXoa_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- ... (phần dưới giữ nguyên) ... -->
+                </Grid>
             </Grid>
         </TabItem>
 
@@ -50,20 +89,34 @@
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Thêm một RowDefinition cho phần cảnh báo -->
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <GroupBox Grid.Row="0" Header="Thiết lập Chính sách Cho thuê" Margin="0,0,0,10">
+                <!-- Khu vực cảnh báo sách quá hạn -->
+                <GroupBox Grid.Row="0" Header="Sách Đang Thuê Bị Quá Hạn" Margin="0,0,0,10" Foreground="Red" FontWeight="Bold">
+                    <DataGrid x:Name="dgSachQuaHan" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="200">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tiêu đề Sách" Binding="{Binding TieuDeSach}" Width="*"/>
+                            <DataGridTextColumn Header="Khách hàng" Binding="{Binding TenKhachHang}" Width="150"/>
+                            <DataGridTextColumn Header="Ngày hẹn trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Header="Thiết lập Chính sách Cho thuê" Margin="0,0,0,10">
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <Label Content="Phí thuê mỗi lượt (VND):" VerticalAlignment="Center"/>
-                        <TextBox x:Name="txtPhiThue" Width="100" Margin="5,0,20,0" Text="10000"/>
+                        <TextBox x:Name="txtPhiThue" Width="100" Margin="5,0,20,0" PreviewTextInput="NumberValidationTextBox"/>
                         <Label Content="Phí phạt mỗi ngày trễ hạn (VND):" VerticalAlignment="Center"/>
-                        <TextBox x:Name="txtPhiPhat" Width="100" Margin="5,0,20,0" Text="5000"/>
+                        <TextBox x:Name="txtPhiPhat" Width="100" Margin="5,0,20,0" PreviewTextInput="NumberValidationTextBox"/>
                         <Button x:Name="btnLuuChinhSach" Content="Lưu Chính sách" Padding="10,5" Click="BtnLuuChinhSach_Click"/>
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1" Header="Lịch sử Cho thuê Sách">
+                <GroupBox Grid.Row="2" Header="Lịch sử Cho thuê Sách">
                     <DataGrid x:Name="dgPhieuThueSach" AutoGenerateColumns="False" IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Tiêu đề Sách" Binding="{Binding TieuDeSach}" Width="*"/>

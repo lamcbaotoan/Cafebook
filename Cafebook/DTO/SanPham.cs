@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cafebook.DTO
+﻿namespace Cafebook.DTO
 {
     public class SanPham
     {
@@ -15,8 +9,10 @@ namespace Cafebook.DTO
         public decimal DonGia { get; set; }
         public string HinhAnh { get; set; }
         public string TrangThai { get; set; }
-
-        // Thuộc tính bổ sung
         public string TenLoaiSP { get; set; }
+
+        // THÊM THUỘC TÍNH NÀY
+        // Dùng để lưu trữ số lượng có thể bán được dựa trên tồn kho
+        public int SoLuongCoThePhucVu { get; set; }
     }
 }

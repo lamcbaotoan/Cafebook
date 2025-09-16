@@ -1,5 +1,7 @@
 ﻿using Cafebook.BUS;
 using Cafebook.DTO;
+using Cafebook.Views.Common;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -12,46 +14,39 @@ namespace Cafebook.Views.nhanvien.pages
         private GoiMonBUS goiMonBUS = new GoiMonBUS();
         private SanPhamBUS sanPhamBUS = new SanPhamBUS();
         private Ban banHienTai;
+        private NhanVien currentUser; // << THÊM BIẾN NÀY ĐỂ LƯU NHÂN VIÊN
         private HoaDon hoaDonHienTai;
         private ObservableCollection<ChiTietHoaDon> chiTietHoaDonOC;
 
-        public GoiMonView(Ban ban)
+        // SỬA LẠI CONSTRUCTOR
+        public GoiMonView(Ban ban, NhanVien user)
         {
             InitializeComponent();
             this.banHienTai = ban;
+            this.currentUser = user; // << LƯU LẠI NHÂN VIÊN
             chiTietHoaDonOC = new ObservableCollection<ChiTietHoaDon>();
             dgChiTietHoaDon.ItemsSource = chiTietHoaDonOC;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadInitialData();
+            lbLoaiSP.ItemsSource = sanPhamBUS.GetDanhSachLoaiSP();
+            if (lbLoaiSP.Items.Count > 0) lbLoaiSP.SelectedIndex = 0;
+
             hoaDonHienTai = goiMonBUS.GetHoaDonChuaThanhToan(banHienTai.IdBan);
 
             if (hoaDonHienTai == null)
             {
-                hoaDonHienTai = new HoaDon { IdBan = banHienTai.IdBan, IdNhanVien = 1 }; // Thay ID 1 bằng ID nhân viên đăng nhập
+                hoaDonHienTai = new HoaDon { IdBan = banHienTai.IdBan, IdNhanVien = 1, ThoiGianTao = System.DateTime.Now };
             }
             else
             {
                 var chiTiet = goiMonBUS.GetChiTietHoaDon(hoaDonHienTai.IdHoaDon);
                 foreach (var item in chiTiet) chiTietHoaDonOC.Add(item);
-                cmbKhuyenMai.SelectedValue = hoaDonHienTai.IdKhuyenMai;
             }
 
             lblTieuDeHoaDon.Text = "Hóa đơn - " + banHienTai.SoBan;
-            CapNhatTongTienHoaDon();
-        }
-
-        private void LoadInitialData()
-        {
-            lbLoaiSP.ItemsSource = sanPhamBUS.GetDanhSachLoaiSP();
-            if (lbLoaiSP.Items.Count > 0) lbLoaiSP.SelectedIndex = 0;
-
-            var dsKM = goiMonBUS.GetKhuyenMaiHopLe();
-            dsKM.Insert(0, new KhuyenMai { IdKhuyenMai = 0, TenKhuyenMai = "Không áp dụng" });
-            cmbKhuyenMai.ItemsSource = dsKM;
-            cmbKhuyenMai.SelectedValuePath = "IdKhuyenMai";
+            CapNhatTongTienVaKhuyenMai();
         }
 
         private void LbLoaiSP_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -68,6 +63,15 @@ namespace Cafebook.Views.nhanvien.pages
             if (selectedProduct == null) return;
 
             var existingItem = chiTietHoaDonOC.FirstOrDefault(item => item.IdSanPham == selectedProduct.IdSanPham);
+            int soLuongHienTaiTrongBill = existingItem?.SoLuong ?? 0;
+
+            // KIỂM TRA LẠI TỒN KHO TRƯỚC KHI THÊM
+            if (soLuongHienTaiTrongBill >= selectedProduct.SoLuongCoThePhucVu)
+            {
+                MessageBox.Show($"Rất tiếc, nguyên liệu cho món '{selectedProduct.TenSanPham}' đã hết hoặc không đủ.", "Hết hàng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (existingItem != null)
             {
                 existingItem.SoLuong++;
@@ -82,29 +86,77 @@ namespace Cafebook.Views.nhanvien.pages
                     SoLuong = 1
                 });
             }
-            CapNhatTongTienHoaDon();
+            CapNhatTongTienVaKhuyenMai();
         }
 
-        private void BtnTangSL_Click(object sender, RoutedEventArgs e) { /* ... Giữ nguyên ... */ }
-        private void BtnGiamSL_Click(object sender, RoutedEventArgs e) { /* ... Giữ nguyên ... */ }
-        private void BtnXoaMon_Click(object sender, RoutedEventArgs e) { /* ... Giữ nguyên ... */ }
-        private void CmbKhuyenMai_SelectionChanged(object sender, SelectionChangedEventArgs e) => CapNhatTongTienHoaDon();
+        private void BtnTangSL_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
+            if (item != null)
+            {
+                // KIỂM TRA TỒN KHO KHI TĂNG SỐ LƯỢNG
+                int soLuongCoThePhucVu = sanPhamBUS.KiemTraKhaNangPhucVu(item.IdSanPham);
+                if (item.SoLuong >= soLuongCoThePhucVu)
+                {
+                    MessageBox.Show($"Không đủ nguyên liệu để thêm món '{item.TenSanPham}'. Chỉ còn phục vụ được {soLuongCoThePhucVu} phần.", "Hết hàng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                item.SoLuong++;
+                CapNhatTongTienVaKhuyenMai();
+            }
+        }
+        private void BtnGiamSL_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
+            if (item != null && item.SoLuong > 1) item.SoLuong--;
+            CapNhatTongTienVaKhuyenMai();
+        }
+        private void BtnXoaMon_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
+            if (item != null) chiTietHoaDonOC.Remove(item);
+            CapNhatTongTienVaKhuyenMai();
+        }
 
-        private void CapNhatTongTienHoaDon()
+        private void CmbKhuyenMai_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbKhuyenMai.IsDropDownOpen)
+                TinhToanTienCuoiCung();
+        }
+
+        private void CapNhatTongTienVaKhuyenMai()
+        {
+            decimal tongTien = chiTietHoaDonOC.Sum(item => item.ThanhTien);
+            var idSanPhamTrongHoaDon = chiTietHoaDonOC.Select(item => item.IdSanPham).ToList();
+
+            var dsKMPhuHop = goiMonBUS.GetKhuyenMaiCoTheApDung(tongTien, idSanPhamTrongHoaDon);
+            dsKMPhuHop.Insert(0, new KhuyenMai { IdKhuyenMai = 0, TenKhuyenMai = "Không áp dụng" });
+
+            int? currentSelectedId = (cmbKhuyenMai.SelectedItem as KhuyenMai)?.IdKhuyenMai ?? hoaDonHienTai.IdKhuyenMai;
+            cmbKhuyenMai.ItemsSource = dsKMPhuHop;
+            cmbKhuyenMai.SelectedValuePath = "IdKhuyenMai";
+
+            if (currentSelectedId.HasValue && dsKMPhuHop.Any(km => km.IdKhuyenMai == currentSelectedId.Value))
+            {
+                cmbKhuyenMai.SelectedValue = currentSelectedId.Value;
+            }
+            else
+            {
+                cmbKhuyenMai.SelectedIndex = 0;
+            }
+
+            TinhToanTienCuoiCung();
+        }
+
+        private void TinhToanTienCuoiCung()
         {
             decimal tongTien = chiTietHoaDonOC.Sum(item => item.ThanhTien);
             decimal soTienGiam = 0;
 
             if (cmbKhuyenMai.SelectedItem is KhuyenMai km && km.IdKhuyenMai != 0)
             {
-                if (km.LoaiGiamGia == "PhanTram")
-                {
-                    soTienGiam = tongTien * (km.GiaTriGiam / 100);
-                }
-                else // SoTien
-                {
-                    soTienGiam = km.GiaTriGiam;
-                }
+                if (km.LoaiGiamGia == "PhanTram") soTienGiam = tongTien * (km.GiaTriGiam / 100);
+                else soTienGiam = km.GiaTriGiam;
                 hoaDonHienTai.IdKhuyenMai = km.IdKhuyenMai;
             }
             else
@@ -113,7 +165,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
 
             decimal thanhTien = tongTien - soTienGiam;
-
             hoaDonHienTai.TongTien = tongTien;
             hoaDonHienTai.SoTienGiam = soTienGiam;
             hoaDonHienTai.ThanhTien = thanhTien;
@@ -125,7 +176,7 @@ namespace Cafebook.Views.nhanvien.pages
 
         private void BtnLuu_Click(object sender, RoutedEventArgs e)
         {
-            CapNhatTongTienHoaDon(); // Cập nhật lần cuối
+            TinhToanTienCuoiCung();
             var result = goiMonBUS.LuuHoaDon(hoaDonHienTai, chiTietHoaDonOC.ToList());
             if (result != null)
             {
@@ -138,6 +189,7 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
+        // SỬA LẠI HÀM NÀY
         private void BtnThanhToan_Click(object sender, RoutedEventArgs e)
         {
             if (chiTietHoaDonOC.Count == 0)
@@ -146,8 +198,19 @@ namespace Cafebook.Views.nhanvien.pages
                 return;
             }
             BtnLuu_Click(null, null);
-            this.NavigationService?.Navigate(new ThanhToanView(this.hoaDonHienTai));
+
+            // SỬA LẠI DÒNG NÀY: Truyền thêm 'this.currentUser'
+            this.NavigationService?.Navigate(new ThanhToanView(this.hoaDonHienTai, this.banHienTai, this.currentUser));
         }
+
+        private void BtnInTamTinh_Click(object sender, RoutedEventArgs e)
+        {
+            // Sửa lại để dùng currentUser
+            var previewWindow = new HoaDonPreviewWindow(this.hoaDonHienTai, chiTietHoaDonOC.ToList(), this.currentUser, this.banHienTai.SoBan);
+            previewWindow.Owner = Window.GetWindow(this);
+            previewWindow.ShowDialog();
+        }
+  
 
         private void BtnQuayLai_Click(object sender, RoutedEventArgs e)
         {

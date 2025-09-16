@@ -94,10 +94,13 @@
                     <DataTemplate>
                         <Button Style="{StaticResource TableCardStyle}" Click="BtnBan_Click">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                                <TextBlock Text="&#xf00c;" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="24" Foreground="#2ECC71">
+                                <TextBlock>
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="&#xf00c;"/>
+                                            <Setter Property="FontFamily" Value="{StaticResource FontAwesomeSolid}"/>
+                                            <Setter Property="FontSize" Value="24"/>
+                                            <Setter Property="Foreground" Value="#2ECC71"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding TrangThai}" Value="Có khách">
                                                     <Setter Property="Text" Value="&#xf0c0;"/>
@@ -111,10 +114,8 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-
                                 <TextBlock Text="{Binding SoBan}" FontSize="22" FontWeight="Bold" Margin="0,5,0,0"/>
                                 <TextBlock Text="{Binding TrangThai}" FontSize="12" Foreground="Gray"/>
-
                                 <TextBlock Text="{Binding TongTienHienTai, StringFormat={}{0:N0} VND}" FontSize="12" Foreground="Red" FontWeight="SemiBold">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -149,16 +150,14 @@
                     <Separator/>
                     <TextBlock FontSize="36" FontWeight="ExtraBold" Margin="0,15,0,0">Bàn <Run x:Name="runSoBan"/></TextBlock>
                     <TextBlock FontSize="16" Margin="0,5,0,0">Trạng thái: <Run x:Name="runTrangThai" FontWeight="SemiBold"/></TextBlock>
-
                     <TextBlock x:Name="tbGhiChu" FontStyle="Italic" Foreground="Gray" Margin="0,5,0,0" TextWrapping="Wrap"/>
-
                     <TextBlock x:Name="tbTongTienWrapper" FontSize="16" Margin="0,5,0,0">Tổng tiền: <Run x:Name="runTongTien" FontWeight="SemiBold" Foreground="Red"/></TextBlock>
 
                     <StackPanel Margin="0,40,0,0">
                         <Button x:Name="btnGoiMon" Content="Gọi Món / Xem Chi tiết" Padding="15" FontSize="16" FontWeight="Bold" Background="#2980B9" Foreground="White" Click="BtnGoiMon_Click"/>
                         <Button x:Name="btnChuyenBan" Content="Chuyển Bàn" Style="{StaticResource ActionButton}" Click="BtnChuyenBan_Click"/>
-
                         <Button x:Name="btnGopBan" Content="Gộp Bàn" Style="{StaticResource ActionButton}" Click="BtnGopBan_Click"/>
+                        <Button x:Name="btnBaoCaoSuCo" Content="Báo cáo Sự cố" Style="{StaticResource ActionButton}" Background="#F39C12" Foreground="White" Margin="0,20,0,0" Click="BtnBaoCaoSuCo_Click"/>
                     </StackPanel>
 
                     <Button x:Name="btnLamMoi" Content="Làm mới Sơ đồ" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0,50,0,0" Click="BtnLamMoi_Click"/>

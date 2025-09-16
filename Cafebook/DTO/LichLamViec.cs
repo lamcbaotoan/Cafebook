@@ -8,7 +8,7 @@ namespace Cafebook.DTO
         public int IdCa { get; set; }
         public DateTime NgayLam { get; set; }
 
-        // --- Thuộc tính bổ sung ---
+        // Thuộc tính hiển thị
         public string HoTenNhanVien { get; set; }
         public string TenCa { get; set; }
         public TimeSpan GioBatDau { get; set; }

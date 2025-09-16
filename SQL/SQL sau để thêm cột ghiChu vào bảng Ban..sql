@@ -1,3 +1,0 @@
-﻿ALTER TABLE Ban
-ADD ghiChu NVARCHAR(255) NULL;
-GO

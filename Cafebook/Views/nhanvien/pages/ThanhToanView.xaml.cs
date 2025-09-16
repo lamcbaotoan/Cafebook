@@ -1,10 +1,12 @@
 ﻿using Cafebook.BUS;
 using Cafebook.DTO;
+using Cafebook.Views.Common;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media; // Thêm using này để dùng Brushes
+using System.Windows.Media;
 
 namespace Cafebook.Views.nhanvien.pages
 {
@@ -12,14 +14,19 @@ namespace Cafebook.Views.nhanvien.pages
     {
         private ThanhToanBUS thanhToanBUS = new ThanhToanBUS();
         private HoaDon hoaDonGoc;
+        private Ban banHienTai;
+        private NhanVien currentUser;
 
         private ObservableCollection<ChiTietHoaDon> chiTietGoc;
-        private ObservableCollection<ChiTietHoaDon> chiTietTach; // Hóa đơn để thanh toán
+        private ObservableCollection<ChiTietHoaDon> chiTietTach;
 
-        public ThanhToanView(HoaDon hoaDon)
+        public ThanhToanView(HoaDon hoaDon, Ban ban, NhanVien user)
         {
             InitializeComponent();
             this.hoaDonGoc = hoaDon;
+            this.banHienTai = ban;
+            this.currentUser = user;
+
             chiTietGoc = new ObservableCollection<ChiTietHoaDon>();
             chiTietTach = new ObservableCollection<ChiTietHoaDon>();
             dgGoc.ItemsSource = chiTietGoc;
@@ -28,9 +35,7 @@ namespace Cafebook.Views.nhanvien.pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Giả sử IdBan đã có trong đối tượng hoaDonGoc được truyền vào
-            // Nếu chưa có, bạn cần JOIN để lấy từ CSDL
-            lblTieuDeThanhToan.Text = $"Thanh toán cho Hóa đơn #{hoaDonGoc.IdHoaDon} - Tổng cộng: {hoaDonGoc.ThanhTien:N0} VND";
+            lblTieuDeThanhToan.Text = $"Thanh toán cho Bàn {banHienTai.SoBan} - Hóa đơn #{hoaDonGoc.IdHoaDon}";
 
             var dsChiTiet = thanhToanBUS.GetChiTietHoaDon(hoaDonGoc.IdHoaDon);
             foreach (var item in dsChiTiet)
@@ -44,7 +49,7 @@ namespace Cafebook.Views.nhanvien.pages
         {
             decimal tongTienTach = chiTietTach.Sum(item => item.ThanhTien);
             lblTienCanThanhToan.Text = tongTienTach.ToString("N0") + " VND";
-            TxtKhachDua_TextChanged(null, null); // Cập nhật lại tiền thừa
+            TxtKhachDua_TextChanged(null, null);
         }
 
         private void BtnChuyenQua_Click(object sender, RoutedEventArgs e)
@@ -87,14 +92,38 @@ namespace Cafebook.Views.nhanvien.pages
 
         private void BtnInTamTinh_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Đang mô phỏng in hóa đơn tạm tính...", "In Hóa đơn");
+            // Nếu chưa tách món nào, mặc định in toàn bộ hóa đơn gốc
+            var listToPrint = chiTietTach.Any() ? chiTietTach.ToList() : chiTietGoc.ToList();
+            if (!listToPrint.Any())
+            {
+                MessageBox.Show("Không có món nào để in tạm tính.", "Thông báo");
+                return;
+            }
+
+            var hoaDonTamTinh = new HoaDon
+            {
+                IdBan = this.hoaDonGoc.IdBan,
+                ThoiGianTao = DateTime.Now,
+                TongTien = listToPrint.Sum(i => i.ThanhTien),
+                SoTienGiam = 0,
+                ThanhTien = listToPrint.Sum(i => i.ThanhTien)
+            };
+
+            var previewWindow = new HoaDonPreviewWindow(hoaDonTamTinh, listToPrint, this.currentUser, this.banHienTai.SoBan);
+            previewWindow.Owner = Window.GetWindow(this);
+            previewWindow.ShowDialog();
         }
 
         private void BtnXacNhanThanhToan_Click(object sender, RoutedEventArgs e)
         {
             if (chiTietGoc.Count > 0)
             {
-                MessageBox.Show("Vẫn còn món trong hóa đơn gốc. Vui lòng chuyển tất cả các món qua 'Hóa đơn thanh toán' hoặc thanh toán toàn bộ hóa đơn.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Vẫn còn món trong hóa đơn gốc chưa được tách. Vui lòng chuyển tất cả các món qua 'Hóa đơn thanh toán' để hoàn tất.", "Thông báo");
+                return;
+            }
+            if (chiTietTach.Count == 0)
+            {
+                MessageBox.Show("Không có món nào trong hóa đơn thanh toán.", "Thông báo");
                 return;
             }
 
@@ -102,31 +131,29 @@ namespace Cafebook.Views.nhanvien.pages
             {
                 if (thanhToanBUS.ThucHienThanhToan(hoaDonGoc.IdHoaDon))
                 {
-                    MessageBox.Show("Thanh toán thành công!");
-                    MessageBox.Show("Đang mô phỏng in hóa đơn thanh toán...", "In Hóa đơn");
+                    MessageBox.Show("Thanh toán thành công!", "Thành công");
 
-                    // SỬA LỖI: Quay về màn hình sơ đồ bàn
-                    // Cách đúng để điều hướng từ một Page là dùng NavigationService của chính nó.
-                    if (this.NavigationService.CanGoBack)
+                    // HIỂN THỊ CỬA SỔ IN HÓA ĐƠN CUỐI CÙNG
+                    var previewWindow = new HoaDonPreviewWindow(this.hoaDonGoc, chiTietTach.ToList(), this.currentUser, this.banHienTai.SoBan, "HÓA ĐƠN THANH TOÁN");
+                    previewWindow.Owner = Window.GetWindow(this);
+                    previewWindow.ShowDialog();
+
+                    // Quay về Sơ đồ bàn
+                    var window = Window.GetWindow(this);
+                    if (window is ManHinhNhanVien main)
                     {
-                        // Xóa lịch sử trang thanh toán và gọi món để không quay lại được
-                        this.NavigationService.RemoveBackEntry(); // Xóa trang thanh toán
-                        this.NavigationService.RemoveBackEntry(); // Xóa trang gọi món
-
-                        // Điều hướng về trang mới của sơ đồ bàn để cập nhật trạng thái
-                        this.NavigationService.Navigate(new SoDoBanView());
+                        main.MainFrame.Navigate(new SoDoBanView(this.currentUser));
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Thanh toán thất bại. Có lỗi xảy ra trong quá trình xử lý.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Thanh toán thất bại. Có lỗi xảy ra.", "Lỗi");
                 }
             }
         }
 
         private void BtnQuayLai_Click(object sender, RoutedEventArgs e)
         {
-            // SỬA LỖI: Dùng NavigationService của Page
             if (this.NavigationService.CanGoBack)
             {
                 this.NavigationService.GoBack();

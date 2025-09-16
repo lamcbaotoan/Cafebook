@@ -1,4 +1,5 @@
-﻿<Page x:Class="Cafebook.Views.nhanvien.pages.DatBanSachView"
+﻿<!-- Views/nhanvien/pages/DatBanSachView.xaml -->
+<Page x:Class="Cafebook.Views.nhanvien.pages.DatBanSachView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,12 +11,24 @@
     <TabControl>
         <TabItem Header="Quản lý Đặt Bàn">
             <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <DataGrid Grid.Column="0" x:Name="dgPhieuDatBan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Xem phiếu ngày:" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="dpChonNgayDatBan" Width="150" SelectedDateChanged="DpChonNgayDatBan_SelectedDateChanged"/>
+                    <Label Content="Tìm kiếm (Tên/SĐT):" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                    <TextBox x:Name="txtTimKiemDatBan" Width="200" VerticalAlignment="Center" TextChanged="TxtTimKiemDatBan_TextChanged"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="1" Grid.Column="0" x:Name="dgPhieuDatBan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding IdPhieuDatBan}" Width="50"/>
                         <DataGridTextColumn Header="Tên Khách" Binding="{Binding TenKhachHangHienThi}" Width="*"/>
@@ -27,27 +40,34 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <StackPanel Grid.Column="1" Width="350" Margin="10,0,0,0">
+                <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button x:Name="btnKhachDaDen" Content="Xác nhận khách đã đến" Padding="8,4" Margin="0,0,10,0" Click="BtnKhachDaDen_Click"/>
+                    <Button x:Name="btnHuyPhieuDat" Content="Hủy Phiếu Đặt" Padding="8,4" Click="BtnHuyPhieuDat_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Grid.RowSpan="3" Width="350" Margin="10,0,0,0">
                     <GroupBox Header="Tạo Phiếu Đặt Bàn Mới">
                         <StackPanel Margin="5">
                             <Label Content="Tên khách hàng:"/>
                             <TextBox x:Name="txtTenKhachDat" Margin="0,0,0,5"/>
                             <Label Content="Số điện thoại:"/>
                             <TextBox x:Name="txtSdtKhachDat" Margin="0,0,0,5"/>
-                            <Label Content="Thời gian đặt (ngày và giờ):"/>
-                            <DatePicker x:Name="dpThoiGianDat" Margin="0,0,0,5"/>
+                            <Label Content="Thời gian đặt (giờ và phút):"/>
+                            <TextBox x:Name="txtGioPhutDat" Text="19:00" Margin="0,0,0,5"/>
                             <Label Content="Số lượng khách:"/>
                             <TextBox x:Name="txtSoLuongKhach" Margin="0,0,0,5"/>
                             <Label Content="Chọn bàn:"/>
                             <ComboBox x:Name="cmbBan" DisplayMemberPath="SoBan" SelectedValuePath="IdBan" Margin="0,0,0,5"/>
                             <Label Content="Ghi chú:"/>
                             <TextBox x:Name="txtGhiChuDat" Margin="0,0,0,5" Height="40" TextWrapping="Wrap"/>
-                            <Button x:Name="btnTaoPhieuDat" Content="Tạo Phiếu Đặt" Margin="0,10,0,0" Padding="10,5"/>
+                            <Button x:Name="btnTaoPhieuDat" Content="Tạo Phiếu Đặt" Margin="0,10,0,0" Padding="10,5" Click="BtnTaoPhieuDat_Click"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </Grid>
         </TabItem>
+
+        <!-- ... (Giữ nguyên TabItem Đặt Bàn) ... -->
 
         <TabItem Header="Quản lý Thuê Sách">
             <Grid Margin="10">
@@ -56,28 +76,78 @@
                     <ColumnDefinition Width="350"/>
                 </Grid.ColumnDefinitions>
 
-                <GroupBox Grid.Column="0" Header="Sách đang được thuê / Quá hạn">
-                    <DataGrid x:Name="dgPhieuThueSach" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieuThueSach_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
-                            <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
-                            <DataGridTextColumn Header="Ngày Thuê" Binding="{Binding NgayThue, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                            <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </GroupBox>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="0" Header="Tìm phiếu trả sách (Mã phiếu / Tên / SĐT)">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" x:Name="txtTimKiemPhieuTra" VerticalContentAlignment="Center" TextChanged="TxtTimKiemPhieuTra_TextChanged"/>
+                            <Button Grid.Column="1" x:Name="btnXoaTimKiemPhieuTra" Content="Xóa tìm kiếm" Margin="10,0,0,0" Padding="5" Click="BtnXoaTimKiemPhieuTra_Click"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" Header="Sách đang được thuê">
+                        <DataGrid x:Name="dgPhieuDangThue" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged">
+                            <!-- Giữ nguyên các cột như cũ -->
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
+                                <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
+                                <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
+                                <DataGridTextColumn Header="Ngày Thuê" Binding="{Binding NgayThue, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" Background="LightGray"/>
+
+                    <GroupBox Grid.Row="3" Header="Sách đã quá hạn">
+                        <DataGrid x:Name="dgPhieuQuaHan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged">
+                            <!-- Giữ nguyên các cột như cũ -->
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
+                                <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
+                                <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
+                                <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
 
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
                     <GroupBox Header="Cho Mượn Sách">
                         <StackPanel Margin="5">
-                            <Label Content="Chọn khách hàng thành viên:"/>
-                            <ComboBox x:Name="cmbKhachHang_Thue" DisplayMemberPath="HoTen" SelectedValuePath="IdKhachHang" Margin="0,0,0,5"/>
+                            <CheckBox x:Name="chkKhachHangMoi" Content="Khách hàng mới" Margin="0,0,0,5" Checked="ChkKhachHangMoi_Changed" Unchecked="ChkKhachHangMoi_Changed"/>
+
+                            <StackPanel x:Name="panelKhachCu">
+                                <Label Content="Tìm khách hàng (Tên/SĐT):"/>
+                                <TextBox x:Name="txtTimKiemKhachHang" Margin="0,0,0,5" TextChanged="TxtTimKiemKhachHang_TextChanged"/>
+                                <Label Content="Chọn khách hàng thành viên:"/>
+                                <ComboBox x:Name="cmbKhachHang_Thue" DisplayMemberPath="HoTen" SelectedValuePath="IdKhachHang" Margin="0,0,0,5"/>
+                            </StackPanel>
+
+                            <StackPanel x:Name="panelKhachMoi" Visibility="Collapsed">
+                                <Label Content="Tên khách hàng mới:"/>
+                                <TextBox x:Name="txtTenKhachMoi" Margin="0,0,0,5"/>
+                                <Label Content="SĐT khách hàng mới:"/>
+                                <TextBox x:Name="txtSdtKhachMoi" Margin="0,0,0,5"/>
+                            </StackPanel>
+
                             <Label Content="Chọn sách muốn thuê:"/>
                             <ComboBox x:Name="cmbSach_Thue" DisplayMemberPath="TieuDe" SelectedValuePath="IdSach" Margin="0,0,0,5"/>
                             <Label Content="Ngày hẹn trả:"/>
                             <DatePicker x:Name="dpNgayHenTra" Margin="0,0,0,5"/>
-                            <Button x:Name="btnXacNhanChoMuon" Content="XÁC NHẬN CHO MƯỢN" Margin="0,10,0,0" Padding="10,8" FontWeight="Bold"/>
+                            <Button x:Name="btnXacNhanChoMuon" Content="XÁC NHẬN CHO MƯỢN" Margin="0,10,0,0" Padding="10,8" FontWeight="Bold" Click="BtnXacNhanChoMuon_Click"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Nhận Trả Sách" Margin="0,15,0,0" x:Name="gbTraSach" IsEnabled="False">
@@ -86,7 +156,7 @@
                             <TextBlock x:Name="lblChiTietThue" TextWrapping="Wrap" Margin="0,5,0,10" Text="Vui lòng chọn một phiếu từ danh sách bên trái."/>
                             <TextBlock Text="Tiền phạt (nếu có):" Margin="0,10,0,0"/>
                             <TextBlock x:Name="lblTienPhat" Text="0 VND" FontSize="18" FontWeight="Bold" Foreground="OrangeRed"/>
-                            <Button x:Name="btnXacNhanTraSach" Content="XÁC NHẬN TRẢ SÁCH" Margin="0,15,0,0" Padding="10,8" FontWeight="Bold"/>
+                            <Button x:Name="btnXacNhanTraSach" Content="XÁC NHẬN TRẢ SÁCH" Margin="0,15,0,0" Padding="10,8" FontWeight="Bold" Click="BtnXacNhanTraSach_Click"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

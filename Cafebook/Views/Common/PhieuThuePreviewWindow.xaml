@@ -1,0 +1,65 @@
+﻿<Window x:Class="Cafebook.Views.Common.PhieuThuePreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Xem trước Phiếu Thuê Sách" Height="600" Width="420"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False" 
+        WindowStyle="ToolWindow" FontFamily="Consolas, Segoe UI" FontSize="13">
+
+    <Grid Margin="15" Grid.IsSharedSizeScope="True" x:Name="printArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header chung -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="CAFEBOOK" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="lblDiaChi" Text="Địa chỉ: ..." HorizontalAlignment="Center" FontSize="11"/>
+            <TextBlock x:Name="lblSdt" Text="SĐT: ..." HorizontalAlignment="Center" FontSize="11" Margin="0,0,0,10"/>
+            <TextBlock Text="PHIẾU THUÊ SÁCH" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,15,0,10"/>
+            <Separator Margin="0,10,0,5"/>
+        </StackPanel>
+
+        <!-- Nội dung phiếu thuê -->
+        <StackPanel Grid.Row="1" Margin="0,10">
+            <TextBlock x:Name="lblMaPhieu" Text="Mã phiếu: #" FontWeight="SemiBold"/>
+            <Separator Margin="0,5"/>
+            <TextBlock Text="Thông tin khách hàng:"/>
+            <TextBlock x:Name="lblTenKhach" Text="  - Tên: " Margin="10,2"/>
+            <TextBlock x:Name="lblSdtKhach" Text="  - SĐT: " Margin="10,2"/>
+            <Separator Margin="0,5"/>
+            <TextBlock Text="Thông tin sách:"/>
+            <TextBlock x:Name="lblTenSach" Text="  - Tên sách: " Margin="10,2"/>
+            <TextBlock x:Name="lblViTri" Text="  - Vị trí: " Margin="10,2"/>
+            <Separator Margin="0,5"/>
+            <TextBlock x:Name="lblNgayThue" Text="Ngày thuê: "/>
+            <TextBlock x:Name="lblNgayHenTra" Text="Ngày hẹn trả: "/>
+        </StackPanel>
+
+        <!-- Tổng kết phí -->
+        <Grid Grid.Row="2" Margin="0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ColThanhTien"/>
+            </Grid.ColumnDefinitions>
+            <Separator Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Phí thuê:" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblPhiThue" TextAlignment="Right"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Tiền cọc:" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblTienCoc" TextAlignment="Right" FontWeight="Bold"/>
+        </Grid>
+
+        <!-- Nút bấm -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+            <Button x:Name="btnPrint" Content="In Phiếu" Width="120" Height="40" Margin="5" Click="InPhieu_Click"/>
+            <Button x:Name="btnClose" Content="Đóng" Width="120" Height="40" Margin="5" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

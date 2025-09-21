@@ -1,4 +1,6 @@
-﻿using System;
+﻿// File: DTO/LichLamViec.cs
+using System;
+
 namespace Cafebook.DTO
 {
     public class LichLamViec
@@ -8,10 +10,13 @@ namespace Cafebook.DTO
         public int IdCa { get; set; }
         public DateTime NgayLam { get; set; }
 
-        // Thuộc tính hiển thị
+        // Các thuộc tính join từ bảng khác
         public string HoTenNhanVien { get; set; }
         public string TenCa { get; set; }
-        public TimeSpan GioBatDau { get; set; }
-        public TimeSpan GioKetThuc { get; set; }
+
+        // CÁC THUỘC TÍNH MỚI CẦN THÊM VÀO
+        public TimeSpan? GioBatDau { get; set; }
+        public TimeSpan? GioKetThuc { get; set; }
+        public string TrangThai { get; set; }
     }
 }

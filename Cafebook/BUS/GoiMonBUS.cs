@@ -204,11 +204,18 @@ namespace Cafebook.BUS
             {
                 conn.Open();
                 SqlTransaction transaction = conn.BeginTransaction();
+
                 try
                 {
+                    // Bước 1: Lấy tất cả chi tiết sản phẩm từ hóa đơn
                     var chiTietList = new List<ChiTietHoaDon>();
-                    var cmdGetChiTiet = new SqlCommand("SELECT idSanPham, soLuong FROM ChiTietHoaDon WHERE idHoaDon = @idHD", conn, transaction);
+                    var cmdGetChiTiet = new SqlCommand(
+                        "SELECT idSanPham, soLuong FROM ChiTietHoaDon WHERE idHoaDon = @idHD",
+                        conn,
+                        transaction
+                    );
                     cmdGetChiTiet.Parameters.AddWithValue("@idHD", idHoaDon);
+
                     using (var reader = cmdGetChiTiet.ExecuteReader())
                     {
                         while (reader.Read())
@@ -221,29 +228,68 @@ namespace Cafebook.BUS
                         }
                     }
 
+                    // Bước 2: Lặp qua từng sản phẩm để trừ kho nguyên liệu tương ứng
                     foreach (var item in chiTietList)
                     {
                         var cmdTruKho = new SqlCommand(@"
-                            UPDATE NguyenLieu
-                            SET soLuongTon = soLuongTon - (ct.luongCanThiet * @soLuongSP)
-                            FROM NguyenLieu nl
-                            JOIN CongThuc ct ON nl.idNguyenLieu = ct.idNguyenLieu
-                            WHERE ct.idSanPham = @idSP", conn, transaction);
+                    UPDATE nl
+                    SET 
+                        nl.soLuongTon = nl.soLuongTon - 
+                        (
+                            CAST(@soLuongSP AS decimal(18,3)) * CAST(
+                                CASE
+                                    -- Chuyển đổi khối lượng: g -> kg
+                                    WHEN LOWER(ct.donViTinhSuDung) = 'g' AND LOWER(nl.donViTinh) = 'kg' 
+                                        THEN ct.luongCanThiet / 1000.0
+                                    
+                                    -- Khối lượng: đã là kg
+                                    WHEN LOWER(ct.donViTinhSuDung) = 'kg' AND LOWER(nl.donViTinh) = 'kg' 
+                                        THEN ct.luongCanThiet
+
+                                    -- Chuyển đổi thể tích: ml -> lít
+                                    WHEN LOWER(ct.donViTinhSuDung) = 'ml' AND LOWER(nl.donViTinh) IN ('l', N'lít', N'lit') 
+                                        THEN ct.luongCanThiet / 1000.0
+
+                                    -- Thể tích: đã là lít
+                                    WHEN LOWER(ct.donViTinhSuDung) IN ('l', N'lít', N'lit') AND LOWER(nl.donViTinh) IN ('l', N'lít', N'lit') 
+                                        THEN ct.luongCanThiet
+
+                                    -- Đơn vị đếm (quả, cái, ...) hoặc các trường hợp khác: giữ nguyên
+                                    ELSE ct.luongCanThiet
+                                END 
+                            AS decimal(18,3))
+                        )
+                    FROM 
+                        NguyenLieu nl
+                    JOIN 
+                        CongThuc ct ON nl.idNguyenLieu = ct.idNguyenLieu
+                    WHERE 
+                        ct.idSanPham = @idSP;",
+                            conn,
+                            transaction
+                        );
 
                         cmdTruKho.Parameters.AddWithValue("@soLuongSP", item.SoLuong);
                         cmdTruKho.Parameters.AddWithValue("@idSP", item.IdSanPham);
                         cmdTruKho.ExecuteNonQuery();
                     }
 
-                    var cmdUpdateHD = new SqlCommand("UPDATE HoaDon SET trangThai = N'Đã thanh toán' WHERE idHoaDon = @idHD", conn, transaction);
+                    // Bước 3: Cập nhật trạng thái hóa đơn thành "Đã thanh toán"
+                    var cmdUpdateHD = new SqlCommand(
+                        "UPDATE HoaDon SET trangThai = N'Đã thanh toán' WHERE idHoaDon = @idHD",
+                        conn,
+                        transaction
+                    );
                     cmdUpdateHD.Parameters.AddWithValue("@idHD", idHoaDon);
                     cmdUpdateHD.ExecuteNonQuery();
 
+                    // Nếu mọi thứ thành công, commit transaction
                     transaction.Commit();
                     return true;
                 }
                 catch (Exception)
                 {
+                    // Nếu có bất kỳ lỗi nào, rollback tất cả các thay đổi
                     transaction.Rollback();
                     return false;
                 }

@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Cafebook.Views.nhanvien.pages"
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="1050"
       Title="ThanhToanView" FontFamily="Segoe UI" Loaded="Page_Loaded">
@@ -18,7 +17,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="lblTieuDeThanhToan" Text="Thanh toán cho Bàn A1 - Tổng cộng: 150,000 VND" FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock x:Name="lblTieuDeThanhToan" Text="Thanh toán cho Bàn A1 - Hóa đơn #1" FontSize="18" FontWeight="SemiBold"/>
 
             <Grid Grid.Row="1" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
@@ -38,8 +37,10 @@
                 </GroupBox>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <Button x:Name="btnChuyenQua" Content=">>" Margin="5" Padding="10,5" ToolTip="Tách món này để thanh toán riêng" Click="BtnChuyenQua_Click"/>
-                    <Button x:Name="btnChuyenLai" Content="&lt;&lt;" Margin="5" Padding="10,5" ToolTip="Trả món này về hóa đơn gốc" Click="BtnChuyenLai_Click"/>
+                    <Button x:Name="btnChuyenQua" Content=">" Margin="5" Padding="10,5" ToolTip="Tách món đã chọn" Click="BtnChuyenQua_Click"/>
+                    <Button x:Name="btnChuyenQuaTatCa" Content=">>" Margin="5" Padding="10,5" ToolTip="Tách tất cả các món" Click="BtnChuyenQuaTatCa_Click"/>
+                    <Button x:Name="btnChuyenLai" Content="&lt;" Margin="5" Padding="10,5" ToolTip="Trả lại món đã chọn" Click="BtnChuyenLai_Click"/>
+                    <Button x:Name="btnChuyenLaiTatCa" Content="&lt;&lt;" Margin="5" Padding="10,5" ToolTip="Trả lại tất cả các món" Click="BtnChuyenLaiTatCa_Click"/>
                 </StackPanel>
 
                 <GroupBox Grid.Column="2" Header="Hóa đơn thanh toán">
@@ -55,39 +56,54 @@
         </Grid>
 
         <Border Grid.Column="1" Background="WhiteSmoke" Padding="15">
-            <StackPanel>
-                <TextBlock Text="Cần thanh toán:" FontSize="16"/>
-                <TextBlock x:Name="lblTienCanThanhToan" Text="0 VND" FontSize="32" FontWeight="Bold" Foreground="Red" Margin="0,0,0,10"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Cần thanh toán:" FontSize="16"/>
+                    <TextBlock x:Name="lblTienCanThanhToan" Text="0 đ" FontSize="32" FontWeight="Bold" Foreground="Red" Margin="0,0,0,10"/>
+                    <Label Content="Áp dụng khuyến mãi:"/>
+                    <ComboBox x:Name="cmbKhuyenMai" DisplayMemberPath="TenKhuyenMai" Margin="0,0,0,10" SelectionChanged="CmbKhuyenMai_SelectionChanged"/>
 
-                <GroupBox Header="Phương thức">
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <RadioButton x:Name="rbTienMat" Content="Tiền mặt" IsChecked="True"/>
-                        <RadioButton Content="Thẻ" Margin="10,0" IsEnabled="False"/>
-                        <RadioButton Content="Chuyển khoản" Margin="10,0" IsEnabled="False"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox Header="Thanh toán tiền mặt" Margin="0,10,0,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,15">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Content="Khách đưa:" FontSize="14" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtKhachDua" FontSize="16" FontWeight="SemiBold" TextChanged="TxtKhachDua_TextChanged"/>
-                        <Label Grid.Row="1" Grid.Column="0" Content="Tiền thừa:" FontSize="14" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblTienThua" FontSize="16" FontWeight="SemiBold" Foreground="Blue" VerticalAlignment="Center" Text="0 VND"/>
-                    </Grid>
-                </GroupBox>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <Button x:Name="btnInTamTinh" Content="In Tạm tính" Padding="10" Margin="0,20,0,0" Click="BtnInTamTinh_Click"/>
-                <Button x:Name="btnXacNhanThanhToan" Content="XÁC NHẬN THANH TOÁN" Padding="15" Margin="0,10,0,0" FontSize="18" FontWeight="Bold" Background="#27AE60" Foreground="White" Click="BtnXacNhanThanhToan_Click"/>
-                <Button x:Name="btnQuayLai" Content="Quay lại" Padding="10" Margin="0,30,0,0" Click="BtnQuayLai_Click"/>
-            </StackPanel>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Giảm giá:" FontSize="14" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblTienGiam" Text="- 0 đ" FontSize="14" Foreground="Green" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Thành tiền:" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblThanhTien" Text="0 đ" FontSize="16" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <GroupBox Header="Thanh toán tiền mặt">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Khách đưa:" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtKhachDua" FontSize="16" FontWeight="SemiBold" TextChanged="TxtKhachDua_TextChanged" TextAlignment="Right"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="Tiền thừa:" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblTienThua" FontSize="16" FontWeight="SemiBold" Foreground="Blue" VerticalAlignment="Center" Text="0 đ" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <Button x:Name="btnInTamTinh" Content="In Tạm tính" Padding="10" Margin="0,20,0,0" Click="BtnInTamTinh_Click"/>
+                    <Button x:Name="btnXacNhanThanhToan" Content="XÁC NHẬN THANH TOÁN" Padding="15" Margin="0,10,0,0" FontSize="18" FontWeight="Bold" Background="#27AE60" Foreground="White" Click="BtnXacNhanThanhToan_Click"/>
+                    <Button x:Name="btnQuayLai" Content="Quay lại Gọi món" Padding="10" Margin="0,30,0,0" Click="BtnQuayLai_Click"/>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </Grid>
 </Page>

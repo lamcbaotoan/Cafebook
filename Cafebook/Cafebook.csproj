@@ -104,9 +104,11 @@
     <Compile Include="DTO\Ban.cs" />
     <Compile Include="DTO\BangChamCong.cs" />
     <Compile Include="DTO\CaLamViec.cs" />
+    <Compile Include="DTO\ChiTietDongLuong.cs" />
     <Compile Include="DTO\ChiTietHoaDon.cs" />
     <Compile Include="DTO\ChiTietPhieuNhap.cs" />
     <Compile Include="DTO\ChiTietThuongPhat.cs" />
+    <Compile Include="DTO\ChiTietThuongPhatDTO.cs" />
     <Compile Include="DTO\CongThuc.cs" />
     <Compile Include="DTO\DoanhThu.cs" />
     <Compile Include="DTO\HieuSuatNhanVien.cs" />
@@ -116,7 +118,7 @@
     <Compile Include="DTO\KhuyenMai.cs" />
     <Compile Include="DTO\LichLamViec.cs" />
     <Compile Include="DTO\LoaiSanPham.cs" />
-    <Compile Include="DTO\LoaiThuongPhat.cs" />
+    <Compile Include="DTO\QuyTacLuong.cs" />
     <Compile Include="DTO\NguyenLieu.cs" />
     <Compile Include="DTO\NhaCungCap.cs" />
     <Compile Include="DTO\PhieuDatBan.cs" />

@@ -14,39 +14,48 @@ namespace Cafebook.Views.nhanvien.pages
         private GoiMonBUS goiMonBUS = new GoiMonBUS();
         private SanPhamBUS sanPhamBUS = new SanPhamBUS();
         private Ban banHienTai;
-        private NhanVien currentUser; // << THÊM BIẾN NÀY ĐỂ LƯU NHÂN VIÊN
+        private NhanVien currentUser;
         private HoaDon hoaDonHienTai;
         private ObservableCollection<ChiTietHoaDon> chiTietHoaDonOC;
 
-        // SỬA LẠI CONSTRUCTOR
         public GoiMonView(Ban ban, NhanVien user)
         {
             InitializeComponent();
             this.banHienTai = ban;
-            this.currentUser = user; // << LƯU LẠI NHÂN VIÊN
+            this.currentUser = user;
             chiTietHoaDonOC = new ObservableCollection<ChiTietHoaDon>();
             dgChiTietHoaDon.ItemsSource = chiTietHoaDonOC;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            lbLoaiSP.ItemsSource = sanPhamBUS.GetDanhSachLoaiSP();
-            if (lbLoaiSP.Items.Count > 0) lbLoaiSP.SelectedIndex = 0;
-
+            LoadInitialData();
             hoaDonHienTai = goiMonBUS.GetHoaDonChuaThanhToan(banHienTai.IdBan);
+
+            // XÓA DỮ LIỆU CŨ TRƯỚC KHI TẢI
+            chiTietHoaDonOC.Clear();
 
             if (hoaDonHienTai == null)
             {
-                hoaDonHienTai = new HoaDon { IdBan = banHienTai.IdBan, IdNhanVien = 1, ThoiGianTao = System.DateTime.Now };
+                hoaDonHienTai = new HoaDon { IdBan = banHienTai.IdBan, IdNhanVien = currentUser.IdNhanVien, ThoiGianTao = System.DateTime.Now };
             }
             else
             {
                 var chiTiet = goiMonBUS.GetChiTietHoaDon(hoaDonHienTai.IdHoaDon);
-                foreach (var item in chiTiet) chiTietHoaDonOC.Add(item);
+                foreach (var item in chiTiet)
+                {
+                    chiTietHoaDonOC.Add(item);
+                }
             }
 
             lblTieuDeHoaDon.Text = "Hóa đơn - " + banHienTai.SoBan;
             CapNhatTongTienVaKhuyenMai();
+        }
+
+        private void LoadInitialData()
+        {
+            lbLoaiSP.ItemsSource = sanPhamBUS.GetDanhSachLoaiSP();
+            if (lbLoaiSP.Items.Count > 0) lbLoaiSP.SelectedIndex = 0;
         }
 
         private void LbLoaiSP_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -63,9 +72,9 @@ namespace Cafebook.Views.nhanvien.pages
             if (selectedProduct == null) return;
 
             var existingItem = chiTietHoaDonOC.FirstOrDefault(item => item.IdSanPham == selectedProduct.IdSanPham);
-            int soLuongHienTaiTrongBill = existingItem?.SoLuong ?? 0;
 
-            // KIỂM TRA LẠI TỒN KHO TRƯỚC KHI THÊM
+            // Kiểm tra kho trước khi thêm
+            int soLuongHienTaiTrongBill = existingItem?.SoLuong ?? 0;
             if (soLuongHienTaiTrongBill >= selectedProduct.SoLuongCoThePhucVu)
             {
                 MessageBox.Show($"Rất tiếc, nguyên liệu cho món '{selectedProduct.TenSanPham}' đã hết hoặc không đủ.", "Hết hàng", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -94,7 +103,6 @@ namespace Cafebook.Views.nhanvien.pages
             var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
             if (item != null)
             {
-                // KIỂM TRA TỒN KHO KHI TĂNG SỐ LƯỢNG
                 int soLuongCoThePhucVu = sanPhamBUS.KiemTraKhaNangPhucVu(item.IdSanPham);
                 if (item.SoLuong >= soLuongCoThePhucVu)
                 {
@@ -105,23 +113,33 @@ namespace Cafebook.Views.nhanvien.pages
                 CapNhatTongTienVaKhuyenMai();
             }
         }
+
         private void BtnGiamSL_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
-            if (item != null && item.SoLuong > 1) item.SoLuong--;
-            CapNhatTongTienVaKhuyenMai();
+            if (item != null && item.SoLuong > 1)
+            {
+                item.SoLuong--;
+                CapNhatTongTienVaKhuyenMai();
+            }
         }
+
         private void BtnXoaMon_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as FrameworkElement)?.DataContext as ChiTietHoaDon;
-            if (item != null) chiTietHoaDonOC.Remove(item);
-            CapNhatTongTienVaKhuyenMai();
+            if (item != null)
+            {
+                chiTietHoaDonOC.Remove(item);
+                CapNhatTongTienVaKhuyenMai();
+            }
         }
 
         private void CmbKhuyenMai_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbKhuyenMai.IsDropDownOpen)
+            {
                 TinhToanTienCuoiCung();
+            }
         }
 
         private void CapNhatTongTienVaKhuyenMai()
@@ -174,9 +192,13 @@ namespace Cafebook.Views.nhanvien.pages
             lblThanhTien.Text = thanhTien.ToString("N0") + " VND";
         }
 
+        // Trong file Views/nhanvien/pages/GoiMonView.xaml.cs
+
         private void BtnLuu_Click(object sender, RoutedEventArgs e)
         {
+            // Đảm bảo tính toán lần cuối trước khi lưu
             TinhToanTienCuoiCung();
+
             var result = goiMonBUS.LuuHoaDon(hoaDonHienTai, chiTietHoaDonOC.ToList());
             if (result != null)
             {
@@ -189,7 +211,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
-        // SỬA LẠI HÀM NÀY
         private void BtnThanhToan_Click(object sender, RoutedEventArgs e)
         {
             if (chiTietHoaDonOC.Count == 0)
@@ -198,19 +219,15 @@ namespace Cafebook.Views.nhanvien.pages
                 return;
             }
             BtnLuu_Click(null, null);
-
-            // SỬA LẠI DÒNG NÀY: Truyền thêm 'this.currentUser'
             this.NavigationService?.Navigate(new ThanhToanView(this.hoaDonHienTai, this.banHienTai, this.currentUser));
         }
 
         private void BtnInTamTinh_Click(object sender, RoutedEventArgs e)
         {
-            // Sửa lại để dùng currentUser
             var previewWindow = new HoaDonPreviewWindow(this.hoaDonHienTai, chiTietHoaDonOC.ToList(), this.currentUser, this.banHienTai.SoBan);
             previewWindow.Owner = Window.GetWindow(this);
             previewWindow.ShowDialog();
         }
-  
 
         private void BtnQuayLai_Click(object sender, RoutedEventArgs e)
         {

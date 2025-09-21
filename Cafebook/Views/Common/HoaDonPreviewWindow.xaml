@@ -67,6 +67,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -75,20 +77,22 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ColThanhTien"/>
             </Grid.ColumnDefinitions>
 
-            <Separator Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
-
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Tổng tiền:" FontSize="14" HorizontalAlignment="Right"/>
             <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblTongTien" FontSize="14" TextAlignment="Right"/>
-
             <TextBlock Grid.Row="2" Grid.Column="0" Text="GIẢM GIÁ:" FontSize="14" HorizontalAlignment="Right"/>
             <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblGiamGia" FontSize="14" TextAlignment="Right"/>
 
-            <Separator Grid.Row="3" Grid.ColumnSpan="2" Margin="0,5"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" x:Name="lblTienKhachDuaTitle" Text="Tiền khách đưa:" FontSize="14" HorizontalAlignment="Right" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblTienKhachDua" FontSize="14" TextAlignment="Right" Visibility="Collapsed"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="THÀNH TIỀN:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="lblThanhTien" FontSize="16" FontWeight="Bold" TextAlignment="Right"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" x:Name="lblTienThoiLaiTitle" Text="Tiền thối lại:" FontSize="14" HorizontalAlignment="Right" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="lblTienThoiLai" FontSize="14" TextAlignment="Right" Foreground="Blue" Visibility="Collapsed"/>
+            <Separator Grid.Row="5" Grid.ColumnSpan="2" Margin="0,5"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="THÀNH TIỀN:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" x:Name="lblThanhTien" FontSize="16" FontWeight="Bold" TextAlignment="Right"/>
         </Grid>
-
+        
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
             <Button x:Name="btnPrint" Content="In Hóa đơn" Width="120" Height="40" Margin="5" Click="BtnPrint_Click"/>
             <Button x:Name="btnClose" Content="Đóng" Width="120" Height="40" Margin="5" Click="BtnClose_Click"/>

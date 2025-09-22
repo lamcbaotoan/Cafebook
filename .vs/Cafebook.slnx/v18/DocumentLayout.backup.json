@@ -1,28 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\bus\\thanhtoanbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\bus\\thanhtoanbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\nhanvien\\pages\\thanhtoanview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\nhanvien\\pages\\thanhtoanview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\nhanvien\\pages\\thanhtoanview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\nhanvien\\pages\\thanhtoanview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\common\\hoadonpreviewwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\common\\hoadonpreviewwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\common\\hoadonpreviewwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\common\\hoadonpreviewwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -30,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -43,69 +22,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HoaDonPreviewWindow.xaml.cs",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml.cs",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml.cs",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml.cs",
-              "RelativeToolTip": "Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAUwEIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T10:38:18.581Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HoaDonPreviewWindow.xaml",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml",
-              "RelativeToolTip": "Cafebook\\Views\\Common\\HoaDonPreviewWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-21T10:38:15.968Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ThanhToanBUS.cs",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\BUS\\ThanhToanBUS.cs",
-              "RelativeDocumentMoniker": "Cafebook\\BUS\\ThanhToanBUS.cs",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\BUS\\ThanhToanBUS.cs*",
-              "RelativeToolTip": "Cafebook\\BUS\\ThanhToanBUS.cs*",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAqwGwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T10:36:09.168Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ThanhToanView.xaml.cs",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml.cs",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml.cs",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml.cs",
-              "RelativeToolTip": "Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml.cs",
-              "ViewState": "AgIAANkAAAAAAAAAAAASwOYAAABJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-21T10:18:06.424Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ThanhToanView.xaml",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml",
-              "RelativeToolTip": "Cafebook\\Views\\nhanvien\\pages\\ThanhToanView.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-21T10:18:05.719Z",
-              "EditorCaption": ""
             }
           ]
         }

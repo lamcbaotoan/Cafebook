@@ -1,6 +1,8 @@
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\CafebookDB.mdf
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\CafebookDB_log.ldf
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\Cafebook.exe.config
+E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\Cafebook.exe.manifest
+E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\Cafebook.application
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\Cafebook.exe
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\Cafebook.pdb
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\bin\Debug\EPPlus.dll
@@ -74,6 +76,8 @@ E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.g.reso
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.Properties.Resources.resources
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.csproj.GenerateResource.cache
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.csproj.CoreCompileInputs.cache
+E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.exe.manifest
+E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.application
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.csproj.Up2Date
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.exe
 E:\Tai Lieu Hoc Tap\CS 464 A\doannop\Cafebook\Cafebook\obj\Debug\Cafebook.pdb

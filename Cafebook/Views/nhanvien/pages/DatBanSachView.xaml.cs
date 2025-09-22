@@ -296,6 +296,8 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
+        // Trong file: Views/nhanvien/pages/DatBanSachView.xaml.cs
+
         private void BtnXacNhanChoMuon_Click(object sender, RoutedEventArgs e)
         {
             int customerId = -1;
@@ -306,6 +308,29 @@ namespace Cafebook.Views.nhanvien.pages
                 {
                     MessageBox.Show("Vui lòng nhập đầy đủ tên và SĐT cho khách hàng mới."); return;
                 }
+
+                // =================================================================
+                // **LOGIC NÂNG CẤP BẮT ĐẦU TỪ ĐÂY**
+                // =================================================================
+
+                // 1. Kiểm tra xem SĐT của khách mới đã tồn tại chưa
+                KhachHang khachHangDaCo = khachHangBUS.GetKhachHangBySdt(txtSdtKhachMoi.Text);
+
+                if (khachHangDaCo != null)
+                {
+                    // 2. Nếu có, tự động chuyển đổi giao diện và chọn khách hàng đó
+                    MessageBox.Show($"Số điện thoại này đã thuộc về khách hàng '{khachHangDaCo.HoTen}'.\nHệ thống sẽ tự động chọn khách hàng này cho bạn.", "Khách hàng đã tồn tại", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Bỏ check "Khách hàng mới" để quay về giao diện khách hàng cũ
+                    chkKhachHangMoi.IsChecked = false;
+
+                    // Tự động chọn đúng khách hàng trong ComboBox
+                    cmbKhachHang_Thue.SelectedValue = khachHangDaCo.IdKhachHang;
+
+                    return; // Dừng lại để nhân viên xác nhận lại thông tin và bấm nút lần nữa
+                }
+
+                // 3. Nếu không có, tiếp tục tạo khách hàng mới như bình thường
                 var newCustomer = new KhachHang { HoTen = txtTenKhachMoi.Text, SoDienThoai = txtSdtKhachMoi.Text };
                 customerId = khachHangBUS.AddKhachHang(newCustomer);
                 if (customerId == -1) { MessageBox.Show("Thêm khách hàng mới thất bại."); return; }
@@ -317,7 +342,7 @@ namespace Cafebook.Views.nhanvien.pages
             }
 
             if (cmbSach_Thue.SelectedItem == null || dpNgayHenTra.SelectedDate == null) { MessageBox.Show("Vui lòng chọn Sách và Ngày hẹn trả."); return; }
-            if (dpNgayHenTra.SelectedDate.Value.Date < DateTime.Today) { MessageBox.Show("Ngày hẹn trả không thể là một ngày trong quá khứ."); return; }
+            if (dpNgayHenTra.SelectedDate.Value.Date <= DateTime.Today) { MessageBox.Show("Ngày hẹn trả phải là một ngày trong tương lai."); return; }
 
             var pts = new PhieuThueSach
             {
@@ -336,6 +361,7 @@ namespace Cafebook.Views.nhanvien.pages
                 previewWindow.Owner = Window.GetWindow(this);
                 previewWindow.ShowDialog();
 
+                // Tải lại toàn bộ dữ liệu và reset form
                 LoadDataThueSach();
                 chkKhachHangMoi.IsChecked = false;
                 txtTenKhachMoi.Clear();

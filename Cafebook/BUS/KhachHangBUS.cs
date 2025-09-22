@@ -148,5 +148,43 @@ namespace Cafebook.BUS
             }
             return ds;
         }
+        // Thêm hàm này vào file: BUS/KhachHangBUS.cs
+
+        public bool KiemTraSdtTonTai(string sdt)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT COUNT(*) FROM KhachHang WHERE soDienThoai = @sdt", conn);
+                cmd.Parameters.AddWithValue("@sdt", sdt);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        // Thêm hàm này vào file: BUS/KhachHangBUS.cs
+
+        public KhachHang GetKhachHangBySdt(string sdt)
+        {
+            KhachHang kh = null;
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM KhachHang WHERE soDienThoai = @sdt", conn);
+                cmd.Parameters.AddWithValue("@sdt", sdt);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        kh = new KhachHang
+                        {
+                            IdKhachHang = (int)reader["idKhachHang"],
+                            HoTen = (string)reader["hoTen"],
+                            SoDienThoai = (string)reader["soDienThoai"]
+                        };
+                    }
+                }
+            }
+            return kh;
+        }
     }
 }

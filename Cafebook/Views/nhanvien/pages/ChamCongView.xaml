@@ -20,6 +20,24 @@
         <Geometry x:Key="IconLogin">M10,17.25V14.25H12V17.25H10M10,10H12V12H10V10M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20Z</Geometry>
         <Geometry x:Key="IconLogout">M16,17V14H9V12H16V9L20,13L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z</Geometry>
 
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" Color="#000000" Opacity="0.08" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="ClockButton" TargetType="Button">
             <Setter Property="Width" Value="180"/>
             <Setter Property="Height" Value="60"/>
@@ -172,17 +190,25 @@
                     </StackPanel>
                 </Border>
 
-                <GroupBox Header="Lịch sử chấm công của bạn">
-                    <DataGrid x:Name="dgLichSuChamCong" IsReadOnly="True" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Ngày làm" Binding="{Binding NgayLam, StringFormat='dd/MM/yyyy'}" Width="*"/>
-                            <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="*"/>
-                            <DataGridTextColumn Header="Giờ vào" Binding="{Binding GioVao, StringFormat='HH:mm:ss'}" Width="*"/>
-                            <DataGridTextColumn Header="Giờ ra" Binding="{Binding GioRa, StringFormat='HH:mm:ss'}" Width="*"/>
-                            <DataGridTextColumn Header="Tổng giờ" Binding="{Binding SoGioLam, StringFormat=N2}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </GroupBox>
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Lịch sử chấm công của bạn" Style="{StaticResource HeaderTextBlock}"/>
+                        <DataGrid Grid.Row="1" x:Name="dgLichSuChamCong" IsReadOnly="True" AutoGenerateColumns="False"
+                  BorderThickness="0" RowHeaderWidth="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Ngày làm" Binding="{Binding NgayLam, StringFormat='dd/MM/yyyy'}" Width="*"/>
+                                <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="*"/>
+                                <DataGridTextColumn Header="Giờ vào" Binding="{Binding GioVao, StringFormat='HH:mm:ss'}" Width="*"/>
+                                <DataGridTextColumn Header="Giờ ra" Binding="{Binding GioRa, StringFormat='HH:mm:ss'}" Width="*"/>
+                                <DataGridTextColumn Header="Tổng giờ" Binding="{Binding SoGioLam, StringFormat=N2}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>

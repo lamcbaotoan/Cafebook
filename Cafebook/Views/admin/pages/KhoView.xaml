@@ -26,6 +26,25 @@
         <Geometry x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z</Geometry>
         <Geometry x:Key="IconUpload">M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z</Geometry>
 
+
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" Color="#000000" Opacity="0.08" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+               
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryBrownBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource WhiteTextBrush}"/>
@@ -121,30 +140,47 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <GroupBox Grid.Row="0" Header="Tất cả Nguyên liệu trong kho" Style="{StaticResource {x:Type GroupBox}}">
-                        <DataGrid x:Name="dgTonKho" AutoGenerateColumns="False" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
-                                <DataGridTextColumn Header="Tên Nguyên liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
-                                <DataGridTextColumn Header="Số lượng tồn" Binding="{Binding SoLuongTon}" Width="150"/>
-                                <DataGridTextColumn Header="Đơn vị tính" Binding="{Binding DonViTinh}" Width="150"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </GroupBox>
-                    <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="Transparent"/>
-                    <GroupBox Grid.Row="2" Header="Cảnh báo Tồn kho thấp (Tự động)" Foreground="{StaticResource ActionRedBrush}" Style="{StaticResource {x:Type GroupBox}}">
-                        <DataGrid x:Name="dgCanhBao" AutoGenerateColumns="False" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
-                                <DataGridTextColumn Header="Tên Nguyên liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
-                                <DataGridTextColumn Header="SL Tồn" Binding="{Binding SoLuongTon}" Width="100"/>
-                                <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinh}" Width="80"/>
-                                <DataGridTextColumn Header="Ngưỡng" Binding="{Binding NguongCanhBao}" Width="100"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </GroupBox>
+
+                    <Border Grid.Row="0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Tất cả Nguyên liệu trong kho" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgTonKho" AutoGenerateColumns="False" IsReadOnly="True" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
+                                    <DataGridTextColumn Header="Tên Nguyên liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
+                                    <DataGridTextColumn Header="Số lượng tồn" Binding="{Binding SoLuongTon}" Width="150"/>
+                                    <DataGridTextColumn Header="Đơn vị tính" Binding="{Binding DonViTinh}" Width="150"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="Transparent" ResizeBehavior="PreviousAndNext"/>
+
+                    <Border Grid.Row="2" Style="{StaticResource CardBorder}" Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Cảnh báo Tồn kho thấp (Tự động)" Style="{StaticResource HeaderTextBlock}" Foreground="{StaticResource ActionRedBrush}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgCanhBao" AutoGenerateColumns="False" IsReadOnly="True" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
+                                    <DataGridTextColumn Header="Tên Nguyên liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
+                                    <DataGridTextColumn Header="SL Tồn" Binding="{Binding SoLuongTon}" Width="100"/>
+                                    <DataGridTextColumn Header="ĐVT" Binding="{Binding DonViTinh}" Width="80"/>
+                                    <DataGridTextColumn Header="Ngưỡng" Binding="{Binding NguongCanhBao}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
@@ -154,14 +190,23 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="350"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="0" x:Name="dgNguyenLieu" Margin="0,0,15,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgNguyenLieu_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
-                            <DataGridTextColumn Header="Tên Nguyên Liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
-                            <DataGridTextColumn Header="ĐVT Cơ bản" Binding="{Binding DonViTinh}" Width="100"/>
-                            <DataGridTextColumn Header="Ngưỡng Cảnh báo" Binding="{Binding NguongCanhBao}" Width="120"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Danh sách Nguyên liệu" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgNguyenLieu" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgNguyenLieu_SelectionChanged" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdNguyenLieu}" Width="50"/>
+                                    <DataGridTextColumn Header="Tên Nguyên Liệu" Binding="{Binding TenNguyenLieu}" Width="*"/>
+                                    <DataGridTextColumn Header="ĐVT Cơ bản" Binding="{Binding DonViTinh}" Width="100"/>
+                                    <DataGridTextColumn Header="Ngưỡng Cảnh báo" Binding="{Binding NguongCanhBao}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
 
                     <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                         <StackPanel>
@@ -239,14 +284,23 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid Grid.Column="0" Margin="0,0,15,0" x:Name="dgPhieuNhap" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieuNhap_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding IdPhieuNhap}" Width="40"/>
-                            <DataGridTextColumn Header="Ngày nhập" Binding="{Binding NgayNhap, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                            <DataGridTextColumn Header="Nhà Cung Cấp" Binding="{Binding TenNhaCungCap}" Width="*"/>
-                            <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TongTien, StringFormat=N0}" Width="100"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Danh sách Phiếu nhập" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgPhieuNhap" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieuNhap_SelectionChanged" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdPhieuNhap}" Width="40"/>
+                                    <DataGridTextColumn Header="Ngày nhập" Binding="{Binding NgayNhap, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                    <DataGridTextColumn Header="Nhà Cung Cấp" Binding="{Binding TenNhaCungCap}" Width="*"/>
+                                    <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TongTien, StringFormat=N0}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
 
                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
@@ -370,14 +424,23 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="350"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="0" x:Name="dgNhaCungCap" Margin="0,0,15,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgNhaCungCap_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding IdNhaCungCap}" Width="50"/>
-                            <DataGridTextColumn Header="Tên Nhà Cung Cấp" Binding="{Binding TenNhaCungCap}" Width="*"/>
-                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="150"/>
-                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DiaChi}" Width="200"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Danh sách Nhà Cung Cấp" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgNhaCungCap" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgNhaCungCap_SelectionChanged" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdNhaCungCap}" Width="50"/>
+                                    <DataGridTextColumn Header="Tên Nhà Cung Cấp" Binding="{Binding TenNhaCungCap}" Width="*"/>
+                                    <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="150"/>
+                                    <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DiaChi}" Width="200"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
                     <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                         <StackPanel>
                             <TextBlock Text="Thông tin Nhà Cung cấp" FontSize="18" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}" Margin="0,0,0,15"/>

@@ -22,6 +22,25 @@
         <Geometry x:Key="IconAdd">M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z</Geometry>
         <Geometry x:Key="IconCheck">M9,20.42L2.79,14.21L4.21,12.79L9,17.58L19.79,6.79L21.21,8.21L9,20.42Z</Geometry>
         <Geometry x:Key="IconCancel">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</Geometry>
+
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" Color="#000000" Opacity="0.08" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -122,56 +141,68 @@
                         <ColumnDefinition Width="360"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,0,15,0">
-                        <Border Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="15">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Xem phiếu ngày:" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource DarkBrownBrush}"/>
-                                <DatePicker x:Name="dpChonNgayDatBan" Width="150" Margin="10,0,0,0" SelectedDateChanged="DpChonNgayDatBan_SelectedDateChanged" VerticalContentAlignment="Center"/>
-                                <Button x:Name="btnHomNay" Content="Hôm nay" Margin="5,0,0,0" Padding="8,4" Click="BtnHomNay_Click"/>
-                                <TextBlock Text="Tìm kiếm (Tên/SĐT):" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource DarkBrownBrush}" Margin="25,0,0,0"/>
-                                <TextBox x:Name="txtTimKiemDatBan" Width="200" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" TextChanged="TxtTimKiemDatBan_TextChanged"/>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Danh sách Phiếu Đặt Bàn" Style="{StaticResource HeaderTextBlock}"/>
+
+                            <Border Grid.Row="1" BorderBrush="{StaticResource BorderGrayBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,15" Margin="0,0,0,15">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Xem phiếu ngày:" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource DarkBrownBrush}"/>
+                                    <DatePicker x:Name="dpChonNgayDatBan" Width="150" Margin="10,0,0,0" SelectedDateChanged="DpChonNgayDatBan_SelectedDateChanged" VerticalContentAlignment="Center"/>
+                                    <Button x:Name="btnHomNay" Content="Hôm nay" Margin="5,0,0,0" Padding="8,4" Click="BtnHomNay_Click"/>
+                                    <TextBlock Text="Tìm kiếm (Tên/SĐT):" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource DarkBrownBrush}" Margin="25,0,0,0"/>
+                                    <TextBox x:Name="txtTimKiemDatBan" Width="200" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" TextChanged="TxtTimKiemDatBan_TextChanged"/>
+                                </StackPanel>
+                            </Border>
+
+                            <DataGrid Grid.Row="2" x:Name="dgPhieuDatBan" AutoGenerateColumns="False" IsReadOnly="True" 
+                          SelectionMode="Single" BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdPhieuDatBan}" Width="50"/>
+                                    <DataGridTextColumn Header="Tên Khách" Binding="{Binding TenKhachHangHienThi}" Width="*"/>
+                                    <DataGridTextColumn Header="SĐT" Binding="{Binding SdtHienThi}" Width="120"/>
+                                    <DataGridTextColumn Header="Bàn" Binding="{Binding SoBanHienThi}" Width="80"/>
+                                    <DataGridTextColumn Header="Thời gian" Binding="{Binding ThoiGianDat, StringFormat='HH:mm dd/MM'}" Width="120"/>
+                                    <DataGridTextColumn Header="SL Khách" Binding="{Binding SoLuongKhach}" Width="80"/>
+                                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                <Button x:Name="btnKhachDaDen" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionGreenBrush}" Click="BtnKhachDaDen_Click">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
+                                            <Path Data="{StaticResource IconCheck}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                        </Viewbox>
+                                        <TextBlock Text="Khách đã đến" VerticalAlignment="Center" Margin="19,0,3,0" Grid.ColumnSpan="2"/>
+                                    </Grid>
+                                </Button>
+                                <Button x:Name="btnHuyPhieuDat" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionRedBrush}" Margin="10,0,0,0" Click="BtnHuyPhieuDat_Click">
+                                    <Grid Height="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
+                                            <Path Data="{StaticResource IconCancel}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                        </Viewbox>
+                                        <TextBlock Text="Hủy Phiếu Đặt" VerticalAlignment="Center" Margin="19,0,3,0" Grid.ColumnSpan="2"/>
+                                    </Grid>
+                                </Button>
                             </StackPanel>
-                        </Border>
-
-                        <DataGrid Margin="0,15,0,0" x:Name="dgPhieuDatBan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding IdPhieuDatBan}" Width="50"/>
-                                <DataGridTextColumn Header="Tên Khách" Binding="{Binding TenKhachHangHienThi}" Width="*"/>
-                                <DataGridTextColumn Header="SĐT" Binding="{Binding SdtHienThi}" Width="120"/>
-                                <DataGridTextColumn Header="Bàn" Binding="{Binding SoBanHienThi}" Width="80"/>
-                                <DataGridTextColumn Header="Thời gian" Binding="{Binding ThoiGianDat, StringFormat='HH:mm dd/MM'}" Width="120"/>
-                                <DataGridTextColumn Header="SL Khách" Binding="{Binding SoLuongKhach}" Width="80"/>
-                                <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                            <Button x:Name="btnKhachDaDen" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionGreenBrush}" Click="BtnKhachDaDen_Click">
-                                <Grid Height="28">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
-                                        <Path Data="{StaticResource IconCheck}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
-                                    </Viewbox>
-                                    <TextBlock Text="Khách đã đến" VerticalAlignment="Center" Margin="19,0,3,0" Grid.ColumnSpan="2"/>
-                                </Grid>
-                            </Button>
-                            <Button x:Name="btnHuyPhieuDat" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionRedBrush}" Margin="10,0,0,0" Click="BtnHuyPhieuDat_Click" Height="36">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
-                                        <Path Data="{StaticResource IconCancel}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
-                                    </Viewbox>
-                                    <TextBlock Text="Hủy Phiếu Đặt" VerticalAlignment="Center" Margin="19,0,3,0" Grid.ColumnSpan="2"/>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
+                        </Grid>
+                    </Border>
 
                     <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -224,6 +255,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
+
                         <Border Grid.Row="0" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="15" Margin="0,0,0,15">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -234,31 +266,52 @@
                                 <Button Grid.Column="1" x:Name="btnXoaTimKiemPhieuTra" Margin="10,0,0,0" Style="{StaticResource IconButton}" Content="{StaticResource IconCancel}" Foreground="{StaticResource TextGrayBrush}" Click="BtnXoaTimKiemPhieuTra_Click"/>
                             </Grid>
                         </Border>
-                        <GroupBox Grid.Row="1" Header="Sách đang được thuê">
-                            <DataGrid x:Name="dgPhieuDangThue" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
-                                    <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
-                                    <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
-                                    <DataGridTextColumn Header="Ngày Thuê" Binding="{Binding NgayThue, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                                    <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
-                        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" Background="Transparent"/>
-                        <GroupBox Grid.Row="3" Header="Sách đã quá hạn">
-                            <DataGrid x:Name="dgPhieuQuaHan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
-                                    <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
-                                    <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
-                                    <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
-                    </Grid>
 
+                        <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Sách đang được thuê" Style="{StaticResource HeaderTextBlock}"/>
+                                <DataGrid Grid.Row="1" x:Name="dgPhieuDangThue" AutoGenerateColumns="False" IsReadOnly="True" 
+                      SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged"
+                      BorderThickness="0" RowHeaderWidth="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
+                                        <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
+                                        <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
+                                        <DataGridTextColumn Header="Ngày Thuê" Binding="{Binding NgayThue, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                        <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" Background="Transparent"/>
+
+                        <Border Grid.Row="3" Style="{StaticResource CardBorder}" Margin="0,5,0,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Sách đã quá hạn" Style="{StaticResource HeaderTextBlock}"/>
+                                <DataGrid Grid.Row="1" x:Name="dgPhieuQuaHan" AutoGenerateColumns="False" IsReadOnly="True" 
+                      SelectionMode="Single" SelectionChanged="DgPhieu_SelectionChanged"
+                      BorderThickness="0" RowHeaderWidth="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Mã Phiếu" Binding="{Binding IdPhieuThue}" Width="80"/>
+                                        <DataGridTextColumn Header="Tên Sách" Binding="{Binding TieuDeSach}" Width="*"/>
+                                        <DataGridTextColumn Header="Khách Hàng" Binding="{Binding TenKhachHang}" Width="150"/>
+                                        <DataGridTextColumn Header="Hẹn Trả" Binding="{Binding NgayHenTra, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    
                     <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>

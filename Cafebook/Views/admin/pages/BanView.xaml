@@ -23,6 +23,13 @@
         <Geometry x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z</Geometry>
         <Geometry x:Key="IconCheck">M9,20.42L2.79,14.21L4.21,12.79L9,17.58L19.79,6.79L21.21,8.21L9,20.42Z</Geometry>
 
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -115,19 +122,44 @@
             <ColumnDefinition Width="380"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" Margin="15" x:Name="dgBan" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgBan_SelectionChanged">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding IdBan}" Width="50"/>
-                <DataGridTextColumn Header="Số Bàn" Binding="{Binding SoBan}" Width="120"/>
-                <DataGridTextColumn Header="Số Ghế" Binding="{Binding SoGhe}" Width="80"/>
-                <DataGridTextColumn Header="Ghi chú" Binding="{Binding GhiChu}" Width="*"/>
-                <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Border Grid.Column="0" Margin="15,15,15,15" Background="White" CornerRadius="8">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
+            </Border.Effect>
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
+                <TextBlock Grid.Row="0" Text="Danh sách Bàn" Style="{StaticResource HeaderTextBlock}"/>
+
+                <DataGrid Grid.Row="1" x:Name="dgBan" AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectionMode="Single" SelectionChanged="DgBan_SelectionChanged"
+                  BorderThickness="0" RowHeaderWidth="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding IdBan}" Width="50"/>
+                        <DataGridTextColumn Header="Số Bàn" Binding="{Binding SoBan}" Width="120"/>
+                        <DataGridTextColumn Header="Số Ghế" Binding="{Binding SoGhe}" Width="80"/>
+                        <DataGridTextColumn Header="Ghi chú" Binding="{Binding GhiChu}" Width="*"/>
+                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- FIX START: Sử dụng Grid thay cho StackPanel để các thành phần con có thể tự co giãn -->
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="0,15,15,15">
-                <Border Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
+            <Grid Margin="0,15,15,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Hàng cho form, chiều cao tự động -->
+                    <RowDefinition Height="*"/>
+                    <!-- Hàng cho danh sách sự cố, chiếm hết không gian còn lại -->
+                </Grid.RowDefinitions>
+
+                <!-- Border 1: Thông tin Bàn -->
+                <Border Grid.Row="0" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
                     </Border.Effect>
@@ -162,7 +194,13 @@
                         </Grid>
 
                         <Grid Margin="0,10,0,0" Height="40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
                             <Button x:Name="btnLamMoiBan" 
+                                    Grid.Column="0"
                                     HorizontalAlignment="Left"
                                     ToolTip="Làm mới form để tạo bàn mới" 
                                     Click="BtnLamMoiBan_Click" 
@@ -172,7 +210,7 @@
                                 <Path Data="{StaticResource IconNew}" Fill="{StaticResource TextGrayBrush}" Width="22" Height="22"/>
                             </Button>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <Button x:Name="btnThemBan" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionGreenBrush}" Click="BtnThemBan_Click" Width="85">
                                     <StackPanel Orientation="Horizontal">
                                         <Viewbox Width="14" Height="14" Margin="0,0,8,0">
@@ -202,13 +240,22 @@
                     </StackPanel>
                 </Border>
 
-                <Border Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20" Margin="0,20,0,0">
+                <!-- Border 2: Sự cố Bàn cần xử lý. Xóa Height cố định để nó tự co giãn. -->
+                <Border Grid.Row="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20" Margin="0,15,0,0">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
                     </Border.Effect>
-                    <StackPanel>
-                        <TextBlock Text="Sự cố Bàn cần xử lý" FontSize="18" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}" Margin="0,0,0,10"/>
-                        <ListBox x:Name="lbThongBaoBan" MaxHeight="250" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <!-- Sử dụng Grid bên trong để ListBox chiếm hết không gian còn lại -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Sự cố Bàn cần xử lý" FontSize="18" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}" Margin="0,0,0,10"/>
+
+                        <!-- Xóa MaxHeight để ListBox lấp đầy không gian -->
+                        <ListBox Grid.Row="1" x:Name="lbThongBaoBan" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="{StaticResource BorderGrayBrush}" BorderThickness="0,0,0,1" Padding="5,10">
@@ -217,7 +264,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel>
+                                            <StackPanel Grid.Column="0">
                                                 <TextBlock Text="{Binding NoiDung}" TextWrapping="Wrap"/>
                                                 <TextBlock FontStyle="Italic" FontSize="11" Foreground="Gray">
                                                     <Run Text="{Binding TenNhanVien}"/> - <Run Text="{Binding ThoiGianTao, StringFormat='HH:mm dd/MM'}"/>
@@ -228,15 +275,15 @@
                                                     Style="{StaticResource IconButton}"
                                                     Content="{StaticResource IconCheck}"
                                                     Foreground="{StaticResource ActionGreenBrush}"/>
-
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                    </StackPanel>
+                    </Grid>
                 </Border>
-            </StackPanel>
+            </Grid>
         </ScrollViewer>
+        <!-- FIX END -->
     </Grid>
 </Page>

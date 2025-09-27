@@ -24,6 +24,24 @@
         <Geometry x:Key="IconSave">M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z</Geometry>
         <Geometry x:Key="IconDelete">M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z</Geometry>
 
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" Color="#000000" Opacity="0.08" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryBrownBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource WhiteTextBrush}"/>
@@ -125,14 +143,25 @@
                         <ColumnDefinition Width="380"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid Grid.Column="0" x:Name="dgKhachHang" Margin="0,0,15,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgKhachHang_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding IdKhachHang}" Width="50"/>
-                            <DataGridTextColumn Header="Họ Tên" Binding="{Binding HoTen}" Width="*"/>
-                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="150"/>
-                            <DataGridTextColumn Header="Ngày tạo" Binding="{Binding NgayTao, StringFormat='dd/MM/yyyy'}" Width="120"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Danh sách Khách hàng" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgKhachHang" AutoGenerateColumns="False" IsReadOnly="True" 
+                  SelectionMode="Single" SelectionChanged="DgKhachHang_SelectionChanged"
+                  BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding IdKhachHang}" Width="50"/>
+                                    <DataGridTextColumn Header="Họ Tên" Binding="{Binding HoTen}" Width="*"/>
+                                    <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="150"/>
+                                    <DataGridTextColumn Header="Ngày tạo" Binding="{Binding NgayTao, StringFormat='dd/MM/yyyy'}" Width="120"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
 
                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
@@ -220,16 +249,27 @@
                         <ColumnDefinition Width="380"/>
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid Grid.Column="0" x:Name="dgKhuyenMai" Margin="0,0,15,0" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgKhuyenMai_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Tên chương trình" Binding="{Binding TenKhuyenMai}" Width="*"/>
-                            <DataGridTextColumn Header="HĐ Tối thiểu" Binding="{Binding GiaTriDonHangToiThieu, StringFormat=N0}" Width="100"/>
-                            <DataGridTextColumn Header="SP Áp dụng" Binding="{Binding TenSanPhamApDung}" Width="120"/>
-                            <DataGridTextColumn Header="Bắt đầu" Binding="{Binding NgayBatDau, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                            <DataGridTextColumn Header="Kết thúc" Binding="{Binding NgayKetThuc, StringFormat='dd/MM/yyyy'}" Width="100"/>
-                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Border Grid.Column="0" Margin="0,0,15,0" Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Danh sách Khuyến mãi" Style="{StaticResource HeaderTextBlock}"/>
+                            <DataGrid Grid.Row="1" x:Name="dgKhuyenMai" AutoGenerateColumns="False" IsReadOnly="True" 
+                  SelectionMode="Single" SelectionChanged="DgKhuyenMai_SelectionChanged"
+                  BorderThickness="0" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Tên chương trình" Binding="{Binding TenKhuyenMai}" Width="*"/>
+                                    <DataGridTextColumn Header="HĐ Tối thiểu" Binding="{Binding GiaTriDonHangToiThieu, StringFormat=N0}" Width="100"/>
+                                    <DataGridTextColumn Header="SP Áp dụng" Binding="{Binding TenSanPhamApDung}" Width="120"/>
+                                    <DataGridTextColumn Header="Bắt đầu" Binding="{Binding NgayBatDau, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                    <DataGridTextColumn Header="Kết thúc" Binding="{Binding NgayKetThuc, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
 
                     <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Padding="20">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">

@@ -5,7 +5,7 @@ using Cafebook.Views.Common;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls.Primitives; // Thêm using này
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace Cafebook.Views.admin
@@ -13,22 +13,29 @@ namespace Cafebook.Views.admin
     public partial class ManHinhAdmin : Window
     {
         private ThongBaoBUS thongBaoBUS = new ThongBaoBUS();
-        private ToggleButton currentNavButton; // Biến để theo dõi nút đang được chọn
+        private ToggleButton currentNavButton;
+        private NhanVien currentUser; // THÊM MỚI: Biến để lưu thông tin admin
 
-        public ManHinhAdmin()
+        // SỬA LẠI: Hàm khởi tạo (constructor) để nhận thông tin người dùng
+        public ManHinhAdmin(NhanVien adminUser)
         {
             InitializeComponent();
+            this.currentUser = adminUser; // Lưu thông tin người dùng
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // THÊM MỚI: Hiển thị tên người dùng lên giao diện
+            if (currentUser != null)
+            {
+                txtAdminName.Text = currentUser.HoTen;
+            }
+
             LoadThongBao();
-            // Mặc định chọn nút Tổng quan khi cửa sổ được tải
             NavButton_Click(btnTongQuan, null);
         }
 
         #region Xử lý Thông báo
-        // ... (Phần code xử lý thông báo của bạn giữ nguyên) ...
         private void LoadThongBao()
         {
             List<ThongBao> dsThongBao = thongBaoBUS.GetThongBaoChuaDoc();
@@ -62,23 +69,18 @@ namespace Cafebook.Views.admin
         #endregion
 
         #region Navigation
-
-        // SỬA: Gộp tất cả các sự kiện click điều hướng vào một hàm
         private void NavButton_Click(object sender, RoutedEventArgs e)
         {
             var clickedButton = sender as ToggleButton;
             if (clickedButton == null) return;
 
-            // Bỏ chọn nút cũ
             if (currentNavButton != null && currentNavButton != clickedButton)
             {
                 currentNavButton.IsChecked = false;
             }
-            // Chọn nút mới
             currentNavButton = clickedButton;
             currentNavButton.IsChecked = true;
 
-            // Điều hướng đến trang tương ứng
             if (clickedButton == btnTongQuan)
                 MainFrame.Navigate(new DashboardView());
             else if (clickedButton == btnSanPham)
@@ -115,9 +117,9 @@ namespace Cafebook.Views.admin
         }
         #endregion
 
+        // Bạn có thể xóa hàm này đi vì không còn dùng nữa
         private void btnKhachHang_Checked(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

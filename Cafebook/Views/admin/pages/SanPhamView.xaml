@@ -153,18 +153,24 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,15,0">
-                        <StackPanel>
-                            <TextBlock Text="Danh sách Sản phẩm" Style="{StaticResource HeaderTextBlock}"/>
-                            <DataGrid x:Name="dgSanPham" AutoGenerateColumns="False" IsReadOnly="True"
-                                      SelectionChanged="DgSanPham_SelectionChanged" SelectionMode="Single"
-                                      RowHeaderWidth="0" BorderThickness="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Danh sách Sản phẩm" Style="{StaticResource HeaderTextBlock}"/>
+
+                            <DataGrid Grid.Row="1" x:Name="dgSanPham" AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectionChanged="DgSanPham_SelectionChanged" SelectionMode="Single"
+                  RowHeaderWidth="0" BorderThickness="0">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tên Sản phẩm" Binding="{Binding TenSanPham}" Width="*"/>
                                     <DataGridTextColumn Header="Đơn giá" Binding="{Binding DonGia, StringFormat=N0}" Width="100"/>
                                     <DataGridTextColumn Header="Loại" Binding="{Binding TenLoaiSP}" Width="120"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </StackPanel>
+                        </Grid>
                     </Border>
 
                     <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
@@ -278,17 +284,23 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,15,0">
-                        <StackPanel>
-                            <TextBlock Text="Danh sách Loại sản phẩm" Style="{StaticResource HeaderTextBlock}"/>
-                            <DataGrid Grid.Column="0" x:Name="dgLoaiSanPham" AutoGenerateColumns="False" IsReadOnly="True" 
-                                      SelectionMode="Single" SelectionChanged="DgLoaiSanPham_SelectionChanged"
-                                      RowHeaderWidth="0" BorderThickness="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Danh sách Loại sản phẩm" Style="{StaticResource HeaderTextBlock}"/>
+
+                            <DataGrid Grid.Row="1" x:Name="dgLoaiSanPham" AutoGenerateColumns="False" IsReadOnly="True" 
+                  SelectionMode="Single" SelectionChanged="DgLoaiSanPham_SelectionChanged"
+                  RowHeaderWidth="0" BorderThickness="0">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="ID" Binding="{Binding IdLoaiSP}" Width="50"/>
                                     <DataGridTextColumn Header="Tên Loại Sản phẩm" Binding="{Binding TenLoaiSP}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </StackPanel>
+                        </Grid>
                     </Border>
 
                     <Border Grid.Column="1" Style="{StaticResource CardBorder}">

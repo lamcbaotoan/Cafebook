@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Cafebook.exe" size="2481048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Cafebook.exe" size="2492824">
       <assemblyIdentity name="Cafebook" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>u8SX8IP9Z4+bvp18Sh3VXTCIMSPNd6DRDeXnrogEmqc=</dsig:DigestValue>
+        <dsig:DigestValue>hAwwNw1RKMX3fqheiFWEJmPeQVp9vflr2uHQdAl9nM8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -104,7 +104,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>CBqn7tzH9PpZri4WLT4ceTsubQ0XHdKa7AaA6HkQWYo=</dsig:DigestValue>
+      <dsig:DigestValue>6o+LdzUutMN1Q6fnRFses/T/1Fae7jnqCs52v6UlnjE=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CafebookDB_log.ldf" size="8388608" writeableType="applicationData">
@@ -113,7 +113,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>TaAELFRtDgMwwRM0WxdAiVS4aR54aLQ06K6HsYdx71o=</dsig:DigestValue>
+      <dsig:DigestValue>OO2+C1FpBabF6+ydw4P1yR4yuFTqGsgyd4u0YoN6Q1g=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

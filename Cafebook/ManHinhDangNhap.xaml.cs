@@ -4,7 +4,7 @@ using Cafebook.Views.admin;
 using Cafebook.Views.nhanvien;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls; // NEW: Added for TextChangedEventArgs
+using System.Windows.Controls;
 using System.Windows.Input;
 using Cafebook.Views.Common;
 
@@ -14,7 +14,7 @@ namespace Cafebook
     {
         private TaiKhoanBUS taiKhoanBUS;
         private bool isProcessing = false;
-        private bool _isPasswordSyncing = false; // NEW: Flag to prevent event loops
+        private bool _isPasswordSyncing = false;
 
         public ManHinhDangNhap()
         {
@@ -27,8 +27,43 @@ namespace Cafebook
             if (isProcessing) return;
 
             string username = txtUsername.Text?.Trim();
-            // This line remains correct as txtPassword is always kept in sync
             string password = txtPassword.Password;
+
+            // ======================================================================
+            // ## BẮT ĐẦU: LOGIC CHO TÀI KHOẢN TEST KHI DATABASE TRỐNG ##
+            // ======================================================================
+            if (username == "quanlytest" && password == "123456")
+            {
+                // **ĐÃ SỬA LỖI Ở ĐÂY**
+                // Tạo một đối tượng NhanVien giả lập cho vai trò Quản lý
+                // Giả định IdVaiTro = 1 là Quản lý
+                var adminUser = new NhanVien
+                {
+                    IdNhanVien = -1, // ID âm để phân biệt với user thật
+                    HoTen = "Quản Lý Test",
+                    IdVaiTro = 1
+                };
+                HandleSuccessfulLogin(adminUser);
+                return; // Dừng thực thi để không kiểm tra database
+            }
+
+            if (username == "nhanvientest" && password == "123456")
+            {
+                // **ĐÃ SỬA LỖI Ở ĐÂY**
+                // Tạo một đối tượng NhanVien giả lập cho vai trò Nhân viên
+                // Giả định IdVaiTro = 2 là Nhân viên
+                var staffUser = new NhanVien
+                {
+                    IdNhanVien = -2, // ID âm để phân biệt với user thật
+                    HoTen = "Nhân Viên Test",
+                    IdVaiTro = 2
+                };
+                HandleSuccessfulLogin(staffUser);
+                return; // Dừng thực thi để không kiểm tra database
+            }
+            // ======================================================================
+            // ## KẾT THÚC: LOGIC CHO TÀI KHOẢN TEST ##
+            // ======================================================================
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -46,21 +81,13 @@ namespace Cafebook
 
                 if (loggedInUser != null)
                 {
-                    this.Hide();
-                    var welcome = new Cafebook.Views.Common.WelcomeWindow(loggedInUser, this, durationMs: 1400);
-                    welcome.Owner = this;
-                    welcome.ShowDialog();
-
-                    if (this.IsVisible)
-                    {
-                        this.Close();
-                    }
+                    HandleSuccessfulLogin(loggedInUser);
                 }
                 else
                 {
                     MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thử lại.", "Lỗi đăng nhập", MessageBoxButton.OK, MessageBoxImage.Error);
                     txtPassword.Clear();
-                    txtVisiblePassword.Clear(); // NEW: Clear the visible password field as well
+                    txtVisiblePassword.Clear();
                     txtPassword.Focus();
                 }
             }
@@ -73,6 +100,19 @@ namespace Cafebook
                 isProcessing = false;
                 btnLogin.IsEnabled = true;
                 btnLogin.Content = "Đăng nhập";
+            }
+        }
+
+        private void HandleSuccessfulLogin(NhanVien loggedInUser)
+        {
+            this.Hide();
+            var welcome = new Cafebook.Views.Common.WelcomeWindow(loggedInUser, this, durationMs: 1400);
+            welcome.Owner = this;
+            welcome.ShowDialog();
+
+            if (this.IsVisible)
+            {
+                this.Close();
             }
         }
 
@@ -111,27 +151,20 @@ namespace Cafebook
             txtUsername.Focus();
         }
 
-        // ####################################################################
-        // ## NEW: Methods to handle Show/Hide Password functionality        ##
-        // ####################################################################
-
         private void ChkShowPassword_Checked(object sender, RoutedEventArgs e)
         {
-            // Show the TextBox, hide the PasswordBox
             txtVisiblePassword.Visibility = Visibility.Visible;
             txtPassword.Visibility = Visibility.Collapsed;
         }
 
         private void ChkShowPassword_Unchecked(object sender, RoutedEventArgs e)
         {
-            // Hide the TextBox, show the PasswordBox
             txtVisiblePassword.Visibility = Visibility.Collapsed;
             txtPassword.Visibility = Visibility.Visible;
         }
 
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            // Sync password from PasswordBox to TextBox to ensure they match
             if (!_isPasswordSyncing)
             {
                 _isPasswordSyncing = true;
@@ -142,7 +175,6 @@ namespace Cafebook
 
         private void TxtVisiblePassword_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Sync password from TextBox to PasswordBox to ensure they match
             if (!_isPasswordSyncing)
             {
                 _isPasswordSyncing = true;

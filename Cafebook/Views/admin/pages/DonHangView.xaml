@@ -20,10 +20,18 @@
         <SolidColorBrush x:Key="ActionBlueBrush" Color="#42A5F5"/>
 
         <Geometry x:Key="IconFilter">M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H14M15,9H9V4H15V9Z</Geometry>
-        <Geometry x:Key="IconFilterOff">M18.84,13H21.84C21.43,18.28 17.06,22.25 11.84,21.84C7.43,21.5 3.76,18.12 2.68,13.5L5.68,13.5C6.44,16.5 9.17,18.88 12.34,18.91C16.14,19 19.17,16 18.84,13M10.16,3H1.16C1.57,3.72 2.06,4.39 2.6,5L6.4,5C6.67,4.32 6.98,3.67 7.33,3H10.16M11.66,3.09L13.16,4.59L17.34,8.78L19,10.44L17.59,11.85L16.29,10.55L14.28,8.54L10.96,5.22C10.61,4.95 10.38,4.55 10.28,4.11C10.18,3.68 10.16,3.37 10.16,3.09M22.84,8.5C22.42,3.22 18.05,-0.75 12.84,-1.16C12.42,-1.2 12,-1.18 11.6,-1.13L13.1,0.37L16.2,3.47L19.49,6.76C19.84,7.03 20.07,7.43 20.17,7.87C20.27,8.3 20.29,8.61 20.29,8.89H22.84Z</Geometry>
+        <Geometry x:Key="IconFilterOff">M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z</Geometry>
         <Geometry x:Key="IconPrint">M19,8H5C3.34,8 2,9.34 2,11V17H6V21H18V17H22V11C22,9.34 20.66,8 19,8M16,19H8V14H16V19M19,12C18.45,12 18,11.55 18,11C18,10.45 18.45,10 19,10C19.55,10 20,10.45 20,11C20,11.55 19.55,12 19,12M18,3H6V7H18V3Z</Geometry>
         <Geometry x:Key="IconCancel">M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z</Geometry>
 
+
+        <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrownBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryBrownBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource WhiteTextBrush}"/>
@@ -125,16 +133,32 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <DataGrid Grid.Column="0" x:Name="dgDonHang" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DgDonHang_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Mã HĐ" Binding="{Binding IdHoaDon}" Width="60"/>
-                    <DataGridTextColumn Header="Thời gian tạo" Binding="{Binding ThoiGianTao, StringFormat='dd/MM HH:mm'}" Width="120"/>
-                    <DataGridTextColumn Header="Nhân viên" Binding="{Binding TenNhanVien}" Width="*"/>
-                    <DataGridTextColumn Header="Bàn" Binding="{Binding SoBan}" Width="80"/>
-                    <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat=N0}" Width="100"/>
-                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Border Grid.Column="0" Background="{StaticResource WhiteTextBrush}" CornerRadius="8">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
+                </Border.Effect>
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Danh sách Đơn hàng" Style="{StaticResource HeaderTextBlock}"/>
+
+                    <DataGrid Grid.Row="1" x:Name="dgDonHang" AutoGenerateColumns="False" IsReadOnly="True" 
+                    SelectionMode="Single" SelectionChanged="DgDonHang_SelectionChanged"
+                    BorderThickness="0" RowHeaderWidth="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã HĐ" Binding="{Binding IdHoaDon}" Width="60"/>
+                            <DataGridTextColumn Header="Thời gian tạo" Binding="{Binding ThoiGianTao, StringFormat='dd/MM HH:mm'}" Width="120"/>
+                            <DataGridTextColumn Header="Nhân viên" Binding="{Binding TenNhanVien}" Width="*"/>
+                            <DataGridTextColumn Header="Bàn" Binding="{Binding SoBan}" Width="80"/>
+                            <DataGridTextColumn Header="Thành tiền" Binding="{Binding ThanhTien, StringFormat=N0}" Width="100"/>
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
 
             <Border Grid.Column="1" Background="{StaticResource WhiteTextBrush}" CornerRadius="8" Margin="15,0,0,0" Padding="20">
                 <Border.Effect>

@@ -84,7 +84,7 @@ namespace Cafebook.Views.Common
                     Window nextWindow;
                     if (_user.IdVaiTro == 1) // Giả sử 1 là Admin
                     {
-                        nextWindow = new ManHinhAdmin();
+                        nextWindow = new ManHinhAdmin(_user);
                     }
                     else
                     {

@@ -1,0 +1,26 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+Debug/
+Release/
+x64/
+x86/
+
+# Packages
+packages/
+*.nupkg
+
+# SQL Server data files
+*.mdf
+*.ldf
+
+# Others
+*.log
+*.cache

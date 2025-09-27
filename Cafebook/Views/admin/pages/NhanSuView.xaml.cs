@@ -545,17 +545,27 @@ namespace Cafebook.Views.admin.pages
 
         private void BtnChotLuong_Click(object sender, RoutedEventArgs e)
         {
-            if (phieuLuongTamTinh != null)
+            if (phieuLuongTamTinh != null && cmbNhanVien_Luong.SelectedItem is NhanVien selectedNV)
             {
                 if (nhanSuBUS.ChotPhieuLuong(phieuLuongTamTinh))
                 {
                     MessageBox.Show("Chốt và tạo phiếu lương thành công!", "Thành công");
+
+                    // SỬA LỖI: Thêm đoạn code để hiển thị cửa sổ xem trước phiếu lương vừa chốt
+                    // =======================================================================
+                    // Lấy lại thông tin chi tiết của phiếu lương vừa được tạo để in
+                    var phieuLuongMoiNhat = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien).FirstOrDefault();
+                    if (phieuLuongMoiNhat != null)
+                    {
+                        var previewWindow = new PhieuLuongPreviewWindow(phieuLuongMoiNhat, selectedNV);
+                        previewWindow.Owner = Window.GetWindow(this);
+                        previewWindow.ShowDialog();
+                    }
+                    // =======================================================================
+
                     phieuLuongTamTinh = null;
                     btnChotLuong.IsEnabled = false;
-                    if (cmbNhanVien_Luong.SelectedItem is NhanVien selectedNV)
-                    {
-                        dgPhieuLuong.ItemsSource = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien);
-                    }
+                    dgPhieuLuong.ItemsSource = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien);
                 }
                 else
                 {

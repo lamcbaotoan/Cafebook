@@ -62,7 +62,7 @@ namespace Cafebook.Views.admin.pages
                 txtDonGia.Text = selectedSP.DonGia.ToString();
                 cmbTrangThai.Text = selectedSP.TrangThai;
                 txtMoTa.Text = selectedSP.MoTa;
-                cmbDonViTinhNVL.ItemsSource = null; // Thêm dòng này
+                cmbDonViTinhNVL.ItemsSource = null;
 
                 LoadCongThuc(selectedSP.IdSanPham);
 
@@ -72,7 +72,6 @@ namespace Cafebook.Views.admin.pages
             }
         }
 
-        // THÊM HÀM MỚI NÀY
         private void CmbNguyenLieu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbNguyenLieu.SelectedItem is NguyenLieu selectedNL)
@@ -180,7 +179,6 @@ namespace Cafebook.Views.admin.pages
             }
         }
 
-        // SỬA LẠI HÀM NÀY
         private void BtnLuuNVL_Click(object sender, RoutedEventArgs e)
         {
             if (dgSanPham.SelectedItem is SanPham selectedSP &&

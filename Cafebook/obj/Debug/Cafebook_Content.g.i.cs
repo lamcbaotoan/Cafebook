@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute(".gitignore")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("cafebookdb.mdf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("cafebookdb_log.ldf")]
 

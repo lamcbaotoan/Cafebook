@@ -28,27 +28,22 @@ namespace Cafebook.Views.nhanvien.pages
             this.banHienTai = ban;
             this.currentUser = user;
 
-            chiTietGoc = new ObservableCollection<ChiTietHoaDon>();
+            chiTietGoc = new ObservableCollection<ChiTietHoaDon>(thanhToanBUS.GetChiTietHoaDon(hoaDon.IdHoaDon));
             chiTietTach = new ObservableCollection<ChiTietHoaDon>();
+
             dgGoc.ItemsSource = chiTietGoc;
             dgTach.ItemsSource = chiTietTach;
         }
 
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             lblTieuDeThanhToan.Text = $"Thanh toán cho Bàn {banHienTai.SoBan} - Hóa đơn #{hoaDonGoc.IdHoaDon}";
-            var dsChiTiet = thanhToanBUS.GetChiTietHoaDon(hoaDonGoc.IdHoaDon);
-
-            chiTietGoc.Clear();
-            foreach (var item in dsChiTiet)
-            {
-                chiTietGoc.Add(item);
-            }
             BtnChuyenQuaTatCa_Click(null, null);
         }
 
         #region TinhToan
+
+        // SỬA LẠI PHƯƠNG THỨC NÀY
         private void CapNhatTienVaKhuyenMai()
         {
             decimal tongTienTach = chiTietTach.Sum(item => item.ThanhTien);
@@ -57,18 +52,27 @@ namespace Cafebook.Views.nhanvien.pages
             var dsKMPhuHop = goiMonBUS.GetKhuyenMaiCoTheApDung(tongTienTach, idSanPhamTrongHoaDonTach);
             dsKMPhuHop.Insert(0, new KhuyenMai { IdKhuyenMai = 0, TenKhuyenMai = "Không áp dụng" });
 
-            int? currentSelectedId = (cmbKhuyenMai.SelectedItem as KhuyenMai)?.IdKhuyenMai;
+            // Ưu tiên lấy ID khuyến mãi đang được chọn trên ComboBox.
+            // Nếu chưa có gì được chọn (lần đầu tải trang), thì lấy ID từ hoaDonGoc truyền qua.
+            int? idCanChon = (cmbKhuyenMai.SelectedItem as KhuyenMai)?.IdKhuyenMai;
+            if (idCanChon == null)
+            {
+                idCanChon = this.hoaDonGoc.IdKhuyenMai;
+            }
+
             cmbKhuyenMai.ItemsSource = dsKMPhuHop;
             cmbKhuyenMai.SelectedValuePath = "IdKhuyenMai";
 
-            if (currentSelectedId.HasValue && dsKMPhuHop.Any(km => km.IdKhuyenMai == currentSelectedId.Value))
+            // Cố gắng chọn lại khuyến mãi dựa trên ID đã xác định
+            if (idCanChon.HasValue && dsKMPhuHop.Any(km => km.IdKhuyenMai == idCanChon.Value))
             {
-                cmbKhuyenMai.SelectedValue = currentSelectedId.Value;
+                cmbKhuyenMai.SelectedValue = idCanChon.Value;
             }
             else
             {
-                cmbKhuyenMai.SelectedValue = hoaDonGoc.IdKhuyenMai ?? 0;
+                cmbKhuyenMai.SelectedIndex = 0;
             }
+
             TinhToanTienCuoiCung();
         }
 
@@ -94,19 +98,19 @@ namespace Cafebook.Views.nhanvien.pages
 
         private void TxtKhachDua_TextChanged(object sender, TextChangedEventArgs e)
         {
-            decimal.TryParse(txtKhachDua.Text, out decimal khachDua);
+            decimal.TryParse(txtKhachDua.Text.Replace(",", ""), out decimal khachDua);
             decimal.TryParse(lblThanhTien.Text.Replace(" đ", "").Replace(",", ""), out decimal tienCanTra);
             decimal tienThua = khachDua - tienCanTra;
 
-            if (tienThua < 0)
+            if (khachDua > 0 && tienCanTra > 0 && tienThua < 0)
             {
-                lblTienThua.Text = "Còn thiếu...";
+                lblTienThua.Text = "Còn thiếu " + (tienThua * -1).ToString("N0") + " đ";
                 lblTienThua.Foreground = Brushes.Red;
             }
             else
             {
                 lblTienThua.Text = tienThua.ToString("N0") + " đ";
-                lblTienThua.Foreground = Brushes.Blue;
+                lblTienThua.Foreground = (SolidColorBrush)FindResource("ActionBlueBrush");
             }
         }
         #endregion
@@ -164,16 +168,8 @@ namespace Cafebook.Views.nhanvien.pages
                 return;
             }
 
-            decimal.TryParse(lblTienGiam.Text.Replace("-", "").Replace("đ", "").Replace(",", "").Trim(), out decimal tienGiam);
-            decimal.TryParse(lblThanhTien.Text.Replace("đ", "").Replace(",", "").Trim(), out decimal thanhTien);
-
-            var hoaDonTamTinh = new HoaDon
-            {
-                ThoiGianTao = DateTime.Now,
-                TongTien = chiTietTach.Sum(i => i.ThanhTien),
-                SoTienGiam = tienGiam,
-                ThanhTien = thanhTien
-            };
+            var hoaDonTamTinh = new HoaDon();
+            CapNhatThongTinHoaDon(hoaDonTamTinh, false);
 
             var previewWindow = new HoaDonPreviewWindow(hoaDonTamTinh, chiTietTach.ToList(), this.currentUser, this.banHienTai.SoBan);
             previewWindow.Owner = Window.GetWindow(this);
@@ -201,16 +197,12 @@ namespace Cafebook.Views.nhanvien.pages
         private void ThanhToanToanBo()
         {
             if (MessageBox.Show("Xác nhận thanh toán cho toàn bộ hóa đơn này?", "Xác nhận", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-
-            CapNhatThongTinHoaDonGoc();
+            CapNhatThongTinHoaDon(this.hoaDonGoc, true);
 
             if (thanhToanBUS.ThucHienThanhToan(hoaDonGoc))
             {
                 MessageBox.Show("Thanh toán thành công!", "Thành công");
-                decimal.TryParse(txtKhachDua.Text, out decimal khachDua);
-                var previewWindow = new HoaDonPreviewWindow(hoaDonGoc, chiTietTach.ToList(), currentUser, banHienTai.SoBan, "HÓA ĐƠN THANH TOÁN", khachDua);
-                previewWindow.Owner = Window.GetWindow(this);
-                previewWindow.ShowDialog();
+                InHoaDonCuoiCung(hoaDonGoc);
                 NavigateToSoDoBan();
             }
             else
@@ -223,24 +215,13 @@ namespace Cafebook.Views.nhanvien.pages
         {
             if (MessageBox.Show("Xác nhận thanh toán cho các món đã tách và tạo hóa đơn mới cho các món còn lại?", "Xác nhận", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
-            CapNhatThongTinHoaDonGoc();
+            var hoaDonThanhToan = new HoaDon { IdBan = this.hoaDonGoc.IdBan, ThoiGianTao = this.hoaDonGoc.ThoiGianTao };
+            CapNhatThongTinHoaDon(hoaDonThanhToan, true);
 
-            if (thanhToanBUS.ThucHienTachHoaDon(hoaDonGoc, chiTietTach.ToList(), currentUser.IdNhanVien))
+            if (thanhToanBUS.ThucHienTachHoaDon(hoaDonGoc.IdHoaDon, hoaDonThanhToan, chiTietTach.ToList(), currentUser.IdNhanVien))
             {
                 MessageBox.Show("Tách và thanh toán hóa đơn thành công!", "Thành công");
-                decimal.TryParse(txtKhachDua.Text, out decimal khachDua);
-
-                // Tạo hóa đơn tạm để in, vì hoaDonGoc giờ đã bị thay đổi
-                var hoaDonDaTachDeIn = new HoaDon
-                {
-                    TongTien = hoaDonGoc.TongTien,
-                    SoTienGiam = hoaDonGoc.SoTienGiam,
-                    ThanhTien = hoaDonGoc.ThanhTien,
-                    ThoiGianTao = DateTime.Now
-                };
-                var previewWindow = new HoaDonPreviewWindow(hoaDonDaTachDeIn, chiTietTach.ToList(), currentUser, banHienTai.SoBan, "HÓA ĐƠN THANH TOÁN", khachDua);
-                previewWindow.Owner = Window.GetWindow(this);
-                previewWindow.ShowDialog();
+                InHoaDonCuoiCung(hoaDonThanhToan);
                 NavigateToSoDoBan();
             }
             else
@@ -249,6 +230,13 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
+        private void InHoaDonCuoiCung(HoaDon hoaDonDaThanhToan)
+        {
+            decimal.TryParse(txtKhachDua.Text.Replace(",", ""), out decimal khachDua);
+            var previewWindow = new HoaDonPreviewWindow(hoaDonDaThanhToan, chiTietTach.ToList(), currentUser, banHienTai.SoBan, "HÓA ĐƠN THANH TOÁN", khachDua);
+            previewWindow.Owner = Window.GetWindow(this);
+            previewWindow.ShowDialog();
+        }
 
         private void BtnQuayLai_Click(object sender, RoutedEventArgs e)
         {
@@ -272,20 +260,46 @@ namespace Cafebook.Views.nhanvien.pages
             if (this.IsLoaded) TinhToanTienCuoiCung();
         }
 
-        // Hàm mới giúp cập nhật thông tin cho đối tượng hoaDonGoc trước khi xử lý
-        private void CapNhatThongTinHoaDonGoc()
+        private void CapNhatThongTinHoaDon(HoaDon hoaDon, bool laThanhToan)
         {
-            // Lấy ID khuyến mãi từ ComboBox
-            hoaDonGoc.IdKhuyenMai = (cmbKhuyenMai.SelectedItem as KhuyenMai)?.IdKhuyenMai;
+            var selectedKM = cmbKhuyenMai.SelectedItem as KhuyenMai;
+            if (selectedKM != null && selectedKM.IdKhuyenMai != 0)
+            {
+                hoaDon.IdKhuyenMai = selectedKM.IdKhuyenMai;
+            }
+            else
+            {
+                hoaDon.IdKhuyenMai = null;
+            }
 
-            // Lấy các giá trị tiền đã được tính toán trên giao diện
-            hoaDonGoc.TongTien = chiTietTach.Sum(i => i.ThanhTien);
+            hoaDon.TongTien = chiTietTach.Sum(i => i.ThanhTien);
             decimal.TryParse(lblTienGiam.Text.Replace("-", "").Replace("đ", "").Replace(",", "").Trim(), out decimal tienGiam);
             decimal.TryParse(lblThanhTien.Text.Replace("đ", "").Replace(",", "").Trim(), out decimal thanhTien);
-            hoaDonGoc.SoTienGiam = tienGiam;
-            hoaDonGoc.ThanhTien = thanhTien;
+            hoaDon.SoTienGiam = tienGiam;
+            hoaDon.ThanhTien = thanhTien;
+
+            if (rbTienMat.IsChecked == true) hoaDon.PhuongThucThanhToan = "Tiền mặt";
+            else if (rbChuyenKhoan.IsChecked == true) hoaDon.PhuongThucThanhToan = "Chuyển khoản";
+            else if (rbThe.IsChecked == true) hoaDon.PhuongThucThanhToan = "Thẻ";
+
+            if (laThanhToan)
+            {
+                hoaDon.TrangThai = "Đã thanh toán";
+                hoaDon.ThoiGianThanhToan = DateTime.Now;
+            }
+            else
+            {
+                hoaDon.ThoiGianTao = DateTime.Now;
+            }
         }
 
+        private void PaymentMethod_Changed(object sender, RoutedEventArgs e)
+        {
+            if (panelTienMat != null)
+            {
+                panelTienMat.Visibility = rbTienMat.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
 
         #endregion
     }

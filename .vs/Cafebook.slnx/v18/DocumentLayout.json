@@ -3,7 +3,8 @@
   "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.KhachHang.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,28 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{007a3a6b-b5b2-454d-a2bd-cf929f989be2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "dbo.KhachHang [Data]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.KhachHang.sql",
-              "ToolTip": "dbo.KhachHang [Data]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-09-22T01:45:09.771Z",
+              "Title": ".gitignore",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\.gitignore",
+              "RelativeDocumentMoniker": "Cafebook\\.gitignore",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\.gitignore",
+              "RelativeToolTip": "Cafebook\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-09-27T06:42:54.191Z",
               "EditorCaption": ""
             }
           ]

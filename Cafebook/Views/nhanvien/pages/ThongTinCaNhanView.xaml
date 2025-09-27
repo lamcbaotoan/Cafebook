@@ -5,17 +5,95 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cafebook.Views.admin.pages"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="1050"
+      d:DesignHeight="700" d:DesignWidth="1100"
       Title="ThongTinCaNhanView" FontFamily="Segoe UI" Loaded="Page_Loaded">
-    <Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <!-- Cột thông tin cá nhân -->
-            <Border Width="500" Background="WhiteSmoke" Padding="30" CornerRadius="5" Margin="0,0,20,0">
+    <Page.Resources>
+        <SolidColorBrush x:Key="PrimaryBrownBrush" Color="#6F4E37"/>
+        <SolidColorBrush x:Key="DarkBrownBrush" Color="#4E342E"/>
+        <SolidColorBrush x:Key="AccentOrangeBrush" Color="#D27D2D"/>
+        <SolidColorBrush x:Key="LightCreamBrush" Color="#FFF8E1"/>
+        <SolidColorBrush x:Key="WhiteTextBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextGrayBrush" Color="#757575"/>
+        <SolidColorBrush x:Key="BorderGrayBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="ActionGreenBrush" Color="#66BB6A"/>
+
+        <Geometry x:Key="IconSave">M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z</Geometry>
+        <Geometry x:Key="IconSend">M2,21L23,12L2,3V10L17,12L2,14V21Z</Geometry>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrownBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="4" Background="{TemplateBinding Background}">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2" Color="{Binding Color, Source={StaticResource PrimaryBrownBrush}}" Opacity="0.3" BlurRadius="10"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource DarkBrownBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MaterialInput" TargetType="Control">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGrayBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrownBrush}"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialInput}"/>
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource MaterialInput}"/>
+
+    </Page.Resources>
+
+    <Grid Background="{StaticResource LightCreamBrush}">
+        <StackPanel x:Name="MainPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.RenderTransform>
+                <TranslateTransform Y="20"/>
+            </StackPanel.RenderTransform>
+            <StackPanel.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="0" Duration="0:0:0.5">
+                                <DoubleAnimation.EasingFunction>
+                                    <BackEase EasingMode="EaseOut" Amplitude="0.2"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </StackPanel.Triggers>
+
+            <Border Width="500" Background="{StaticResource WhiteTextBrush}" Padding="30" CornerRadius="8" Margin="0,0,20,0">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
+                </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="Thông tin Cá nhân" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="Thông tin Cá nhân" FontSize="22" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}" HorizontalAlignment="Left" Margin="0,0,0,20"/>
 
-                    <GroupBox Header="Thông tin cơ bản" Margin="0,0,0,10">
+                    <Border BorderBrush="{StaticResource BorderGrayBrush}" BorderThickness="1" CornerRadius="4" Padding="15" Margin="0,0,0,20">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -27,55 +105,85 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Content="Họ tên:" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblHoTen" VerticalAlignment="Center"/>
-                            <Label Grid.Row="1" Grid.Column="0" Content="Vai trò:" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblVaiTro" VerticalAlignment="Center"/>
-                            <Label Grid.Row="2" Grid.Column="0" Content="Ngày vào làm:" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblNgayVaoLam" VerticalAlignment="Center"/>
-                            <Label Grid.Row="3" Grid.Column="0" Content="Mức lương:" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblLuong" VerticalAlignment="Center"/>
-                        </Grid>
-                    </GroupBox>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Họ tên:" FontWeight="SemiBold" Margin="0,5,20,5" Foreground="{StaticResource DarkBrownBrush}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblHoTen" VerticalAlignment="Center" Margin="0,5"/>
 
-                    <GroupBox Header="Thông tin có thể cập nhật">
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Vai trò:" FontWeight="SemiBold" Margin="0,5,20,5" Foreground="{StaticResource DarkBrownBrush}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblVaiTro" VerticalAlignment="Center" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Ngày vào làm:" FontWeight="SemiBold" Margin="0,5,20,5" Foreground="{StaticResource DarkBrownBrush}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblNgayVaoLam" VerticalAlignment="Center" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Mức lương:" FontWeight="SemiBold" Margin="0,5,20,5" Foreground="{StaticResource DarkBrownBrush}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="lblLuong" VerticalAlignment="Center" Margin="0,5"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="Cập nhật thông tin" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource DarkBrownBrush}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Số điện thoại:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtSdt" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtEmail" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Địa chỉ:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtDiaChi" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Mật khẩu mới:" VerticalAlignment="Center"/>
+                        <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="txtMatKhauMoi" Margin="0,5"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Xác nhận MK:" VerticalAlignment="Center"/>
+                        <PasswordBox Grid.Row="4" Grid.Column="1" x:Name="txtXacNhanMatKhau" Margin="0,5"/>
+                    </Grid>
+
+                    <Button x:Name="btnCapNhat" Margin="0,25,0,0" Style="{StaticResource PrimaryButton}" Click="BtnCapNhat_Click" Height="35">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Content="Số điện thoại:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtSdt" Margin="0,5"/>
-                            <Label Grid.Row="1" Grid.Column="0" Content="Email:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtEmail" Margin="0,5"/>
-                            <Label Grid.Row="2" Grid.Column="0" Content="Địa chỉ:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtDiaChi" Margin="0,5"/>
-                            <Label Grid.Row="3" Grid.Column="0" Content="Mật khẩu mới:" VerticalAlignment="Center"/>
-                            <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="txtMatKhauMoi" Margin="0,5"/>
-                            <Label Grid.Row="4" Grid.Column="0" Content="Xác nhận MK:" VerticalAlignment="Center"/>
-                            <PasswordBox Grid.Row="4" Grid.Column="1" x:Name="txtXacNhanMatKhau" Margin="0,5"/>
+                            <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
+                                <Path Data="{StaticResource IconSave}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Viewbox>
+                            <TextBlock Grid.Column="1" Text="Cập nhật Thông tin" VerticalAlignment="Center" Margin="0,1,0,0"/>
                         </Grid>
-                    </GroupBox>
-
-                    <Button x:Name="btnCapNhat" Content="Cập nhật Thông tin" Margin="0,20,0,0" Padding="10" Background="#2980B9" Foreground="White" Click="BtnCapNhat_Click"/>
+                    </Button>
                 </StackPanel>
             </Border>
 
-            <!-- Cột gửi thông báo -->
-            <Border Width="400" Background="WhiteSmoke" Padding="30" CornerRadius="5">
+            <Border Width="400" Background="{StaticResource WhiteTextBrush}" Padding="30" CornerRadius="8">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
+                </Border.Effect>
                 <StackPanel>
-                    <TextBlock Text="Gửi Báo Cáo / Góp Ý" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                    <TextBlock Text="Gửi thông báo đến quản lý về các vấn đề như: thiếu nguyên liệu, thiết bị hỏng, góp ý vận hành,..." TextWrapping="Wrap" FontStyle="Italic" Foreground="Gray" Margin="0,0,0,15"/>
-                    <Label Content="Nội dung báo cáo:"/>
-                    <TextBox x:Name="txtNoiDungThongBao" Height="200" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
-                    <Button x:Name="btnGuiThongBao" Content="Gửi Thông Báo" Margin="0,20,0,0" Padding="10" Background="#27AE60" Foreground="White" Click="BtnGuiThongBao_Click"/>
+                    <TextBlock Text="Gửi Báo Cáo / Góp Ý" FontSize="20" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}" Margin="0,0,0,10"/>
+                    <TextBlock Text="Gửi thông báo đến quản lý về các vấn đề như: thiếu nguyên liệu, thiết bị hỏng, góp ý vận hành,..." TextWrapping="Wrap" FontStyle="Italic" Foreground="Gray" Margin="0,0,0,20"/>
+                    <TextBlock Text="Nội dung báo cáo:" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtNoiDungThongBao" Height="250" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Padding="8"/>
+                    <Button x:Name="btnGuiThongBao" Margin="0,25,0,0" Style="{StaticResource PrimaryButton}" Background="{StaticResource ActionGreenBrush}" Click="BtnGuiThongBao_Click" Height="38">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Grid.Column="0" Width="14" Height="14" Margin="0,0,8,0">
+                                <Path Data="{StaticResource IconSend}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Viewbox>
+                            <TextBlock Grid.Column="1" Text="Gửi Thông Báo" VerticalAlignment="Center" Margin="0,1,0,0"/>
+                        </Grid>
+                    </Button>
                 </StackPanel>
             </Border>
 

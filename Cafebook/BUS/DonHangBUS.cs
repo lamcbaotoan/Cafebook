@@ -94,5 +94,55 @@ namespace Cafebook.BUS
                 }
             }
         }
+        // THÊM PHƯƠNG THỨC MỚI NÀY VÀO LỚP DonHangBUS
+        public HoaDon GetHoaDonDayDuById(int idHoaDon)
+        {
+            HoaDon hoaDon = null;
+            // Dòng này của bạn bị lặp lại, chỉ cần một dòng là đủ
+            // string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                // SỬA LẠI: Liệt kê rõ ràng các cột để tránh lỗi và dễ quản lý
+                var cmd = new SqlCommand(@"
+                    SELECT 
+                        hd.idHoaDon, hd.idKhachHang, hd.idNhanVien, hd.idBan, hd.idKhuyenMai,
+                        hd.thoiGianTao, hd.thoiGianThanhToan, 
+                        hd.tongTien, hd.soTienGiam, hd.thanhTien, 
+                        hd.trangThai, hd.phuongThucThanhToan,
+                        b.soBan, 
+                        nv.hoTen AS TenNhanVien
+                    FROM HoaDon hd
+                    JOIN Ban b ON hd.idBan = b.idBan
+                    JOIN NhanVien nv ON hd.idNhanVien = nv.idNhanVien
+                    WHERE hd.idHoaDon = @idHD", conn);
+                cmd.Parameters.AddWithValue("@idHD", idHoaDon);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        hoaDon = new HoaDon
+                        {
+                            IdHoaDon = (int)reader["idHoaDon"],
+                            IdKhachHang = reader.IsDBNull(reader.GetOrdinal("idKhachHang")) ? (int?)null : (int)reader["idKhachHang"],
+                            IdNhanVien = (int)reader["idNhanVien"],
+                            IdBan = (int)reader["idBan"],
+                            IdKhuyenMai = reader.IsDBNull(reader.GetOrdinal("idKhuyenMai")) ? (int?)null : (int)reader["idKhuyenMai"],
+                            ThoiGianTao = (DateTime)reader["thoiGianTao"],
+                            ThoiGianThanhToan = reader.IsDBNull(reader.GetOrdinal("thoiGianThanhToan")) ? (DateTime?)null : (DateTime)reader["thoiGianThanhToan"],
+                            TongTien = (decimal)reader["tongTien"],
+                            SoTienGiam = (decimal)reader["soTienGiam"],
+                            ThanhTien = (decimal)reader["thanhTien"],
+                            TrangThai = (string)reader["trangThai"],
+                            PhuongThucThanhToan = reader.IsDBNull(reader.GetOrdinal("phuongThucThanhToan")) ? "" : (string)reader["phuongThucThanhToan"],
+                            SoBan = (string)reader["soBan"],
+                            TenNhanVien = (string)reader["TenNhanVien"]
+                        };
+                    }
+                }
+            }
+            return hoaDon;
+        }
     }
 }

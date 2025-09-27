@@ -4,70 +4,186 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="1050"
+      d:DesignHeight="700" d:DesignWidth="1100"
       Title="ChamCongView" FontFamily="Segoe UI" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="WhiteSmoke" Padding="20" Margin="10" CornerRadius="5">
-            <StackPanel HorizontalAlignment="Center">
-                <TextBlock x:Name="lblThoiGian" Text="dd/MM/yyyy - HH:mm:ss" FontSize="32" FontWeight="Bold"/>
-                <TextBlock x:Name="lblCaLamViec" Text="Đang tải lịch làm việc..." HorizontalAlignment="Center" FontSize="16" Margin="0,5,0,15"/>
+    <Page.Resources>
+        <SolidColorBrush x:Key="PrimaryBrownBrush" Color="#6F4E37"/>
+        <SolidColorBrush x:Key="DarkBrownBrush" Color="#4E342E"/>
+        <SolidColorBrush x:Key="LightCreamBrush" Color="#FFF8E1"/>
+        <SolidColorBrush x:Key="WhiteTextBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextGrayBrush" Color="#757575"/>
+        <SolidColorBrush x:Key="BorderGrayBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="ActionGreenBrush" Color="#66BB6A"/>
+        <SolidColorBrush x:Key="ActionRedBrush" Color="#EF5350"/>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="btnVaoCa" Content="VÀO CA" Width="150" Height="60" FontSize="20" FontWeight="Bold"
-                            Background="#27AE60" Foreground="White" Margin="10" Click="BtnVaoCa_Click"/>
-                    <Button x:Name="btnRaCa" Content="RA CA" Width="150" Height="60" FontSize="20" FontWeight="Bold"
-                            Background="#E74C3C" Foreground="White" Margin="10" Click="BtnRaCa_Click"/>
-                </StackPanel>
+        <Geometry x:Key="IconLogin">M10,17.25V14.25H12V17.25H10M10,10H12V12H10V10M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20Z</Geometry>
+        <Geometry x:Key="IconLogout">M16,17V14H9V12H16V9L20,13L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z</Geometry>
 
-                <TextBlock x:Name="lblTrangThaiChamCong" Text="Trạng thái: ..." HorizontalAlignment="Center"
-                           FontSize="14" Margin="0,15,0,0" FontStyle="Italic"/>
+        <Style x:Key="ClockButton" TargetType="Button">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteTextBrush}"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="8" Background="{TemplateBinding Background}">
+                            <Border.Effect>
+                                <DropShadowEffect x:Name="shadow" ShadowDepth="3" Opacity="0.3" BlurRadius="12"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.03" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.03" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-                <Border Background="White" BorderBrush="Gainsboro" BorderThickness="1" CornerRadius="3" Padding="15" Margin="0,10,0,0" MinWidth="400">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+        <Style TargetType="ProgressBar">
+            <Setter Property="Background" Value="{StaticResource BorderGrayBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource ActionGreenBrush}"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border x:Name="PART_Track" CornerRadius="4" Background="{TemplateBinding Background}"/>
+                            <Border x:Name="PART_Indicator" CornerRadius="4" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Giờ vào thực tế:" Margin="5" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblGioVaoThucTe" Text="--" Margin="5" TextAlignment="Right"/>
+    <Grid Background="{StaticResource LightCreamBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="MainPanel"  Margin="20">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="20"/>
+                </StackPanel.RenderTransform>
+                <StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="0" Duration="0:0:0.5">
+                                    <DoubleAnimation.EasingFunction>
+                                        <BackEase EasingMode="EaseOut" Amplitude="0.2"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </StackPanel.Triggers>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Thời gian đã làm:" Margin="5" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblThoiGianDaLam" Text="--" Margin="5" TextAlignment="Right"/>
+                <Border Background="{StaticResource WhiteTextBrush}" Padding="30" Margin="0,0,0,20" CornerRadius="8">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" Color="#000" Opacity="0.08" BlurRadius="20"/>
+                    </Border.Effect>
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock x:Name="lblThoiGian" Text="dd/MM/yyyy - HH:mm:ss" FontSize="42" FontWeight="Bold" Foreground="{StaticResource DarkBrownBrush}"/>
+                        <TextBlock x:Name="lblCaLamViec" Text="Đang tải lịch làm việc..." HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,20" Foreground="{StaticResource TextGrayBrush}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Thời gian còn lại:" Margin="5" FontWeight="SemiBold"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblThoiGianConLai" Text="--" Margin="5" TextAlignment="Right"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button x:Name="btnVaoCa" Style="{StaticResource ClockButton}" Background="{StaticResource ActionGreenBrush}" Click="BtnVaoCa_Click">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Viewbox Grid.Column="0" Width="20" Height="20" Margin="0,0,10,0">
+                                        <Path Data="{StaticResource IconLogin}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                    </Viewbox>
+                                    <TextBlock Grid.Column="1" Text="VÀO CA" VerticalAlignment="Center" Margin="0,1,0,0"/>
+                                </Grid>
+                            </Button>
 
-                        <TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="lblCanhBao" Text="" FontSize="12" Margin="5" HorizontalAlignment="Center" Foreground="Red" FontWeight="Bold"/>
-                    </Grid>
+                            <Button x:Name="btnRaCa" Style="{StaticResource ClockButton}" Background="{StaticResource ActionRedBrush}" Click="BtnRaCa_Click">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Viewbox Grid.Column="0" Width="20" Height="20" Margin="0,0,10,0">
+                                        <Path Data="{StaticResource IconLogout}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                    </Viewbox>
+                                    <TextBlock Grid.Column="1" Text="RA CA" VerticalAlignment="Center" Margin="0,1,0,0"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+
+                        <TextBlock x:Name="lblTrangThaiChamCong" Text="Trạng thái: ..." HorizontalAlignment="Center" FontSize="14" Margin="0,15,0,20" FontStyle="Italic"/>
+
+                        <Border BorderBrush="{StaticResource BorderGrayBrush}" BorderThickness="1" CornerRadius="4" Padding="15" MinWidth="450">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Giờ vào thực tế:" Margin="5" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="lblGioVaoThucTe" Text="--" Margin="5" TextAlignment="Right"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Thời gian đã làm:" Margin="5" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="lblThoiGianDaLam" Text="--" Margin="5" TextAlignment="Right"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Thời gian còn lại:" Margin="5" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="lblThoiGianConLai" Text="--" Margin="5" TextAlignment="Right"/>
+                                <TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="lblCanhBao" Text="" FontSize="12" Margin="5" HorizontalAlignment="Center" Foreground="{StaticResource ActionRedBrush}" FontWeight="Bold"/>
+                            </Grid>
+                        </Border>
+                        <ProgressBar x:Name="pbThoiGianLamViec" Margin="0,15,0,0" Minimum="0" Maximum="100" Value="0" ToolTip="Tiến độ ca làm việc hiện tại"/>
+                    </StackPanel>
                 </Border>
-                <ProgressBar x:Name="pbThoiGianLamViec" Height="10" Margin="0,15,0,0"
-                     Minimum="0" Maximum="100" Value="0"
-                     Width="400" ToolTip="Tiến độ ca làm việc hiện tại"/>
-            </StackPanel>
-        </Border>
 
-        <GroupBox Grid.Row="1" Header="Lịch sử chấm công của bạn" Margin="10">
-            <DataGrid x:Name="dgLichSuChamCong" IsReadOnly="True" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Ngày làm" Binding="{Binding NgayLam, StringFormat='dd/MM/yyyy'}" Width="*"/>
-                    <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="*"/>
-                    <DataGridTextColumn Header="Giờ vào" Binding="{Binding GioVao, StringFormat='HH:mm:ss'}" Width="*"/>
-                    <DataGridTextColumn Header="Giờ ra" Binding="{Binding GioRa, StringFormat='HH:mm:ss'}" Width="*"/>
-                    <DataGridTextColumn Header="Tổng giờ" Binding="{Binding SoGioLam, StringFormat=N2}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </GroupBox>
+                <GroupBox Header="Lịch sử chấm công của bạn">
+                    <DataGrid x:Name="dgLichSuChamCong" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ngày làm" Binding="{Binding NgayLam, StringFormat='dd/MM/yyyy'}" Width="*"/>
+                            <DataGridTextColumn Header="Ca làm" Binding="{Binding TenCa}" Width="*"/>
+                            <DataGridTextColumn Header="Giờ vào" Binding="{Binding GioVao, StringFormat='HH:mm:ss'}" Width="*"/>
+                            <DataGridTextColumn Header="Giờ ra" Binding="{Binding GioRa, StringFormat='HH:mm:ss'}" Width="*"/>
+                            <DataGridTextColumn Header="Tổng giờ" Binding="{Binding SoGioLam, StringFormat=N2}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

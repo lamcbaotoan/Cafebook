@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Cafebook.Views.nhanvien.pages
 {
@@ -31,8 +32,6 @@ namespace Cafebook.Views.nhanvien.pages
         {
             LoadInitialData();
             hoaDonHienTai = goiMonBUS.GetHoaDonChuaThanhToan(banHienTai.IdBan);
-
-            // XÓA DỮ LIỆU CŨ TRƯỚC KHI TẢI
             chiTietHoaDonOC.Clear();
 
             if (hoaDonHienTai == null)
@@ -47,23 +46,54 @@ namespace Cafebook.Views.nhanvien.pages
                     chiTietHoaDonOC.Add(item);
                 }
             }
-
             lblTieuDeHoaDon.Text = "Hóa đơn - " + banHienTai.SoBan;
             CapNhatTongTienVaKhuyenMai();
         }
 
         private void LoadInitialData()
         {
-            lbLoaiSP.ItemsSource = sanPhamBUS.GetDanhSachLoaiSP();
-            if (lbLoaiSP.Items.Count > 0) lbLoaiSP.SelectedIndex = 0;
+            var loaiSpList = sanPhamBUS.GetDanhSachLoaiSP();
+            lbLoaiSP.ItemsSource = loaiSpList;
+
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                if (lbLoaiSP.Items.Count > 0)
+                {
+                    var firstItemContainer = lbLoaiSP.ItemContainerGenerator.ContainerFromIndex(0) as FrameworkElement;
+                    if (firstItemContainer != null)
+                    {
+                        var radioButton = FindVisualChild<RadioButton>(firstItemContainer);
+                        if (radioButton != null)
+                        {
+                            radioButton.IsChecked = true;
+                        }
+                    }
+                }
+            });
         }
 
-        private void LbLoaiSP_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Category_Checked(object sender, RoutedEventArgs e)
         {
-            if (lbLoaiSP.SelectedItem is LoaiSanPham selected)
+            if (sender is RadioButton selectedRadioButton && selectedRadioButton.DataContext is LoaiSanPham selected)
             {
                 icSanPham.ItemsSource = goiMonBUS.GetSanPhamTheoLoai(selected.IdLoaiSP);
             }
+        }
+
+        private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T t)
+                {
+                    return t;
+                }
+                var result = FindVisualChild<T>(child);
+                if (result != null) return result;
+            }
+            return null;
         }
 
         private void ProductButton_Click(object sender, RoutedEventArgs e)
@@ -72,8 +102,6 @@ namespace Cafebook.Views.nhanvien.pages
             if (selectedProduct == null) return;
 
             var existingItem = chiTietHoaDonOC.FirstOrDefault(item => item.IdSanPham == selectedProduct.IdSanPham);
-
-            // Kiểm tra kho trước khi thêm
             int soLuongHienTaiTrongBill = existingItem?.SoLuong ?? 0;
             if (soLuongHienTaiTrongBill >= selectedProduct.SoLuongCoThePhucVu)
             {
@@ -146,7 +174,6 @@ namespace Cafebook.Views.nhanvien.pages
         {
             decimal tongTien = chiTietHoaDonOC.Sum(item => item.ThanhTien);
             var idSanPhamTrongHoaDon = chiTietHoaDonOC.Select(item => item.IdSanPham).ToList();
-
             var dsKMPhuHop = goiMonBUS.GetKhuyenMaiCoTheApDung(tongTien, idSanPhamTrongHoaDon);
             dsKMPhuHop.Insert(0, new KhuyenMai { IdKhuyenMai = 0, TenKhuyenMai = "Không áp dụng" });
 
@@ -162,7 +189,6 @@ namespace Cafebook.Views.nhanvien.pages
             {
                 cmbKhuyenMai.SelectedIndex = 0;
             }
-
             TinhToanTienCuoiCung();
         }
 
@@ -192,13 +218,9 @@ namespace Cafebook.Views.nhanvien.pages
             lblThanhTien.Text = thanhTien.ToString("N0") + " VND";
         }
 
-        // Trong file Views/nhanvien/pages/GoiMonView.xaml.cs
-
         private void BtnLuu_Click(object sender, RoutedEventArgs e)
         {
-            // Đảm bảo tính toán lần cuối trước khi lưu
             TinhToanTienCuoiCung();
-
             var result = goiMonBUS.LuuHoaDon(hoaDonHienTai, chiTietHoaDonOC.ToList());
             if (result != null)
             {
@@ -219,11 +241,18 @@ namespace Cafebook.Views.nhanvien.pages
                 return;
             }
             BtnLuu_Click(null, null);
+            // Cần đảm bảo ThanhToanView tồn tại và có constructor phù hợp
             this.NavigationService?.Navigate(new ThanhToanView(this.hoaDonHienTai, this.banHienTai, this.currentUser));
         }
 
         private void BtnInTamTinh_Click(object sender, RoutedEventArgs e)
         {
+            // SỬA: Cập nhật thời gian của hóa đơn ngay trước khi in
+            if (this.hoaDonHienTai != null)
+            {
+                this.hoaDonHienTai.ThoiGianTao = System.DateTime.Now;
+            }
+
             var previewWindow = new HoaDonPreviewWindow(this.hoaDonHienTai, chiTietHoaDonOC.ToList(), this.currentUser, this.banHienTai.SoBan);
             previewWindow.Owner = Window.GetWindow(this);
             previewWindow.ShowDialog();

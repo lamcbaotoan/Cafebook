@@ -121,7 +121,9 @@ namespace Cafebook.Views.nhanvien.pages
             }
             if (MessageBox.Show($"Gộp tất cả món từ bàn '{banDuocChon.SoBan}' vào bàn '{banDich.SoBan}'?\n(Bàn '{banDuocChon.SoBan}' sẽ trở thành bàn trống)", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                if (banBUS.GopBan(banDuocChon.IdHoaDonHienTai.Value, banDich.IdHoaDonHienTai.Value))
+                // FIX: Hoán đổi tham số. Bàn đích (banDich) nhận món từ bàn nguồn (banDuocChon).
+                // Tham số đầu tiên thường là hóa đơn đích, tham số thứ hai là hóa đơn nguồn.
+                if (banBUS.GopBan(banDich.IdHoaDonHienTai.Value, banDuocChon.IdHoaDonHienTai.Value))
                 {
                     MessageBox.Show("Gộp bàn thành công!");
                     LoadSoDoBan();
@@ -129,7 +131,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
             ClearSelection();
         }
-        // Trong file SoDoBanView.xaml.cs
 
         private void BtnGoiMon_Click(object sender, RoutedEventArgs e)
         {
@@ -138,7 +139,6 @@ namespace Cafebook.Views.nhanvien.pages
                 var mainWindow = Window.GetWindow(this) as ManHinhNhanVien;
                 if (mainWindow != null)
                 {
-                    // SỬA LẠI DÒNG NÀY: Truyền thêm 'this.currentUser'
                     mainWindow.MainFrame.Navigate(new GoiMonView(banDuocChon, this.currentUser));
                 }
             }

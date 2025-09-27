@@ -2,13 +2,14 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Cafebook // Đảm bảo namespace này khớp với namespace gốc của project bạn
+namespace Cafebook
 {
     public class IsLessThanValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int threshold = 5; // Ngưỡng mặc định là 5
+            // Giá trị ngưỡng để so sánh, mặc định là 5
+            int threshold = 5;
             if (parameter != null)
             {
                 int.TryParse(parameter.ToString(), out threshold);

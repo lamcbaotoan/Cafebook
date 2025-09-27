@@ -68,14 +68,25 @@ namespace Cafebook.Views.admin.pages
 
         private void BtnInLaiHoaDon_Click(object sender, RoutedEventArgs e)
         {
-            if (dgDonHang.SelectedItem is HoaDon selected)
+            if (dgDonHang.SelectedItem is HoaDon selectedSummary)
             {
-                // Cần lấy lại thông tin đầy đủ của hóa đơn và nhân viên để in
-                // Tạm thời mô phỏng với thông tin có sẵn
-                var chiTiet = goiMonBUS.GetChiTietHoaDon(selected.IdHoaDon);
-                var nv = new NhanVien { HoTen = selected.TenNhanVien };
+                // SỬA LỖI: Tải lại thông tin ĐẦY ĐỦ của hóa đơn từ BUS
+                HoaDon hoaDonDayDu = donHangBUS.GetHoaDonDayDuById(selectedSummary.IdHoaDon);
 
-                var preview = new HoaDonPreviewWindow(selected, chiTiet, nv, selected.SoBan, "HÓA ĐƠN BÁN LẺ");
+                if (hoaDonDayDu == null)
+                {
+                    MessageBox.Show("Không thể tải chi tiết hóa đơn.", "Lỗi");
+                    return;
+                }
+
+                // Lấy danh sách chi tiết món ăn
+                var chiTiet = goiMonBUS.GetChiTietHoaDon(hoaDonDayDu.IdHoaDon);
+
+                // Lấy thông tin nhân viên (đã có sẵn trong hoaDonDayDu)
+                var nv = new NhanVien { HoTen = hoaDonDayDu.TenNhanVien };
+
+                // Tạo cửa sổ xem trước với đối tượng hóa đơn ĐẦY ĐỦ
+                var preview = new HoaDonPreviewWindow(hoaDonDayDu, chiTiet, nv, hoaDonDayDu.SoBan, "HÓA ĐƠN BÁN LẺ");
                 preview.Owner = Window.GetWindow(this);
                 preview.ShowDialog();
             }

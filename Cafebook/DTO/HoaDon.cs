@@ -1,5 +1,5 @@
-﻿// DTO/HoaDon.cs
-using System;
+﻿using System;
+using System.Collections.Generic; // Thêm dòng này
 
 namespace Cafebook.DTO
 {
@@ -11,13 +11,21 @@ namespace Cafebook.DTO
         public int IdBan { get; set; }
         public int? IdKhuyenMai { get; set; }
         public DateTime ThoiGianTao { get; set; }
+        public DateTime? ThoiGianThanhToan { get; set; } // << THÊM DÒNG NÀY
         public decimal TongTien { get; set; }
         public decimal SoTienGiam { get; set; }
         public decimal ThanhTien { get; set; }
         public string TrangThai { get; set; }
+        public string PhuongThucThanhToan { get; set; } // << THÊM DÒNG NÀY
 
-        // --- Thuộc tính bổ sung để hiển thị ---
+
+        // Thuộc tính bổ sung để hiển thị
         public string SoBan { get; set; }
         public string TenNhanVien { get; set; }
+        public List<ChiTietHoaDon> ChiTiet { get; set; } // << THÊM DÒNG NÀY
+        public HoaDon() // << THÊM HÀM KHỞI TẠO NÀY
+        {
+            ChiTiet = new List<ChiTietHoaDon>();
+        }
     }
 }

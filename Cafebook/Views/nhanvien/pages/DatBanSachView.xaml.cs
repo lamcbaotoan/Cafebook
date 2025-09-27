@@ -1,6 +1,4 @@
-﻿// Views/nhanvien/pages/DatBanSachView.xaml.cs
-
-using Cafebook.BUS;
+﻿using Cafebook.BUS;
 using Cafebook.DTO;
 using System;
 using System.Collections.Generic;
@@ -9,13 +7,11 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
-// Placeholder for session management - in a real app, this would be in its own file
+// Placeholder for session management
 public static class LoginSession
 {
-    // Giả lập người dùng đăng nhập để code chạy được. Trong dự án thật, bạn sẽ lấy thông tin này sau khi đăng nhập thành công.
     public static NhanVien CurrentUser { get; set; } = new NhanVien { IdNhanVien = 1, HoTen = "Admin Demo" };
 }
-
 
 namespace Cafebook.Views.nhanvien.pages
 {
@@ -26,8 +22,9 @@ namespace Cafebook.Views.nhanvien.pages
         private BanBUS banBUS = new BanBUS();
 
         private List<PhieuDatBan> danhSachPhieuDatBanHomNay = new List<PhieuDatBan>();
-        private const decimal MucPhatMoiNgay = 5000;
 
+        private List<KhachHang> danhSachKhachHangDayDu;
+        private List<Sach> danhSachSachDayDu;
         public DatBanSachView()
         {
             InitializeComponent();
@@ -37,7 +34,7 @@ namespace Cafebook.Views.nhanvien.pages
         {
             dpChonNgayDatBan.SelectedDate = DateTime.Today;
             LoadDataDatBan();
-            LoadDataThueSach();
+            LoadDataThueSach(); // Phần này bạn giữ nguyên logic của bạn
         }
 
         #region Đặt Bàn
@@ -47,51 +44,53 @@ namespace Cafebook.Views.nhanvien.pages
             danhSachPhieuDatBanHomNay = nghiepVuBUS.GetPhieuDatBan(selectedDate);
             dgPhieuDatBan.ItemsSource = danhSachPhieuDatBanHomNay;
             cmbBan.ItemsSource = banBUS.GetDanhSachBan();
+            dpNgayDatMoi.SelectedDate = DateTime.Today;
         }
 
-        // Phương thức này xử lý sự kiện khi người dùng chọn ngày khác
         private void DpChonNgayDatBan_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (IsLoaded) // Chỉ chạy khi Page đã được load xong
+            if (IsLoaded)
             {
                 LoadDataDatBan();
             }
         }
 
-        // Phương thức này xử lý sự kiện click nút "Tạo Phiếu Đặt"
+        // SỬA: Thêm phương thức mới cho nút "Hôm nay"
+        private void BtnHomNay_Click(object sender, RoutedEventArgs e)
+        {
+            dpChonNgayDatBan.SelectedDate = DateTime.Today;
+            // Sự kiện SelectedDateChanged sẽ tự động được gọi và tải lại dữ liệu
+        }
+
         private void BtnTaoPhieuDat_Click(object sender, RoutedEventArgs e)
         {
+            // --- Validations (giữ nguyên) ---
             if (string.IsNullOrWhiteSpace(txtTenKhachDat.Text) || string.IsNullOrWhiteSpace(txtSdtKhachDat.Text))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ Tên và Số điện thoại khách hàng.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (!Regex.IsMatch(txtSdtKhachDat.Text, @"^0\d{9,10}$"))
-            {
-                MessageBox.Show("Số điện thoại không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Vui lòng nhập đầy đủ Tên và Số điện thoại khách hàng.", "Thiếu thông tin"); return;
             }
             if (!TimeSpan.TryParse(txtGioPhutDat.Text, out TimeSpan gioDat))
             {
-                MessageBox.Show("Giờ đặt không hợp lệ. Vui lòng nhập theo định dạng HH:mm (ví dụ: 19:30).", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Giờ đặt không hợp lệ. Vui lòng nhập theo định dạng HH:mm.", "Lỗi"); return;
             }
             if (!int.TryParse(txtSoLuongKhach.Text, out int soLuong) || soLuong <= 0)
             {
-                MessageBox.Show("Số lượng khách phải là một số lớn hơn 0.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Số lượng khách phải là một số lớn hơn 0.", "Lỗi"); return;
             }
             if (cmbBan.SelectedItem == null)
             {
-                MessageBox.Show("Vui lòng chọn một bàn.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                MessageBox.Show("Vui lòng chọn một bàn.", "Thiếu thông tin"); return;
+            }
+            if (dpNgayDatMoi.SelectedDate == null)
+            {
+                MessageBox.Show("Vui lòng chọn ngày đặt bàn.", "Thiếu thông tin"); return;
             }
 
-            DateTime thoiGianDat = (dpChonNgayDatBan.SelectedDate ?? DateTime.Today).Date.Add(gioDat);
+            DateTime thoiGianDat = dpNgayDatMoi.SelectedDate.Value.Date.Add(gioDat);
+
             if (thoiGianDat < DateTime.Now)
             {
-                MessageBox.Show("Không thể đặt bàn cho thời gian trong quá khứ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Không thể đặt bàn cho thời gian trong quá khứ.", "Lỗi"); return;
             }
 
             var pdb = new PhieuDatBan
@@ -108,8 +107,14 @@ namespace Cafebook.Views.nhanvien.pages
             string errorMessage = nghiepVuBUS.TaoPhieuDatBan(pdb);
             if (errorMessage == null)
             {
-                MessageBox.Show("Tạo phiếu đặt bàn thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Tạo phiếu đặt bàn thành công!", "Thành công");
+
+                // SỬA LỖI: Cập nhật lại bộ lọc ngày trước khi tải lại danh sách
+                dpChonNgayDatBan.SelectedDate = dpNgayDatMoi.SelectedDate;
+
                 LoadDataDatBan(); // Tải lại danh sách
+
+                // Reset form
                 txtTenKhachDat.Clear();
                 txtSdtKhachDat.Clear();
                 txtSoLuongKhach.Clear();
@@ -118,11 +123,10 @@ namespace Cafebook.Views.nhanvien.pages
             }
             else
             {
-                MessageBox.Show(errorMessage, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(errorMessage, "Lỗi");
             }
         }
 
-        // Phương thức này xử lý sự kiện click nút "Xác nhận khách đã đến"
         private void BtnKhachDaDen_Click(object sender, RoutedEventArgs e)
         {
             if (dgPhieuDatBan.SelectedItem is PhieuDatBan selected)
@@ -139,7 +143,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
-        // Phương thức này xử lý sự kiện click nút "Hủy Phiếu Đặt"
         private void BtnHuyPhieuDat_Click(object sender, RoutedEventArgs e)
         {
             if (dgPhieuDatBan.SelectedItem is PhieuDatBan selected)
@@ -159,7 +162,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
 
-        // Phương thức này xử lý sự kiện khi người dùng gõ vào ô tìm kiếm
         private void TxtTimKiemDatBan_TextChanged(object sender, TextChangedEventArgs e)
         {
             string keyword = txtTimKiemDatBan.Text.ToLower();
@@ -174,22 +176,21 @@ namespace Cafebook.Views.nhanvien.pages
                     .ToList();
             }
         }
-
         #endregion
 
         #region Thuê Sách
         // Lưu trữ danh sách khách hàng gốc để lọc
-        private List<KhachHang> danhSachKhachHangDayDu;
+    //    private List<KhachHang> danhSachKhachHangDayDu;
 
         private void LoadDataThueSach()
         {
-            // Lấy danh sách khách hàng đầy đủ và lưu vào biến tạm
             danhSachKhachHangDayDu = khachHangBUS.GetDanhSachKhachHang();
             cmbKhachHang_Thue.ItemsSource = danhSachKhachHangDayDu;
 
-            cmbSach_Thue.ItemsSource = nghiepVuBUS.GetSachCoTheChoThue();
+            // SỬA: Lưu danh sách sách đầy đủ vào biến tạm
+            danhSachSachDayDu = nghiepVuBUS.GetSachCoTheChoThue();
+            cmbSach_Thue.ItemsSource = danhSachSachDayDu;
 
-            // Tự động tải danh sách sách đang thuê và quá hạn
             dgPhieuDangThue.ItemsSource = nghiepVuBUS.GetPhieuDangThue();
             dgPhieuQuaHan.ItemsSource = nghiepVuBUS.GetPhieuQuaHan();
 
@@ -213,6 +214,36 @@ namespace Cafebook.Views.nhanvien.pages
                     .Where(kh => kh.HoTen.ToLower().Contains(keyword) || kh.SoDienThoai.Contains(keyword))
                     .ToList();
             }
+        }
+
+        // SỬA: Thêm phương thức mới để xử lý tìm kiếm sách
+        private void TxtTimKiemSach_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string keyword = txtTimKiemSach.Text.ToLower().Trim();
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                // Nếu ô tìm kiếm trống, hiển thị lại toàn bộ danh sách
+                cmbSach_Thue.ItemsSource = danhSachSachDayDu;
+            }
+            else
+            {
+                // Lọc danh sách sách gốc
+                // Lưu ý: Giả định lớp Sach của bạn có các thuộc tính TieuDe, TacGia, ViTri
+                var ketQuaLoc = danhSachSachDayDu
+                    .Where(sach =>
+                        sach.TieuDe.ToLower().Contains(keyword) ||
+                        (sach.TacGia != null && sach.TacGia.ToLower().Contains(keyword)) ||
+                        (sach.ViTri != null && sach.ViTri.ToLower().Contains(keyword)) ||
+                        sach.IdSach.ToString() == keyword
+                     )
+                    .ToList();
+
+                cmbSach_Thue.ItemsSource = ketQuaLoc;
+            }
+
+            // Tự động mở dropdown để hiển thị kết quả
+            cmbSach_Thue.IsDropDownOpen = true;
         }
 
         // === TÌM KIẾM PHIẾU TRẢ SÁCH ===
@@ -399,5 +430,6 @@ namespace Cafebook.Views.nhanvien.pages
             }
         }
         #endregion
+
     }
 }

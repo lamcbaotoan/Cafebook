@@ -108,7 +108,8 @@ namespace Cafebook.BUS
         }
 
         // **HÀM TÁCH HÓA ĐƠN ĐÃ ĐƯỢC THIẾT KẾ LẠI HOÀN TOÀN**
-        public bool ThucHienTachHoaDon(HoaDon hoaDonGoc, List<ChiTietHoaDon> chiTietCanTach, int idNhanVien)
+        // SỬA LẠI HOÀN TOÀN HÀM NÀY
+        public bool ThucHienTachHoaDon(int idHoaDonGoc, HoaDon hoaDonThanhToan, List<ChiTietHoaDon> chiTietCanTach, int idNhanVien)
         {
             using (var conn = new SqlConnection(connectionString))
             {
@@ -117,30 +118,19 @@ namespace Cafebook.BUS
                 {
                     try
                     {
-                        // 1. Tạo một hóa đơn MỚI cho các món ĐÃ TÁCH và thanh toán nó
-                        var hoaDonDaTach = new HoaDon
-                        {
-                            IdBan = hoaDonGoc.IdBan,
-                            IdNhanVien = idNhanVien,
-                            ThoiGianTao = DateTime.Now,
-                            TrangThai = "Đã thanh toán", // Hóa đơn này được thanh toán ngay
-                            TongTien = hoaDonGoc.TongTien, // Thông tin tiền đã được cập nhật từ View
-                            SoTienGiam = hoaDonGoc.SoTienGiam,
-                            ThanhTien = hoaDonGoc.ThanhTien,
-                            IdKhuyenMai = hoaDonGoc.IdKhuyenMai
-                        };
-
-                        var cmdInsertHD = new SqlCommand(@"INSERT INTO HoaDon (idBan, idNhanVien, thoiGianTao, trangThai, idKhuyenMai, tongTien, soTienGiam, thanhTien)
+                        // 1. Tạo hóa đơn MỚI cho các món ĐÃ TÁCH và thanh toán nó
+                        var cmdInsertHD = new SqlCommand(@"INSERT INTO HoaDon (idBan, idNhanVien, thoiGianTao, thoiGianThanhToan, trangThai, idKhuyenMai, tongTien, soTienGiam, thanhTien)
                                                          OUTPUT INSERTED.idHoaDon
-                                                         VALUES (@idBan, @idNV, @time, @tt, @idKM, @tong, @giam, @thanhTien)", conn, tran);
-                        cmdInsertHD.Parameters.AddWithValue("@idBan", hoaDonDaTach.IdBan);
-                        cmdInsertHD.Parameters.AddWithValue("@idNV", hoaDonDaTach.IdNhanVien);
-                        cmdInsertHD.Parameters.AddWithValue("@time", hoaDonDaTach.ThoiGianTao);
-                        cmdInsertHD.Parameters.AddWithValue("@tt", hoaDonDaTach.TrangThai);
-                        cmdInsertHD.Parameters.AddWithValue("@idKM", (object)hoaDonDaTach.IdKhuyenMai ?? DBNull.Value);
-                        cmdInsertHD.Parameters.AddWithValue("@tong", hoaDonDaTach.TongTien);
-                        cmdInsertHD.Parameters.AddWithValue("@giam", hoaDonDaTach.SoTienGiam);
-                        cmdInsertHD.Parameters.AddWithValue("@thanhTien", hoaDonDaTach.ThanhTien);
+                                                         VALUES (@idBan, @idNV, @time, @timePay, @tt, @idKM, @tong, @giam, @thanhTien)", conn, tran);
+                        cmdInsertHD.Parameters.AddWithValue("@idBan", hoaDonThanhToan.IdBan);
+                        cmdInsertHD.Parameters.AddWithValue("@idNV", idNhanVien);
+                        cmdInsertHD.Parameters.AddWithValue("@time", hoaDonThanhToan.ThoiGianTao);
+                        cmdInsertHD.Parameters.AddWithValue("@timePay", hoaDonThanhToan.ThoiGianThanhToan);
+                        cmdInsertHD.Parameters.AddWithValue("@tt", hoaDonThanhToan.TrangThai);
+                        cmdInsertHD.Parameters.AddWithValue("@idKM", (object)hoaDonThanhToan.IdKhuyenMai ?? DBNull.Value);
+                        cmdInsertHD.Parameters.AddWithValue("@tong", hoaDonThanhToan.TongTien);
+                        cmdInsertHD.Parameters.AddWithValue("@giam", hoaDonThanhToan.SoTienGiam);
+                        cmdInsertHD.Parameters.AddWithValue("@thanhTien", hoaDonThanhToan.ThanhTien);
                         int newHoaDonId = (int)cmdInsertHD.ExecuteScalar();
 
                         // Thêm chi tiết cho hóa đơn vừa tách
@@ -158,22 +148,23 @@ namespace Cafebook.BUS
                         foreach (var item in chiTietCanTach)
                         {
                             var cmdDeleteCT = new SqlCommand("DELETE FROM ChiTietHoaDon WHERE idHoaDon = @idHD AND idSanPham = @idSP", conn, tran);
-                            cmdDeleteCT.Parameters.AddWithValue("@idHD", hoaDonGoc.IdHoaDon);
+                            cmdDeleteCT.Parameters.AddWithValue("@idHD", idHoaDonGoc);
                             cmdDeleteCT.Parameters.AddWithValue("@idSP", item.IdSanPham);
                             cmdDeleteCT.ExecuteNonQuery();
                         }
 
-                        // 3. Cập nhật lại tổng tiền cho hóa đơn gốc (giờ chỉ còn các món chưa thanh toán)
-                        var chiTietConLai = GetChiTietHoaDon(hoaDonGoc.IdHoaDon);
-                        decimal tongTienConLai = chiTietConLai.Sum(i => i.ThanhTien);
-
-                        var cmdUpdateHDGoc = new SqlCommand("UPDATE HoaDon SET tongTien = @tong, soTienGiam=0, thanhTien=@thanhTien, idKhuyenMai=NULL WHERE idHoaDon = @idHD", conn, tran);
-                        cmdUpdateHDGoc.Parameters.AddWithValue("@tong", tongTienConLai);
-                        cmdUpdateHDGoc.Parameters.AddWithValue("@thanhTien", tongTienConLai);
-                        cmdUpdateHDGoc.Parameters.AddWithValue("@idHD", hoaDonGoc.IdHoaDon);
+                        // 3. Cập nhật lại tổng tiền cho hóa đơn gốc
+                        var cmdUpdateHDGoc = new SqlCommand(@"
+                            UPDATE HoaDon 
+                            SET 
+                                tongTien = (SELECT ISNULL(SUM(soLuong * donGiaLucBan), 0) FROM ChiTietHoaDon WHERE idHoaDon = @idHD),
+                                soTienGiam = 0,
+                                thanhTien = (SELECT ISNULL(SUM(soLuong * donGiaLucBan), 0) FROM ChiTietHoaDon WHERE idHoaDon = @idHD),
+                                idKhuyenMai = NULL
+                            WHERE idHoaDon = @idHD", conn, tran);
+                        cmdUpdateHDGoc.Parameters.AddWithValue("@idHD", idHoaDonGoc);
                         cmdUpdateHDGoc.ExecuteNonQuery();
 
-                        // Bàn vẫn ở trạng thái "Đang phục vụ" vì còn hóa đơn gốc
                         tran.Commit();
                         return true;
                     }

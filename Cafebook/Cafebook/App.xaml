@@ -1,0 +1,26 @@
+﻿<Application x:Class="Cafebook.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Cafebook"
+             StartupUri="ManHinhDangNhap.xaml">
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryBrownBrush" Color="#6F4E37"/>
+        <SolidColorBrush x:Key="DarkBrownBrush" Color="#4E342E"/>
+        <SolidColorBrush x:Key="AccentOrangeBrush" Color="#D27D2D"/>
+        <SolidColorBrush x:Key="LightCreamBrush" Color="#FFF8E1"/>
+        <SolidColorBrush x:Key="WhiteTextBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextGrayBrush" Color="#757575"/>
+        <SolidColorBrush x:Key="SubtleGrayBrush" Color="#EEEEEE"/>
+        <SolidColorBrush x:Key="BorderGrayBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="StatusGreenBrush" Color="#66BB6A"/>
+        <SolidColorBrush x:Key="StatusRedBrush" Color="#EF5350"/>
+        <SolidColorBrush x:Key="StatusYellowBrush" Color="#FFA726"/>
+        <SolidColorBrush x:Key="ActionBlueBrush" Color="#42A5F5"/>
+        <SolidColorBrush x:Key="ActionGrayBrush" Color="#BDBDBD"/>
+        <SolidColorBrush x:Key="StatusBlueBrush" Color="#42A5F5"/>
+        <ExponentialEase x:Key="ExpoEaseOut" EasingMode="EaseOut"/>
+
+        <FontFamily x:Key="FontAwesomeSolid">/Fonts/Font Awesome 6 Free-Solid-900.otf#Font Awesome 6 Free Solid</FontFamily>
+    </Application.Resources>
+</Application>

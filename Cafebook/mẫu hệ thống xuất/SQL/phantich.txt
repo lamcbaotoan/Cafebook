@@ -1,0 +1,76 @@
+Phân Tích Chức Năng
+Hệ thống sẽ tập trung vào các nghiệp vụ vận hành và quản lý nội bộ tại quán.
+
+1. Tác Nhân Nhân Viên (Staff)
+Nhân viên sẽ sử dụng ứng dụng WPF (máy POS) để thực hiện các công việc hằng ngày.
+
+Quản lý Ca làm việc Đăng nhập vào hệ thống khi bắt đầu ca và đăng xuất khi kết thúc để ghi nhận giờ công.
+
+Quản lý Sơ đồ bàn
+
+Xem trạng thái trực quan của các bàn (trống, có khách, đã đặt).
+
+Thực hiện các thao tác như chọn bàn để gọi món, chuyển bàn, gộp hoặc tách bàn cho khách.
+
+Gọi món & Lập hóa đơn
+
+Ghi nhận order của khách, thêm các ghi chú đặc biệt cho món.
+
+Cập nhật order (thêmsửahủy món).
+
+Áp dụng các chương trình khuyến mãi hợp lệ vào hóa đơn.
+
+Thanh toán
+
+Thực hiện thanh toán bằng nhiều hình thức.
+
+Hỗ trợ tách hoặc gộp nhiều hóa đơn theo yêu cầu của khách.
+
+In hóa đơn tạm tính và hóa đơn thanh toán cuối cùng.
+
+Quản lý Đặt bàn & Thuê sách
+
+Tạo phiếu đặt bàn mới cho khách đặt qua điện thoại hoặc trực tiếp.
+
+Xử lý nghiệp vụ cho mượn và trả sách tại quầy.
+
+2. Tác Nhân Quản Lý (Admin)
+Quản lý sử dụng ứng dụng WPF với đầy đủ quyền hạn để giám sát và điều hành toàn bộ hoạt động của quán.
+
+Tổng quan & Báo cáo
+
+Xem dashboard với các chỉ số kinh doanh quan trọng (doanh thu, chi phí, v.v.).
+
+Tạo và xuất các báo cáo chi tiết về bán hàng, tồn kho, và hiệu suất làm việc của nhân viên.
+
+Quản lý Sản phẩm
+
+Thêm, sửa, xóa các sản phẩm (đồ ăn, thức uống) trong thực đơn.
+
+Thiết lập công thức định lượng nguyên vật liệu cho từng sản phẩm để tự động trừ kho.
+
+Quản lý Kho
+
+Quản lý việc nhập, xuất và theo dõi số lượng tồn kho của nguyên vật liệu.
+
+Tạo phiếu nhập kho, quản lý thông tin nhà cung cấp.
+
+Lưu trữ và quản lý hóa đơn đầu vào tương ứng với các phiếu nhập.
+
+Quản lý Đầu sách & Cho thuê
+
+Quản lý danh mục sách của thư viện (thêmsửaxóa sách).
+
+Thiết lập các chính sách liên quan đến việc cho thuê sách (phí thuê, phí phạt).
+
+Quản lý Nhân sự
+
+Quản lý tài khoản nhân viên và thực hiện phân quyền chi tiết cho từng vai trò.
+
+Sắp xếp và phân công lịch làm việc cho nhân viên.
+
+Thực hiện chấm công và hỗ trợ tính lương dựa trên dữ liệu giờ làm.
+
+Quản lý Khuyến mãi
+
+Tạo và quản lý các chương trình khuyến mãi, giảm giá áp dụng tại quán.

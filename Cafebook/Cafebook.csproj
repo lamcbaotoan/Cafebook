@@ -379,7 +379,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\logo.png" />
-    <Resource Include=".gitignore.txt" />
     <Content Include="CafebookDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

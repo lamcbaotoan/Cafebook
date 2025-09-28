@@ -554,7 +554,7 @@ namespace Cafebook.Views.admin.pages
                     // SỬA LỖI: Thêm đoạn code để hiển thị cửa sổ xem trước phiếu lương vừa chốt
                     // =======================================================================
                     // Lấy lại thông tin chi tiết của phiếu lương vừa được tạo để in
-                    var phieuLuongMoiNhat = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien).FirstOrDefault();
+                    var phieuLuongMoiNhat = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien).OrderByDescending(p => p.IdPhieuLuong).FirstOrDefault();
                     if (phieuLuongMoiNhat != null)
                     {
                         var previewWindow = new PhieuLuongPreviewWindow(phieuLuongMoiNhat, selectedNV);

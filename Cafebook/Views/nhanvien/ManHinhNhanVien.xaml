@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Cafebook.Views.nhanvien"
         mc:Ignorable="d"
         Title="Cafebook - Copyright by © Lâm Chu Bảo Toàn | Contact:[lamchubaotoan@gmail.com]" Height="800" Width="1440"
+        Icon="/Assets/logo.ico"        
         WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI"
         WindowState="Maximized">

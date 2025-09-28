@@ -105,8 +105,7 @@
 
                 <TextBlock Text="Số điện thoại" Foreground="{StaticResource TextGrayBrush}" Margin="0,0,0,5"/>
                 <TextBox x:Name="txtSoDienThoai" Margin="0,0,0,30" Style="{StaticResource ModernTextBoxStyle}"/>
-
-                <Grid>
+                <Grid Height="35">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -123,7 +122,7 @@
                             <Viewbox Grid.Column="0" Width="16" Height="16" Margin="0,0,10,0">
                                 <Path Data="{StaticResource IconSave}" Fill="White"/>
                             </Viewbox>
-                            <TextBlock Grid.Column="1" Text="Lưu Thay đổi" VerticalAlignment="Center"/>
+                            <TextBlock Text="Lưu Thay đổi" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="21,1,5,0"/>
                         </Grid>
                     </Button>
                 </Grid>

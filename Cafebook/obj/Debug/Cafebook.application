@@ -7,14 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Cafebook.exe.manifest" size="6336">
+    <dependentAssembly dependencyType="install" codebase="Cafebook.exe.manifest" size="6810">
       <assemblyIdentity name="Cafebook.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8TIalubFqaR1+uJ/uMZ1xZNpuToTBk5KUnO1zzW37as=</dsig:DigestValue>
+        <dsig:DigestValue>ZBnAMMIGZ4OT2MgaKZrWvBuM/99aBz/o7+Z6DJURSPY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -1,12 +1,53 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\pages\\nhansuview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\nhansuview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\pages\\nhansuview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\nhansuview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NhanSuView.xaml.cs",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
+              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
+              "ViewState": "AgIAACECAAAAAAAAAAAQwDECAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-28T01:10:42.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NhanSuView.xaml",
+              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
+              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
+              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
+              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-28T01:10:38.719Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

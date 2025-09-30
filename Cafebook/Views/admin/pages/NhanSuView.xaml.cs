@@ -551,9 +551,7 @@ namespace Cafebook.Views.admin.pages
                 {
                     MessageBox.Show("Chốt và tạo phiếu lương thành công!", "Thành công");
 
-                    // SỬA LỖI: Thêm đoạn code để hiển thị cửa sổ xem trước phiếu lương vừa chốt
-                    // =======================================================================
-                    // Lấy lại thông tin chi tiết của phiếu lương vừa được tạo để in
+
                     var phieuLuongMoiNhat = nhanSuBUS.GetLichSuPhieuLuong(selectedNV.IdNhanVien).OrderByDescending(p => p.IdPhieuLuong).FirstOrDefault();
                     if (phieuLuongMoiNhat != null)
                     {

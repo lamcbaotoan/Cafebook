@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+55XspLlDmK4dzmb+8m0wqOOx13NrZwTsRhzfSqtICM=</dsig:DigestValue>
+        <dsig:DigestValue>eiIqimCuDhnAQ8wqOvhQr8Mf+PewQcYdssD9/BLcTf0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -105,7 +105,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>IDKgUXw9V8W67GFdk4CdKtescklIgiy2Pj48nkqlzcE=</dsig:DigestValue>
+      <dsig:DigestValue>hrbr/Kf/2gERhjBL5t/vdhLts9et2FUL+QNT/340FAo=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CafebookDB_log.ldf" size="8388608" writeableType="applicationData">
@@ -114,7 +114,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>VhJDWbRpWZut7POl4LzppRURHOweK6bgwQkgj8Q0r2U=</dsig:DigestValue>
+      <dsig:DigestValue>KsJJko8he2kEaRuF8p9R6EZRPCaVst4jW6s0oVPYPSA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="logo.ico" size="170200">

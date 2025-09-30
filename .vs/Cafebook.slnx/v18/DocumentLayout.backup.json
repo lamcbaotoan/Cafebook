@@ -3,12 +3,13 @@
   "WorkspaceRootPath": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\pages\\nhansuview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\nhansuview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.Sach.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|e:\\tai lieu hoc tap\\cs 464 a\\doannop\\cafebook\\cafebook\\views\\admin\\pages\\nhansuview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{84302CA6-3B5A-45B6-BFC4-EC9A59CD3AA4}|Cafebook\\Cafebook.csproj|solutionrelative:cafebook\\views\\admin\\pages\\nhansuview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.CongThuc.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.Ban.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,26 +24,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "NhanSuView.xaml.cs",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
-              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml.cs",
-              "ViewState": "AgIAACECAAAAAAAAAAAQwDECAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T01:10:42.575Z",
+              "Title": "dbo.Sach [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.Sach.sql",
+              "ToolTip": "dbo.Sach [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-09-29T00:07:13.505Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "NhanSuView.xaml",
-              "DocumentMoniker": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
-              "RelativeDocumentMoniker": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
-              "ToolTip": "E:\\Tai Lieu Hoc Tap\\CS 464 A\\doannop\\Cafebook\\Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
-              "RelativeToolTip": "Cafebook\\Views\\admin\\pages\\NhanSuView.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-28T01:10:38.719Z",
+              "Title": "dbo.CongThuc [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.CongThuc.sql",
+              "ToolTip": "dbo.CongThuc [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-09-29T00:06:59.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "dbo.Ban [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/E__TAI_LIEU_HOC_TAP_CS_464_A_DOANNOP_CAFEBOOK_CAFEBOOK_CAFEBOOKDB.MDF/True/SqlTable/dbo.Ban.sql",
+              "ToolTip": "dbo.Ban [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-09-29T00:06:47.024Z",
               "EditorCaption": ""
             }
           ]
